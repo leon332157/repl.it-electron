@@ -377,7 +377,7 @@ request('https://darktheme.tk/darktheme.css', function (error, response, body) {
 
 
         if (error) {
-            fs.readFile(__dirname + '/Dark.css', function (err, data) {
+            fs.readFile(__dirname + '/styles/dark.css', function (err, data) {
                 if (err) {
                     throw err;
                 }
@@ -485,7 +485,7 @@ function startCustomSession() {
             type: 'url',
             //required: true
         },
-        customStylesheet: Dark ? __dirname + '/PromptDark.css' : __dirname + '/Prompt.css'
+        customStylesheet: Dark ? __dirname + '/styles/promptDark.css' : __dirname + '/styles/prompt.css'
     })
         .then((r) => {
             if (r === undefined || r === null) {
