@@ -1,14 +1,14 @@
 /* Require Packages */
-const { app, BrowserWindow, Menu, dialog, shell } = require("electron");
-const DiscordRPC = require("discord-rpc");
-const fs = require("fs");
-const ElectronPrompt = require("electron-prompt");
-const request = require("request");
-const ChromeErrors = require("chrome-network-errors");
-const ElectronPreferences = require("electron-preferences");
-const path = require("path");
-const EBU = require(__dirname + "/electron-basic-updater");
-const ElectronContext = require("electron-context-menu");
+const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
+const DiscordRPC = require('discord-rpc');
+const fs = require('fs');
+const ElectronPrompt = require('electron-prompt');
+const request = require('request');
+const ChromeErrors = require('chrome-network-errors');
+const ElectronPreferences = require('electron-preferences');
+const path = require('path');
+const EBU = require(__dirname + '/electron-basic-updater');
+const ElectronContext = require('electron-context-menu');
 
 /* Declare Constants */
 let DarkCSS;
@@ -19,21 +19,21 @@ var subWindow = undefined;
 let Update;
 
 /* Constant Variables */
-const clientId = "498635999274991626";
+const clientId = '498635999274991626';
 var startTimestamp = new Date();
 const rpc = new DiscordRPC.Client({
-    transport: "ipc"
+    transport: 'ipc'
 });
 
 /* Preferences */
 const Preferences = new ElectronPreferences({
-    dataStore: path.resolve(app.getPath("userData"), "Preferences.json"),
+    dataStore: path.resolve(app.getPath('userData'), 'Preferences.json'),
     defaults: {
-        "app-theme": {
+        'app-theme': {
             dark: false
         },
-        "update-settings": {
-            "auto-update": true
+        'update-settings': {
+            'auto-update': true
         }
     },
     onLoad: data => {
@@ -44,22 +44,22 @@ const Preferences = new ElectronPreferences({
     },
     sections: [
         {
-            id: "app-theme",
-            label: "App Theme",
-            icon: "preferences",
+            id: 'app-theme',
+            label: 'App Theme',
+            icon: 'preferences',
             form: {
                 groups: [
                     {
                         fields: [
                             {
-                                label: "Dark Theme",
-                                key: "dark",
-                                type: "radio",
+                                label: 'Dark Theme',
+                                key: 'dark',
+                                type: 'radio',
                                 options: [
-                                    { label: "Yes", value: true },
-                                    { label: "No", value: false }
+                                    { label: 'Yes', value: true },
+                                    { label: 'No', value: false }
                                 ],
-                                help: "Enable/Disable dark theme."
+                                help: 'Enable/Disable dark theme.'
                             }
                         ]
                     }
@@ -67,28 +67,28 @@ const Preferences = new ElectronPreferences({
             }
         },
         {
-            id: "update-settings",
-            label: "Update Settings",
-            icon: "square-download",
+            id: 'update-settings',
+            label: 'Update Settings',
+            icon: 'square-download',
             form: {
                 groups: [
                     {
                         fields: [
                             {
-                                label: "Auto Update",
-                                key: "auto-update",
-                                type: "radio",
+                                label: 'Auto Update',
+                                key: 'auto-update',
+                                type: 'radio',
                                 options: [
                                     {
-                                        label: "Yes",
+                                        label: 'Yes',
                                         value: true
                                     },
                                     {
-                                        label: "No",
+                                        label: 'No',
                                         value: false
                                     }
                                 ],
-                                help: "Enable/Disable auto update."
+                                help: 'Enable/Disable auto update.'
                             }
                         ]
                     }
@@ -112,95 +112,95 @@ const Preferences = new ElectronPreferences({
         }*/
     ]
 });
-Preferences.on("save", preferences => {
+Preferences.on('save', preferences => {
     console.log(
         `Preferences were saved.`,
         JSON.stringify(preferences, null, 4)
     );
-    Dark = Preferences.value("app-theme").dark;
+    Dark = Preferences.value('app-theme').dark;
     mainWindow.reload();
     if (subWindow) {
         subWindow.reload();
     }
 });
 
-Dark = Preferences.value("app-theme").dark;
-Update = Preferences.value("update-settings")["auto-update"];
+Dark = Preferences.value('app-theme').dark;
+Update = Preferences.value('update-settings')['auto-update'];
 
 /* Menu Template */
 const template = [
     {
-        label: "Main",
+        label: 'Main',
         submenu: [
             {
-                label: "New Window",
-                accelerator: "CmdOrCtrl+N",
+                label: 'New Window',
+                accelerator: 'CmdOrCtrl+N',
                 click() {
                     startSubWindow(mainWindow.webContents.getURL());
                 }
             },
             {
-                label: "Join Multiplayer/Custom Repl.it Links",
-                accelerator: "CmdOrCtrl+L",
+                label: 'Join Multiplayer/Custom Repl.it Links',
+                accelerator: 'CmdOrCtrl+L',
                 click() {
                     startCustomSession();
                 }
             },
             {
-                label: "Preference",
-                accelerator: "CmdOrCtrl+,",
+                label: 'Preference',
+                accelerator: 'CmdOrCtrl+,',
                 click() {
                     startPreferenceWindow();
                 }
             },
             {
-                type: "separator"
+                type: 'separator'
             },
             {
-                role: "quit"
+                role: 'quit'
             }
         ]
     },
     {
-        label: "Edit",
+        label: 'Edit',
         submenu: [
             {
-                role: "undo"
+                role: 'undo'
             },
             {
-                role: "redo"
+                role: 'redo'
             },
             {
-                type: "separator"
+                type: 'separator'
             },
             {
-                role: "cut"
+                role: 'cut'
             },
             {
-                role: "copy"
+                role: 'copy'
             },
             {
-                role: "paste"
+                role: 'paste'
             },
             {
-                role: "pasteandmatchstyle"
+                role: 'pasteandmatchstyle'
             },
             {
-                role: "delete"
+                role: 'delete'
             },
             {
-                role: "selectall"
+                role: 'selectall'
             },
             {
-                type: "separator"
+                type: 'separator'
             }
         ]
     },
     {
-        label: "View",
+        label: 'View',
         submenu: [
             {
-                label: "Go Back",
+                label: 'Go Back',
                 click(item, focusedWindow) {
                     if (focusedWindow.webContents.canGoBack()) {
                         focusedWindow.webContents.goBack();
@@ -208,7 +208,7 @@ const template = [
                 }
             },
             {
-                label: "Go Forward",
+                label: 'Go Forward',
                 click(item, focusedWindow) {
                     if (focusedWindow.webContents.canGoForward()) {
                         focusedWindow.webContents.goForward();
@@ -216,24 +216,24 @@ const template = [
                 }
             },
             {
-                type: "separator"
+                type: 'separator'
             },
             {
-                label: "Dark Mode",
-                accelerator: "F10",
+                label: 'Dark Mode',
+                accelerator: 'F10',
                 click(item, focusedWindow) {
                     Dark = true;
-                    Preferences.value("app-theme", { dark: true });
+                    Preferences.value('app-theme', { dark: true });
                     addDark(focusedWindow, Dark);
                 }
             },
             {
-                label: "Dark Mode Off",
-                accelerator: "F9",
+                label: 'Dark Mode Off',
+                accelerator: 'F9',
                 click(item, focusedWindow) {
                     Dark = false;
                     try {
-                        Preferences.value("app-theme", { dark: false });
+                        Preferences.value('app-theme', { dark: false });
                     } catch (e) {
                         console.error(e);
                     }
@@ -241,108 +241,108 @@ const template = [
                 }
             },
             {
-                label: "Select Input",
-                accelerator: "CmdOrCtrl+f",
+                label: 'Select Input',
+                accelerator: 'CmdOrCtrl+f',
                 click(item, focusedWindow) {
                     selectInput(focusedWindow);
                 }
             },
             {
-                type: "separator"
+                type: 'separator'
             },
             {
-                label: "Reload",
-                accelerator: "CmdOrCtrl+R",
+                label: 'Reload',
+                accelerator: 'CmdOrCtrl+R',
                 click(item, focusedWindow) {
                     if (focusedWindow) focusedWindow.reload();
                 }
             },
             {
-                label: "Toggle Developer Tools",
+                label: 'Toggle Developer Tools',
                 accelerator:
-                    process.platform === "darwin"
-                        ? "Alt+Command+I"
-                        : "Ctrl+Shift+I",
+                    process.platform === 'darwin'
+                        ? 'Alt+Command+I'
+                        : 'Ctrl+Shift+I',
                 click(item, focusedWindow) {
                     if (focusedWindow)
                         focusedWindow.webContents.toggleDevTools();
                 }
             },
             {
-                type: "separator"
+                type: 'separator'
             },
             {
-                role: "resetzoom"
+                role: 'resetzoom'
             },
             {
-                role: "zoomin"
+                role: 'zoomin'
             },
             {
-                role: "zoomout"
+                role: 'zoomout'
             },
             {
-                type: "separator"
+                type: 'separator'
             },
             {
-                role: "togglefullscreen"
+                role: 'togglefullscreen'
             }
         ]
     },
     {
-        role: "window",
+        role: 'window',
         submenu: [
             {
-                role: "minimize"
+                role: 'minimize'
             },
             {
-                role: "close"
+                role: 'close'
             }
         ]
     },
     {
-        role: "help",
+        role: 'help',
         submenu: [
             {
-                label: "Learn More",
+                label: 'Learn More',
                 click() {
-                    require("electron").shell.openExternal("https://repl.it");
+                    require('electron').shell.openExternal('https://repl.it');
                 }
             }
         ]
     }
 ];
-if (process.platform === "darwin") {
+if (process.platform === 'darwin') {
     const name = app.getName();
     template.unshift({
         label: name,
         submenu: [
             {
-                role: "about"
+                role: 'about'
             },
             {
-                type: "separator"
+                type: 'separator'
             },
             {
-                role: "services",
+                role: 'services',
                 submenu: []
             },
             {
-                type: "separator"
+                type: 'separator'
             },
             {
-                role: "hide"
+                role: 'hide'
             },
             {
-                role: "hideothers"
+                role: 'hideothers'
             },
             {
-                role: "unhide"
+                role: 'unhide'
             },
             {
-                type: "separator"
+                type: 'separator'
             },
             {
-                role: "quit"
+                role: 'quit'
             }
         ]
     });
@@ -350,16 +350,16 @@ if (process.platform === "darwin") {
     template[1].submenu.splice(-1);
     template[2].submenu.push(
         {
-            type: "separator"
+            type: 'separator'
         },
         {
-            label: "Speech",
+            label: 'Speech',
             submenu: [
                 {
-                    role: "startspeaking"
+                    role: 'startspeaking'
                 },
                 {
-                    role: "stopspeaking"
+                    role: 'stopspeaking'
                 }
             ]
         }
@@ -367,35 +367,35 @@ if (process.platform === "darwin") {
     // Window menu.
     template[4].submenu = [
         {
-            label: "Close",
-            accelerator: "CmdOrCtrl+W",
-            role: "close"
+            label: 'Close',
+            accelerator: 'CmdOrCtrl+W',
+            role: 'close'
         },
         {
-            label: "Minimize",
-            accelerator: "CmdOrCtrl+M",
-            role: "minimize"
+            label: 'Minimize',
+            accelerator: 'CmdOrCtrl+M',
+            role: 'minimize'
         },
         {
-            label: "Zoom",
-            role: "zoom"
+            label: 'Zoom',
+            role: 'zoom'
         },
         {
-            type: "separator"
+            type: 'separator'
         },
         {
-            label: "Bring All to Front",
-            role: "front"
+            label: 'Bring All to Front',
+            role: 'front'
         }
     ];
 }
 const menu = Menu.buildFromTemplate(template);
 
 /* Load the dark theme CSS */
-request("https://darktheme.tk/darktheme.css", function(error, response, body) {
+request('https://darktheme.tk/darktheme.css', function(error, response, body) {
     if (body === undefined) {
         if (error) {
-            fs.readFile(__dirname + "/styles/dark.css", function(err, data) {
+            fs.readFile(__dirname + '/styles/dark.css', function(err, data) {
                 if (err) {
                     throw err;
                 }
@@ -417,43 +417,43 @@ function doUpdate() {
         return;
     }
     EBU.init({
-        api: "https://replit-electron-updater.leon332157.repl.co/check/" // The API EBU will talk to
+        api: 'https://replit-electron-updater.leon332157.repl.co/check/' // The API EBU will talk to
     });
     EBU.check(function(result) {
         console.log(result);
-        if (result.toString().startsWith("has_update|")) {
+        if (result.toString().startsWith('has_update|')) {
             dialog.showMessageBox(
                 {
-                    title: "Update available",
+                    title: 'Update available',
                     message: `New version ${
-                        result.toString().split("|")[1]
+                        result.toString().split('|')[1]
                     } is available, would you like to update it?
 
 New features:
-${result.toString().split("|")[2]}
+${result.toString().split('|')[2]}
 `,
-                    type: "info",
-                    buttons: ["Yes", "No"],
+                    type: 'info',
+                    buttons: ['Yes', 'No'],
                     defaultId: 1
                 },
                 function(index) {
                     if (index === 0) {
                         //mainWindow.hide();
                         EBU.download(true, function(result) {
-                            if (result.toString() === "success") {
+                            if (result.toString() === 'success') {
                                 dialog.showMessageBox({
-                                    title: "Update success",
+                                    title: 'Update success',
                                     message: `Update was successful, please restart the app.`,
-                                    type: "info"
+                                    type: 'info'
                                 });
                                 process.exit(0);
                             } else {
                                 dialog.showMessageBox({
-                                    title: "Update failed",
+                                    title: 'Update failed',
                                     message: `Update failed, please check log file at ${path.dirname(
                                         app.getAppPath() + path.sep
                                     ) + path.sep}.`,
-                                    type: "info"
+                                    type: 'info'
                                 });
                             }
                         });
@@ -467,12 +467,12 @@ ${result.toString().split("|")[2]}
 function ErrorMessage(windowObject, errorCode) {
     dialog.showMessageBox(
         {
-            title: "Loading Failed",
+            title: 'Loading Failed',
             message: `loading Failed on window ${
                 windowObject.InternalId
             } reason ${ChromeErrors[errorCode]}, do you want to try again?`,
-            type: "error",
-            buttons: ["Try again please", "Quit"],
+            type: 'error',
+            buttons: ['Try again please', 'Quit'],
             defaultId: 0
         },
         function(index) {
@@ -505,40 +505,40 @@ function startPreferenceWindow() {
 
 function startCustomSession() {
     ElectronPrompt({
-        title: "Join Multiplayer",
-        label: "URL:",
-        value: "https://repl.it/",
+        title: 'Join Multiplayer',
+        label: 'URL:',
+        value: 'https://repl.it/',
         inputAttrs: {
-            type: "url"
+            type: 'url'
             //required: true
         },
         customStylesheet: Dark
-            ? __dirname + "/styles/promptDark.css"
-            : __dirname + "/styles/prompt.css"
+            ? __dirname + '/styles/promptDark.css'
+            : __dirname + '/styles/prompt.css'
     })
         .then(r => {
             if (r === undefined || r === null) {
                 return;
             }
             if (
-                r.toString().replace(" ", "") === "" ||
-                !r.toString().startsWith("https://repl.it/")
+                r.toString().replace(' ', '') === '' ||
+                !r.toString().startsWith('https://repl.it/')
             ) {
                 dialog.showMessageBox({
-                    title: "",
+                    title: '',
                     message: `Please input a valid URL.`,
-                    type: "info",
-                    buttons: ["OK"],
+                    type: 'info',
+                    buttons: ['OK'],
                     defaultId: 0
                 });
             } else {
                 if (subWindow !== undefined) {
                     dialog.showMessageBox(
                         {
-                            title: "",
+                            title: '',
                             message: `Do you want to load ${r} in window 2?`,
-                            type: "info",
-                            buttons: ["Yes", "No"],
+                            type: 'info',
+                            buttons: ['Yes', 'No'],
                             defaultId: 0
                         },
                         index => {
@@ -560,16 +560,16 @@ function getUrl() {
     try {
         var url = mainWindow.webContents
             .getURL()
-            .replace(/(^\w+:|^)\/\/repl\.it\//, "");
-        url = url.split("?")[0];
+            .replace(/(^\w+:|^)\/\/repl\.it\//, '');
+        url = url.split('?')[0];
         return url;
     } catch (e) {
-        return "";
+        return '';
     }
 }
 
-var urlbefore = "";
-var urlnow = "";
+var urlbefore = '';
+var urlnow = '';
 
 function setUrl() {
     urlbefore = urlnow;
@@ -600,18 +600,18 @@ user.classList.add('bot');
 
 async function setPlayingDiscord() {
     var url = getUrl();
-    var spliturl = url.split("/");
+    var spliturl = url.split('/');
 
-    if (spliturl[0] === "repls") {
+    if (spliturl[0] === 'repls') {
         rpc.setActivity({
             details: `Browsing Repls`,
             state: `repl.it/${url}`,
             startTimestamp,
-            largeImageKey: "logo",
-            largeImageText: "Repl.it",
+            largeImageKey: 'logo',
+            largeImageText: 'Repl.it',
             instance: false
         });
-    } else if (spliturl[0] === "talk") {
+    } else if (spliturl[0] === 'talk') {
         let viewing;
         if (spliturl[3] !== undefined) {
             await mainWindow.webContents.executeJavaScript(
@@ -623,41 +623,41 @@ async function setPlayingDiscord() {
         } else {
             viewing = url;
         }
-        var talkBoard = "error";
+        var talkBoard = 'error';
         switch (spliturl[1]) {
-            case "announcements":
-                talkBoard = "Announcements";
+            case 'announcements':
+                talkBoard = 'Announcements';
                 break;
-            case "ask":
-                talkBoard = "Ask";
+            case 'ask':
+                talkBoard = 'Ask';
                 break;
-            case "challenge":
-                talkBoard = "Challenge";
+            case 'challenge':
+                talkBoard = 'Challenge';
                 break;
-            case "learn":
-                talkBoard = "Learn";
+            case 'learn':
+                talkBoard = 'Learn';
                 break;
-            case "share":
-                talkBoard = "Share";
+            case 'share':
+                talkBoard = 'Share';
                 break;
             default:
-                talkBoard = "";
+                talkBoard = '';
         }
         console.log(talkBoard);
         rpc.setActivity({
             state: `${viewing}`,
             details: `In Repl Talk ${talkBoard}`,
             startTimestamp,
-            largeImageKey: "logo",
-            largeImageText: "Repl.it",
-            smallImageKey: "talk",
-            smallImageText: "Repl Talk",
+            largeImageKey: 'logo',
+            largeImageText: 'Repl.it',
+            smallImageKey: 'talk',
+            smallImageText: 'Repl Talk',
             instance: false
         });
-    } else if (spliturl[0][0] === "@" && spliturl[1] !== undefined) {
-        var fileName = "Error";
-        var replName = "Error";
-        var replLanguage = "Error";
+    } else if (spliturl[0][0] === '@' && spliturl[1] !== undefined) {
+        var fileName = 'Error';
+        var replName = 'Error';
+        var replLanguage = 'Error';
         await mainWindow.webContents.executeJavaScript(
             "document.querySelector('.file-header-name div').textContent",
             function(result) {
@@ -677,74 +677,74 @@ async function setPlayingDiscord() {
             }
         );
 
-        var fileExtension = fileName.split(".").slice(-1)[0]; // gets the file extension
+        var fileExtension = fileName.split('.').slice(-1)[0]; // gets the file extension
         var lang = fileExtension;
-        if (replLanguage === "Nodejs") {
-            lang = "node";
+        if (replLanguage === 'Nodejs') {
+            lang = 'node';
         }
         const langsJson = {
-            py: "python",
-            cpp: "cpp",
-            cs: "csharp",
-            html: "html",
-            css: "css",
-            js: "javascript",
-            node: "nodejs",
-            java: "java",
-            rb: "ruby",
-            txt: "txt",
-            go: "go",
-            lua: "lua",
-            sh: "sh",
-            Unknown: "txt"
+            py: 'python',
+            cpp: 'cpp',
+            cs: 'csharp',
+            html: 'html',
+            css: 'css',
+            js: 'javascript',
+            node: 'nodejs',
+            java: 'java',
+            rb: 'ruby',
+            txt: 'txt',
+            go: 'go',
+            lua: 'lua',
+            sh: 'sh',
+            Unknown: 'txt'
         };
 
         if (!(lang in langsJson)) {
-            lang = "Unknown";
+            lang = 'Unknown';
         }
         rpc.setActivity({
             details: `Editing: ${fileName}`,
             state: `${url} `,
             startTimestamp,
-            smallImageKey: "logo",
-            smallImageText: "Repl.it",
+            smallImageKey: 'logo',
+            smallImageText: 'Repl.it',
             largeImageKey: langsJson[lang],
             largeImageText: langsJson[lang],
             instance: false
         }).catch(ret => {
             console.debug(`error@editing ${ret}`);
         });
-    } else if (spliturl[0] === "talk") {
+    } else if (spliturl[0] === 'talk') {
         rpc.setActivity({
             details: `In Repl Talk`,
             state: `repl.it/${url}`,
             startTimestamp,
-            largeImageKey: "talk",
-            largeImageText: "Repl Talk",
-            smallImageKey: "logo",
-            smallImageText: "Repl.it",
+            largeImageKey: 'talk',
+            largeImageText: 'Repl Talk',
+            smallImageKey: 'logo',
+            smallImageText: 'Repl.it',
             instance: false
         }).catch(ret => {
             console.debug(`error@talk ${ret}`);
         });
-    } else if (spliturl[0][0] === "@") {
+    } else if (spliturl[0][0] === '@') {
         rpc.setActivity({
             details: `Looking at ${spliturl[0]}'s profile`,
             state: `repl.it/${url}`,
             startTimestamp,
-            largeImageKey: "logo",
-            largeImageText: "Repl.it",
+            largeImageKey: 'logo',
+            largeImageText: 'Repl.it',
             instance: false
         }).catch(ret => {
             console.debug(`error@profile ${ret}`);
         });
-    } else if (spliturl[0] === "account") {
+    } else if (spliturl[0] === 'account') {
         rpc.setActivity({
             details: `Changing account settings`,
             state: `repl.it/${url}`,
             startTimestamp,
-            largeImageKey: "logo",
-            largeImageText: "Repl.it",
+            largeImageKey: 'logo',
+            largeImageText: 'Repl.it',
             instance: false
         }).catch(ret => {
             console.debug(`error@acount ${ret}`);
@@ -754,8 +754,8 @@ async function setPlayingDiscord() {
             details: `On Repl.it`,
             state: `repl.it/${url}`,
             startTimestamp,
-            largeImageKey: "logo",
-            largeImageText: "Repl.it",
+            largeImageKey: 'logo',
+            largeImageText: 'Repl.it',
             instance: false
         }).catch(ret => {
             console.debug(`error@main ${ret}`);
@@ -777,45 +777,45 @@ function startSubWindow(url) {
     subWindow = new BrowserWindow({
         width: mainWindow.getSize()[0] - 10,
         height: mainWindow.getSize()[1] - 10,
-        title: "Repl.it",
-        icon: path.resolve(__dirname, "utils/logo.png"),
+        title: 'Repl.it',
+        icon: path.resolve(__dirname, 'utils/logo.png'),
         parent: mainWindow
     });
-    subWindow.setBackgroundColor("#393c42");
+    subWindow.setBackgroundColor('#393c42');
     subWindow.InternalId = 2;
     if (url) {
         subWindow.loadURL(url);
     } else {
-        subWindow.loadURL("https://repl.it/repls");
+        subWindow.loadURL('https://repl.it/repls');
     }
-    subWindow.webContents.on("did-frame-finish-load", () => {
+    subWindow.webContents.on('did-frame-finish-load', () => {
         addDark(subWindow, Dark);
         if (!Dark) {
-            subWindow.setBackgroundColor("#FFF");
+            subWindow.setBackgroundColor('#FFF');
         }
     });
-    subWindow.webContents.on("did-fail-load", (event, errorCode) => {
+    subWindow.webContents.on('did-fail-load', (event, errorCode) => {
         ErrorMessage(subWindow, errorCode);
     });
-    subWindow.on("close", () => {
+    subWindow.on('close', () => {
         subWindow.prototype = {};
         subWindow = undefined;
     });
-    subWindow.webContents.on("did-start-navigation", (event, url) => {
+    subWindow.webContents.on('did-start-navigation', (event, url) => {
         if (
-            url.toString().includes("repl.it") ||
-            url.toString().includes("repl.co") ||
-            url.toString().includes("google.com") ||
-            url.toString().includes("repl.run") ||
-            url.toString().startsWith("about:")
+            url.toString().includes('repl.it') ||
+            url.toString().includes('repl.co') ||
+            url.toString().includes('google.com') ||
+            url.toString().includes('repl.run') ||
+            url.toString().startsWith('about:')
         ) {
         } else {
             dialog.showMessageBox(
                 {
-                    title: "Confirm External Links",
+                    title: 'Confirm External Links',
                     message: `${url} Looks like an external link, would you like to load it externally?`,
-                    type: "info",
-                    buttons: ["No", "Yes"],
+                    type: 'info',
+                    buttons: ['No', 'Yes'],
                     defaultId: 1
                 },
                 function(index) {
@@ -833,32 +833,32 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1280,
         height: 800,
-        title: "Repl.it",
-        icon: path.resolve(__dirname, "utils/logo.png")
+        title: 'Repl.it',
+        icon: path.resolve(__dirname, 'utils/logo.png')
     });
-    mainWindow.setBackgroundColor("#393c42");
+    mainWindow.setBackgroundColor('#393c42');
     mainWindow.InternalId = 1;
-    mainWindow.loadURL("https://repl.it/repls");
-    mainWindow.webContents.on("did-fail-load", (event, errorCode) => {
+    mainWindow.loadURL('https://repl.it/repls');
+    mainWindow.webContents.on('did-fail-load', (event, errorCode) => {
         ErrorMessage(mainWindow, errorCode);
     });
     Menu.setApplicationMenu(menu);
-    mainWindow.webContents.on("did-frame-finish-load", () => {
+    mainWindow.webContents.on('did-frame-finish-load', () => {
         addDark(mainWindow, Dark);
         if (!Dark) {
-            mainWindow.setBackgroundColor("#FFF");
+            mainWindow.setBackgroundColor('#FFF');
         }
     });
-    mainWindow.on("close", () => {
+    mainWindow.on('close', () => {
         try {
             var url = mainWindow.webContents.getURL();
         } catch (e) {}
         dialog.showMessageBox(
             {
-                title: "Confirm Quit",
+                title: 'Confirm Quit',
                 message: `Are you sure you want to quit?`,
-                type: "info",
-                buttons: ["Yes", "No"],
+                type: 'info',
+                buttons: ['Yes', 'No'],
                 defaultId: 0
             },
             function(index) {
@@ -874,20 +874,20 @@ function createWindow() {
             }
         );
     });
-    mainWindow.webContents.on("did-start-navigation", (event, url) => {
+    mainWindow.webContents.on('did-start-navigation', (event, url) => {
         if (
-            url.toString().includes("repl.it") ||
-            url.toString().includes("repl.co") ||
-            url.toString().includes("google.com") ||
-            url.toString().includes("repl.run")
+            url.toString().includes('repl.it') ||
+            url.toString().includes('repl.co') ||
+            url.toString().includes('google.com') ||
+            url.toString().includes('repl.run')
         ) {
         } else {
             dialog.showMessageBox(
                 {
-                    title: "Confirm External Links",
+                    title: 'Confirm External Links',
                     message: `${url} Looks like an external link, would you like to load it externally?`,
-                    type: "info",
-                    buttons: ["No", "Yes"],
+                    type: 'info',
+                    buttons: ['No', 'Yes'],
                     defaultId: 1
                 },
                 function(index) {
@@ -907,20 +907,20 @@ ElectronContext({
     showSaveImageAs: true,
     showInspectElement: false
 });
-rpc.on("ready", () => {
-    mainWindow.on("did-finish-load", setPlayingDiscord);
+rpc.on('ready', () => {
+    mainWindow.on('did-finish-load', setPlayingDiscord);
     // activity can only be set every 15 seconds
     setInterval(() => {
         setPlayingDiscord().catch({});
     }, 15e3);
 });
-rpc.on("ready", () => {
+rpc.on('ready', () => {
     setInterval(setUrl, 1000);
 });
-app.on("window-all-closed", function() {
+app.on('window-all-closed', function() {
     app.quit();
 });
-app.on("ready", () => {
+app.on('ready', () => {
     doUpdate();
     createWindow();
 });
