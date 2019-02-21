@@ -1,0 +1,10 @@
+{
+  "name": "example",
+  "productName": "Example",
+  "version": "1.0.0",
+  "description": "Example",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  }
+}

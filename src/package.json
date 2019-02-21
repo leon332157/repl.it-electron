@@ -1,6 +1,6 @@
 {
   "name": "repl.it",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "electron version of repl.it",
   "main": "main.js",
   "scripts": {
@@ -18,14 +18,13 @@
     "electron-store": "^2.0.0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "chrome-network-errors": "^1.0.0",
     "discord-rpc": "^3.0.1",
     "electron-context-menu": "^0.10.1",
-    "electron-preferences": "^1.2.0",
     "electron-prompt": "^1.3.0",
     "react": "^16.7.0",
     "register-scheme": "github:devsnek/node-register-scheme",
-    "request": "latest",
     "restler": "^3.4.0",
     "zip-local": "^0.3.4"
   },

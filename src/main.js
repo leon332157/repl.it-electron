@@ -3,34 +3,71 @@ const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
 const DiscordRPC = require('discord-rpc');
 const fs = require('fs');
 const ElectronPrompt = require('electron-prompt');
-const request = require('request');
 const ChromeErrors = require('chrome-network-errors');
-const ElectronPreferences = require('electron-preferences');
+const ElectronPreferences = require(__dirname + '/electron-preferences');
 const path = require('path');
 const EBU = require(__dirname + '/electron-basic-updater');
 const ElectronContext = require('electron-context-menu');
+const requests = require('axios');
 
 /* Declare Constants */
 let DarkCSS;
 var Dark;
 let mainWindow;
 var subWindow = undefined;
-
 let Update;
-
-/* Constant Variables */
+let Themes = {'Dark (Old)': 'old_dark'};
 const clientId = '498635999274991626';
 var startTimestamp = new Date();
 const rpc = new DiscordRPC.Client({
     transport: 'ipc'
 });
 
+/* Custom Methods */
+String.prototype.capitalize = function () {
+    return this.replace(/(^|\s)([a-z])/g, function (m, p1, p2) {
+        return p1 + p2.toUpperCase();
+    });
+};
+String.prototype.toTitleCase = String.prototype.capitalize;
+Array.prototype.append = Array.prototype.push;
+
+/* Theme SetUp's */
+
+async function getAllThemes() {
+    var themes = {};
+    var res = await requests.get('https://www.darktheme.tk/themes.json');
+    var raw_themes = res.data;
+    for (let key in raw_themes) {
+        if (raw_themes.hasOwnProperty(key)) {
+            themes[key.capitalize()] = raw_themes[key]
+        }
+    }
+
+
+    for (let theme in themes) {
+        if (themes.hasOwnProperty(theme)) {
+            var resp = await requests.get(`https://www.darktheme.tk/theme.css?${themes[theme]}`);
+            Themes[theme] = resp.data.toString()
+        }
+    }
+    return Themes;
+}
+
+getAllThemes().catch((reason) => {
+        console.error(reason);
+        let data = fs.readFileSync(__dirname + '/Dark.css');
+        return DarkCSS = data.toString();
+    }
+);
+
+
 /* Preferences */
 const Preferences = new ElectronPreferences({
     dataStore: path.resolve(app.getPath('userData'), 'Preferences.json'),
     defaults: {
         'app-theme': {
-            dark: false
+            'premade_theme': null, 'css_string': null, 'enable_custom_css': false
         },
         'update-settings': {
             'auto-update': true
@@ -39,78 +76,88 @@ const Preferences = new ElectronPreferences({
     onLoad: data => {
         return data;
     },
-    webPreferences: {
-        devTools: true
+    'webPreferences': {
+        'devTools': true
     },
-    sections: [
-        {
-            id: 'app-theme',
-            label: 'App Theme',
-            icon: 'preferences',
-            form: {
-                groups: [
-                    {
-                        fields: [
-                            {
-                                label: 'Dark Theme',
-                                key: 'dark',
-                                type: 'radio',
-                                options: [
-                                    { label: 'Yes', value: true },
-                                    { label: 'No', value: false }
-                                ],
-                                help: 'Enable/Disable dark theme.'
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            id: 'update-settings',
-            label: 'Update Settings',
-            icon: 'square-download',
-            form: {
-                groups: [
-                    {
-                        fields: [
-                            {
-                                label: 'Auto Update',
-                                key: 'auto-update',
-                                type: 'radio',
-                                options: [
+    'sections': [{
+        'id': 'app-theme',
+        'label': 'App Theme',
+        'icon': 'preferences',
+        'form': {
+            'groups': [
+                /*{
+                    'label': 'Which of the following foods do you like?',
+                    'key': 'premade_theme',
+                    'type': 'dropdown',
+                    'options': Themes,
+                    'help': 'Select one theme and use the window to check it out.'
+                },*/ {
+                    'fields': [{
+                        'label': 'Custom CSS import',
+                        'key': 'css_string',
+                        'type': 'Text',
+                        'options': [{label: 'Yes', value: true}],
+                        'help': 'Paste your CSS here to be applied in the app'
+                    },
+
+                        {
+                            'label': 'Enable Custom CSS',
+                            'key': 'enable_custom_css',
+                            'type': 'radio',
+                            'options': [{
+                                'label': 'Yes',
+                                'value': true
+                            },
+                                {
+                                    'label': 'No',
+                                    'value': false
+                                }
+                            ]
+                        }],
+                },
+
+                {
+                    'id': 'update-settings',
+                    'label': 'Update Settings',
+                    'icon': 'square-download',
+                    'form': {
+                        'groups': [{
+                            'fields': [{
+                                'label': 'Auto Update',
+                                'key': 'auto-update',
+                                'type': 'radio',
+                                'options': [{
+                                    'label': 'Yes',
+                                    'value': true
+                                },
                                     {
-                                        label: 'Yes',
-                                        value: true
-                                    },
-                                    {
-                                        label: 'No',
-                                        value: false
+                                        'label': 'No',
+                                        'value': false
                                     }
                                 ],
-                                help: 'Enable/Disable auto update.'
-                            }
-                        ]
+                                'help': 'Enable/Disable auto update.'
+                            }]
+                        }]
                     }
-                ]
-            }
+                },
+                /*{
+                    'id': 'editor-settings',
+                    'label': 'Editor Settings',
+                    'icon': 'single-folded-content',
+                    'form': {
+                        'groups': [{
+                            'fields': [{
+                                'label': 'Font size',
+                                'key': 'font-size',
+                                'type': 'text',
+                                'help': 'Font size in px for the editor.'
+                            }]
+                        }]
+                    }
+                }*/
+            ]
         }
-        /*{
-            'id': 'editor-settings',
-            'label': 'Editor Settings',
-            'icon': 'single-folded-content',
-            'form': {
-                'groups': [{
-                    'fields': [{
-                        'label': 'Font size',
-                        'key': 'font-size',
-                        'type': 'text',
-                        'help': 'Font size in px for the editor.'
-                    }]
-                }]
-            }
-        }*/
-    ]
+    }]
 });
 Preferences.on('save', preferences => {
     console.log(
@@ -124,7 +171,7 @@ Preferences.on('save', preferences => {
     }
 });
 
-Dark = Preferences.value('app-theme').dark;
+Theme = Preferences.value('app-theme').theme;
 Update = Preferences.value('update-settings')['auto-update'];
 
 /* Menu Template */
@@ -147,10 +194,31 @@ const template = [
                 }
             },
             {
+                label: 'Send Sub to Main Window',
+                click() {
+                    if (subWindow) {
+                        var subUrl = subWindow.getURL();
+                        dialog.showMessageBox({
+                            title: "",
+                            message: `Do you want to load ${subUrl} in window 1?`,
+                            type: 'info',
+                            buttons: ["Yes", "No"],
+                            defaultId: 0
+                        }, (index) => {
+                            if (index === 0) {
+                                mainWindow.loadURL(subUrl)
+                            } else {
+
+                            }
+                        })
+                    }
+                }
+            },
+            {
                 label: 'Preference',
                 accelerator: 'CmdOrCtrl+,',
                 click() {
-                    startPreferenceWindow();
+                    Preferences.show()
                 }
             },
             {
@@ -301,14 +369,12 @@ const template = [
     },
     {
         role: 'help',
-        submenu: [
-            {
-                label: 'Learn More',
-                click() {
-                    require('electron').shell.openExternal('https://repl.it');
-                }
+        submenu: [{
+            label: 'Learn More about repl.it',
+            click() {
+                shell.openExternal('https://repl.it/site/about')
             }
-        ]
+        }]
     }
 ];
 if (process.platform === 'darwin') {
@@ -391,25 +457,8 @@ if (process.platform === 'darwin') {
 }
 const menu = Menu.buildFromTemplate(template);
 
-/* Load the dark theme CSS */
-request('https://darktheme.tk/darktheme.css', function(error, response, body) {
-    if (body === undefined) {
-        if (error) {
-            fs.readFile(__dirname + '/styles/dark.css', function(err, data) {
-                if (err) {
-                    throw err;
-                }
-                return (DarkCSS = data.toString());
-            });
-        }
-    } else {
-        return (DarkCSS = body.toString());
-    }
-});
-
-//Editor TODO: Font size settings for Editor
-//Editor TODO:Add custom themes from css.
-//TODO: Add change log for new updates.
+//TODO:Add custom themes from css.
+//Update: TODO: Use github to do updates.
 
 /* Auto update function */
 function doUpdate() {
@@ -465,25 +514,25 @@ ${result.toString().split('|')[2]}
 }
 
 function ErrorMessage(windowObject, errorCode) {
-    dialog.showMessageBox(
-        {
-            title: 'Loading Failed',
-            message: `loading Failed on window ${
-                windowObject.InternalId
-            } reason ${ChromeErrors[errorCode]}, do you want to try again?`,
-            type: 'error',
-            buttons: ['Try again please', 'Quit'],
-            defaultId: 0
-        },
-        function(index) {
-            // if clicked "Try again please"
-            if (index === 0) {
-                windowObject.reload();
-            } else {
-                app.quit();
-            }
+    var id = windowObject.InternalId;
+    var reason = ChromeErrors[errorCode];
+    if (reason === "ABORTED" || reason === "FAILED") {
+        return;
+    }
+    dialog.showMessageBox({
+        title: "Loading Failed",
+        message: `loading Failed on window ${id} reason ${reason}, do you want to try again?`,
+        type: 'error',
+        buttons: ["Try again please", "Quit"],
+        defaultId: 0
+    }, function (index) {
+        // if clicked "Try again please"
+        if (index === 0) {
+            windowObject.reload();
+        } else {
+            app.quit()
         }
-    );
+    });
 }
 
 function addDark(windowObj, arg) {
@@ -499,9 +548,6 @@ function addDark(windowObj, arg) {
     console.log(`nope for ${windowObj.InternalId}`);
 }
 
-function startPreferenceWindow() {
-    Preferences.show();
-}
 
 function startCustomSession() {
     ElectronPrompt({
@@ -509,8 +555,7 @@ function startCustomSession() {
         label: 'URL:',
         value: 'https://repl.it/',
         inputAttrs: {
-            type: 'url'
-            //required: true
+            type: 'url',
         },
         customStylesheet: Dark
             ? __dirname + '/styles/promptDark.css'
@@ -610,7 +655,7 @@ async function setPlayingDiscord() {
             largeImageKey: 'logo',
             largeImageText: 'Repl.it',
             instance: false
-        });
+        }).then();
     } else if (spliturl[0] === 'talk') {
         let viewing;
         if (spliturl[3] !== undefined) {
@@ -653,7 +698,7 @@ async function setPlayingDiscord() {
             smallImageKey: 'talk',
             smallImageText: 'Repl Talk',
             instance: false
-        });
+        }).then();
     } else if (spliturl[0][0] === '@' && spliturl[1] !== undefined) {
         var fileName = 'Error';
         var replName = 'Error';
@@ -677,8 +722,7 @@ async function setPlayingDiscord() {
             }
         );
 
-        var fileExtension = fileName.split('.').slice(-1)[0]; // gets the file extension
-        var lang = fileExtension;
+        var lang = fileName.split('.').slice(-1)[0]; // gets the file extension
         if (replLanguage === 'Nodejs') {
             lang = 'node';
         }
@@ -802,29 +846,29 @@ function startSubWindow(url) {
         subWindow = undefined;
     });
     subWindow.webContents.on('did-start-navigation', (event, url) => {
-        if (
-            url.toString().includes('repl.it') ||
-            url.toString().includes('repl.co') ||
-            url.toString().includes('google.com') ||
-            url.toString().includes('repl.run') ||
-            url.toString().startsWith('about:')
-        ) {
+        if (url.toString().startsWith('about:')) {
+            subWindow.reload()
+        }
+        if (url.toString().includes('repl.it') || url.toString().includes('repl.co') || url.toString().includes('google.com') || url.toString().includes('repl.run')) {
         } else {
-            dialog.showMessageBox(
-                {
-                    title: 'Confirm External Links',
-                    message: `${url} Looks like an external link, would you like to load it externally?`,
-                    type: 'info',
-                    buttons: ['No', 'Yes'],
-                    defaultId: 1
-                },
-                function(index) {
-                    if (index === 1) {
-                        shell.openExternal(url);
-                    } else {
+            dialog.showMessageBox({
+                title: "Confirm External Links",
+                message: `${url} Lookas like an external link, would you like to load it externally?`,
+                type: 'info',
+                buttons: ["No", "Yes"],
+                defaultId: 1
+            }, function (index) {
+                if (index === 1) {
+                    shell.openExternal(url);
+                    if (subWindow.webContents.canGoBack()) {
+                        subWindow.webContents.goBack()
+                    }
+                } else {
+                    if (subWindow.webContents.canGoBack()) {
+                        subWindow.webContents.goBack()
                     }
                 }
-            );
+            });
         }
     });
 }
@@ -875,28 +919,29 @@ function createWindow() {
         );
     });
     mainWindow.webContents.on('did-start-navigation', (event, url) => {
-        if (
-            url.toString().includes('repl.it') ||
-            url.toString().includes('repl.co') ||
-            url.toString().includes('google.com') ||
-            url.toString().includes('repl.run')
-        ) {
+        if (url.toString().startsWith('about:')) {
+            mainWindow.reload()
+        }
+        if (url.toString().includes('repl.it') || url.toString().includes('repl.co') || url.toString().includes('google.com') || url.toString().includes('repl.run')) {
         } else {
-            dialog.showMessageBox(
-                {
-                    title: 'Confirm External Links',
-                    message: `${url} Looks like an external link, would you like to load it externally?`,
-                    type: 'info',
-                    buttons: ['No', 'Yes'],
-                    defaultId: 1
-                },
-                function(index) {
-                    if (index === 1) {
-                        shell.openExternal(url);
-                    } else {
+            dialog.showMessageBox({
+                title: "Confirm External Links",
+                message: `${url} Looks like an external link, would you like to load it externally?`,
+                type: 'info',
+                buttons: ["No", "Yes"],
+                defaultId: 1
+            }, function (index) {
+                if (index === 1) {
+                    shell.openExternal(url);
+                    if (mainWindow.webContents.canGoBack()) {
+                        mainWindow.webContents.goBack()
+                    }
+                } else {
+                    if (mainWindow.webContents.canGoBack()) {
+                        mainWindow.webContents.goBack()
                     }
                 }
-            );
+            });
         }
     });
     return mainWindow;
@@ -908,7 +953,6 @@ ElectronContext({
     showInspectElement: false
 });
 rpc.on('ready', () => {
-    mainWindow.on('did-finish-load', setPlayingDiscord);
     // activity can only be set every 15 seconds
     setInterval(() => {
         setPlayingDiscord().catch({});

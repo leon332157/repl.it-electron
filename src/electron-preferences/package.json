@@ -1,0 +1,99 @@
+{
+  "_from": "electron-preferences",
+  "_id": "electron-preferences@1.2.0",
+  "_inBundle": false,
+  "_integrity": "sha512-FGLNHveAWhh1O6prku6F/2zBO2dB+CiYggLNAYMlsIVg7COgJYmQbriCm8wxTdRmbYMSPDVFdfNVg2K9K9WC1w==",
+  "_location": "/electron-preferences",
+  "_phantomChildren": {
+    "graceful-fs": "4.1.15",
+    "jsonfile": "4.0.0",
+    "universalify": "0.1.2"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "electron-preferences",
+    "name": "electron-preferences",
+    "escapedName": "electron-preferences",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/electron-preferences/-/electron-preferences-1.2.0.tgz",
+  "_shasum": "c6053bf81e5d4e0d29d8407743fb7e15e307b695",
+  "_spec": "electron-preferences",
+  "_where": "/Users/lynnzheng/Desktop/repl.it/src",
+  "author": {
+    "name": "Tim Ambler",
+    "email": "tkambler@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/tkambler/electron-preferences/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "eventemitter2": "^5.0.1",
+    "fs-extra": "^5.0.0",
+    "lodash": "^4.17.4",
+    "react-color": "^2.14.1"
+  },
+  "deprecated": false,
+  "description": "A simple, consistent interface for managing user preferences within an Electron application.",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "bottlejs": "^1.6.3",
+    "cache-loader": "^1.2.0",
+    "css-loader": "^0.28.7",
+    "font-awesome": "^4.7.0",
+    "glob": "^7.1.2",
+    "grunt": "^1.0.1",
+    "grunt-concurrent": "^2.3.1",
+    "grunt-contrib-compass": "^1.1.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^2.2.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-webpack": "^3.0.2",
+    "handlebars": "^4.0.11",
+    "html-loader": "^0.5.1",
+    "json5-loader": "^1.0.1",
+    "load-grunt-tasks": "^3.5.2",
+    "node-sass": "^4.7.2",
+    "opensans-npm-webfont": "^1.0.0",
+    "prop-types": "^15.6.0",
+    "raw-loader": "^0.5.1",
+    "react": "^16.8.1",
+    "react-dom": "^16.2.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.1",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.15"
+  },
+  "homepage": "https://github.com/tkambler/electron-preferences#readme",
+  "keywords": [
+    "electron",
+    "preferences"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "electron-preferences",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tkambler/electron-preferences.git"
+  },
+  "scripts": {
+    "build": "grunt build",
+    "example": "cd example && electron main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.2.0"
+}

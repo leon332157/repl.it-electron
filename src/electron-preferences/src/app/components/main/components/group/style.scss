@@ -1,0 +1,56 @@
+.group {
+
+    .group-label {
+
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-bottom: 1px dashed #000;
+        margin-bottom: 10px;
+
+    }
+
+    .field {
+
+        margin-bottom: 20px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .field-label {
+
+            border-bottom: 1px dashed #ccc;
+            margin-bottom: 10px;
+
+        }
+
+        .help {
+            display: block;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .value {
+        }
+
+        .bt {
+
+            display: inline-block;
+            background-color: #D9DADB;
+            color: #000;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 0, 0, 0.25);
+
+            &:hover {
+                cursor: pointer;
+                background-color: #A7A8A8;
+            }
+
+        }
+
+    }
+
+}

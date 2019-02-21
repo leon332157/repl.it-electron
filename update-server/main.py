@@ -1,16 +1,20 @@
+import base64
+import io
 import json
 import logging
 import os
 import platform
 import threading
 import time
+import traceback
 from datetime import datetime
-import base64
+
 import dotenv
 import flask
+import json_store_client
+import jsonpickle
 import requests
 from pytz import utc, timezone
-from werkzeug.utils import secure_filename
 
 
 def customTime(*args):
@@ -24,7 +28,8 @@ logging.Formatter.converter = customTime
 dotenv.load_dotenv()
 
 TOKEN = os.getenv('TOKEN')
-
+JSON_STORE_TOKEN = os.getenv('JSON_STORE_TOKEN')
+client = json_store_client.Client(JSON_STORE_TOKEN)
 if platform != 'darwin':
     os.chdir('/')
     logging.basicConfig(
@@ -32,7 +37,8 @@ if platform != 'darwin':
         filemode='a',
         level=logging.INFO,
         format="%(asctime)s %(message)s")
-changelog = json.load(open(os.getcwd() + 'home/runner/updates/changelog.json'))
+changelog = client.retrieve('change_log')
+files = jsonpickle.decode(client.retrieve('files'))
 app = flask.Flask(__name__, root_path=os.getcwd())
 
 
@@ -51,22 +57,13 @@ def log():
 
 
 @app.route('/changelog')
-@app.route('/changelog.json')
 def show_change_log():
-    return flask.send_file(os.getcwd() + 'home/runner/updates/changelog.json')
+    return str(changelog)
 
 
 @app.route('/updates/')
 def updates():
-    return '\n'.join(os.listdir('home/runner/updates/'))
-
-
-@app.route('/update/')
-def update():
-    updates_list = []
-    for each in os.listdir('home/runner/updates/'):
-        updates_list.append(each.strip('.zip').replace('.', ''))
-        return str(updates_list.sort(key=int))
+    return str(files.keys())
 
 
 @app.route('/release', methods=['POST'])
@@ -77,58 +74,64 @@ def add_release():
         return flask.abort(403)
     change_log = flask.request.args.get('change_log', None)
     changelog[version] = base64.urlsafe_b64decode(change_log).decode('utf8')
-    json.dump(changelog, open(os.getcwd() +
-                              'home/runner/updates/changelog.json', 'w'))
+    client.save(changelog, json.dumps(changelog))
     f = flask.request.files['file']
-    os.makedirs('home/runner/updates/', exist_ok=True)
-    f.save(os.getcwd() + 'home/runner/updates/' + secure_filename(f.filename))
+    files[version] = jsonpickle.encode(io.BytesIO(f.stream))
+    try:
+        client.save('files', json.dumps(files))
+    except json_store_client.JsonstoreError:
+        return traceback.format_exc()
     return 'Success'
 
 
-@app.route('/download/<name>')
-def download(name):
-    try:
-        return flask.send_file(os.getcwd() + f'home/runner/updates/{name}')
-    except OSError:
-        return flask.abort(404)
-
-
-@app.route('/remove_update/<name>')
-def delete_release(name):
+@app.route('/clear_log')
+@app.route('/refresh_log')
+def clear_log():
     token = flask.request.args.get('token', None)
     if not token == TOKEN:
         return flask.abort(403)
-    if name.endswith('.zip'):
-        try:
-            os.remove(os.getcwd() + f'home/runner/updates/{name}')
-        except OSError:
-            return flask.abort(404)
-    else:
-        try:
-            os.remove(os.getcwd() + f'home/runner/updates/{name}.zip')
-        except OSError:
-            return flask.abort(404)
-    return 'Success remove ' + name
+    open(os.getcwd() + 'home/runner/log.txt', 'w').close()
+    return 'Success'
+
+
+@app.route('/download/<version>')
+def download(version):
+    try:
+        return flask.send_file(files[version])
+    except KeyError:
+        return flask.abort(404)
+
+
+@app.route('/remove_update/<version>')
+def delete_release(version):
+    token = flask.request.args.get('token', None)
+    if not token == TOKEN:
+        return flask.abort(403)
+    try:
+        files.pop(version)
+        client.save('files', files)
+    except KeyError:
+        return flask.abort(404)
+    return 'Success remove ' + version
 
 
 @app.route('/check/', methods=['POST', "GET"])
 def give_update():
     updates_list = []
-    for each in os.listdir(os.getcwd() + 'home/runner/updates/'):
-        if (each.strip('.zip').replace('.', '')).isdigit():
-            updates_list.append(each.strip('.zip').replace('.', ''))
-        updates_list.sort(key=int)
+    for each in files.keys():
+        updates_list.append(each)
+    updates_list.sort(key=int)
     latest = ".".join(list(updates_list[-1]))
     client_version = flask.request.get_data().decode(
         'utf8').replace('current=', '').replace('.', '')
     if client_version < updates_list[-1]:
         try:
             return json.dumps(
-                {"last": f'{latest}', "source": f"http://replit-electron-updater.leon332157.repl.co/download/{latest}.zip",
-                 "change_log": json.load(open(os.getcwd() + 'home/runner/updates/changelog.json'))[latest]})
+                {"last": f'{latest}', "source": f"https://replit-electron-updater.leon332157.repl.co/download/{latest}",
+                 "change_log": json.load(client.get('change_log'))[latest]})
         except KeyError:
             return json.dumps(
-                {"last": f'{latest}', "source": f"http://replit-electron-updater.leon332157.repl.co/download/{latest}.zip"})
+                {"last": f'{latest}', "source": f"https://replit-electron-updater.leon332157.repl.co/download/{latest}"})
     else:
         return json.dumps({"last": f'{latest}', "source": False})
 
@@ -157,4 +160,4 @@ def ping_myself():
 
 thread = threading.Thread(target=ping_myself)
 thread.start()
-app.run(host='0.0.0.0', port=3435)
+app.run(host='0.0.0.0', port=3430)

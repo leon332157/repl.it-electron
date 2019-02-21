@@ -34,3 +34,9 @@
 1. Changed some details on the UI.
    
 2. Bug Fix.
+
+# 0.1.0
+
+1. Added menu for sending sub window to main window.
+
+2. Bug Fix. 
