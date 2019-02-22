@@ -1,6 +1,3 @@
-[submodule "electron-basic-updater"]
-	path = electron-basic-updater
+[submodule "src/electron-basic-updater"]
+	path = src/electron-basic-updater
 	url = https://github.com/leon332157/electron-basic-updater.git
-[submodule "electron-preferences"]
-	path = electron-preferences
-	url = https://github.com/leon332157/electron-preferences.git
