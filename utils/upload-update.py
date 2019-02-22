@@ -1,15 +1,21 @@
-import base64
+import io
 import json
 import logging
 import os
 import zipfile
 
 import dotenv
-import requests
+import jsonpickle
+import pymongo
 
 dotenv.load_dotenv('update-server/.env')
 TOKEN = os.getenv('TOKEN')
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
+client = pymongo.MongoClient(
+    f'mongodb+srv://leon332157:{os.getenv("PASSWORD")}@cluster0-ysgtf.mongodb.net/test?retryWrites=true&authSource=admin')
+print('Connected')
+db = client['main']
+main = db['main']
 
 print('Input change log:')
 lines = []
@@ -25,25 +31,8 @@ version = json.load(open('src/package.json'))['version']
 update = zipfile.ZipFile(f'pre-distribute/{version}.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9)
 update.write('pre-distribute/repl.it-win32-ia32/resources/app.asar', arcname='app.asar')
 update.close()
-files = {'file': open(f'pre-distribute/{version}.zip', 'rb')}
-for x in range(5):
-    try:
-        request = requests.post(f'https://replit-electron-updater.leon332157.repl.co/release?version={version}&token={TOKEN}' +
-                                f'&change_log={base64.urlsafe_b64encode(change_log.encode("utf8")).decode("utf8")}',
-                                files=files)
-        break
-    except requests.exceptions.ConnectionError as e:
-        print(f'''
-        $$$$$$$$\
-        $$  _____|
-        $$ |       $$$$$$\   $$$$$$\   $$$$$$\   $$$$$$\
-        $$$$$\    $$  __$$\ $$  __$$\ $$  __$$\ $$  __$$\
-        $$  __|   $$ |  \__|$$ |  \__|$$ /  $$ |$$ |  \__|
-        $$ |      $$ |      $$ |      $$ |  $$ |$$ |
-        $$$$$$$$\ $$ |      $$ |      \$$$$$$  |$$ |
-        \________|\__|      \__|       \______/ \__|
 
-        ''')
-        print(e)
-        continue
-# os.remove(f'pre-distribute/{version}.zip')
+file = io.BytesIO(open(f'pre-distribute/{version}.zip', 'rb').read())
+print('Deleted Count:', main.delete_many({'version': version}).deleted_count)
+main.insert_one({'version': version, 'change_log': change_log, 'file': jsonpickle.encode(file)})
+# # os.remove(f'pre-distribute/{version}.zip')

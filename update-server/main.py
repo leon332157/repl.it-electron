@@ -1,20 +1,18 @@
-import base64
-import io
 import json
 import logging
 import os
 import platform
 import threading
 import time
-import traceback
 from datetime import datetime
 
 import dotenv
 import flask
-import json_store_client
 import jsonpickle
+import pymongo
 import requests
 from pytz import utc, timezone
+from werkzeug.wsgi import FileWrapper
 
 
 def customTime(*args):
@@ -28,8 +26,7 @@ logging.Formatter.converter = customTime
 dotenv.load_dotenv()
 
 TOKEN = os.getenv('TOKEN')
-JSON_STORE_TOKEN = os.getenv('JSON_STORE_TOKEN')
-client = json_store_client.Client(JSON_STORE_TOKEN)
+
 if platform != 'darwin':
     os.chdir('/')
     logging.basicConfig(
@@ -37,9 +34,11 @@ if platform != 'darwin':
         filemode='a',
         level=logging.INFO,
         format="%(asctime)s %(message)s")
-changelog = client.retrieve('change_log')
-files = jsonpickle.decode(client.retrieve('files'))
 app = flask.Flask(__name__, root_path=os.getcwd())
+client = pymongo.MongoClient(
+    f'mongodb+srv://leon332157:{os.getenv("PASSWORD")}@cluster0-ysgtf.mongodb.net/test?retryWrites=true&authSource=admin')
+db = client['main']
+main = db['main']
 
 
 @app.route('/')
@@ -58,30 +57,24 @@ def log():
 
 @app.route('/changelog')
 def show_change_log():
-    return str(changelog)
+    change_log_list = []
+    for each in list(main.find()):
+        try:
+            change_log_list.append({each['version']: each['change_log']})
+        except KeyError:
+            continue
+    return str(change_log_list)
 
 
 @app.route('/updates/')
 def updates():
-    return str(files.keys())
-
-
-@app.route('/release', methods=['POST'])
-def add_release():
-    token = flask.request.args.get('token', None)
-    version = flask.request.args.get('version', None)
-    if not token == TOKEN or not version:
-        return flask.abort(403)
-    change_log = flask.request.args.get('change_log', None)
-    changelog[version] = base64.urlsafe_b64decode(change_log).decode('utf8')
-    client.save(changelog, json.dumps(changelog))
-    f = flask.request.files['file']
-    files[version] = jsonpickle.encode(io.BytesIO(f.stream))
-    try:
-        client.save('files', json.dumps(files))
-    except json_store_client.JsonstoreError:
-        return traceback.format_exc()
-    return 'Success'
+    updates_list = []
+    for each in list(main.find()):
+        try:
+            updates_list.append(each['version'])
+        except KeyError:
+            continue
+    return str(updates_list)
 
 
 @app.route('/clear_log')
@@ -96,8 +89,14 @@ def clear_log():
 
 @app.route('/download/<version>')
 def download(version):
+    download_dict = {}
+    for each in list(main.find()):
+        try:
+            download_dict[each['version']] = jsonpickle.decode(each['file'])
+        except KeyError:
+            continue
     try:
-        return flask.send_file(files[version])
+        return flask.Response(FileWrapper(download_dict[version]), mimetype="application/zip")
     except KeyError:
         return flask.abort(404)
 
@@ -107,28 +106,33 @@ def delete_release(version):
     token = flask.request.args.get('token', None)
     if not token == TOKEN:
         return flask.abort(403)
-    try:
-        files.pop(version)
-        client.save('files', files)
-    except KeyError:
-        return flask.abort(404)
-    return 'Success remove ' + version
+    result = main.delete_one({'version': version})
+    return str(result.raw_result) + str(result.deleted_count)
 
 
 @app.route('/check/', methods=['POST', "GET"])
 def give_update():
     updates_list = []
-    for each in files.keys():
-        updates_list.append(each)
+    for each in main.find():
+        try:
+            updates_list.append(each['version'].replace('.', ''))
+        except KeyError:
+            continue
     updates_list.sort(key=int)
     latest = ".".join(list(updates_list[-1]))
     client_version = flask.request.get_data().decode(
         'utf8').replace('current=', '').replace('.', '')
+    change_logs = {}
+    for each in list(main.find()):
+        try:
+            change_logs[each['version']] = each['change_log']
+        except KeyError:
+            continue
     if client_version < updates_list[-1]:
         try:
             return json.dumps(
                 {"last": f'{latest}', "source": f"https://replit-electron-updater.leon332157.repl.co/download/{latest}",
-                 "change_log": json.load(client.get('change_log'))[latest]})
+                 "change_log": change_logs[latest]})
         except KeyError:
             return json.dumps(
                 {"last": f'{latest}', "source": f"https://replit-electron-updater.leon332157.repl.co/download/{latest}"})

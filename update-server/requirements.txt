@@ -2,4 +2,5 @@ flask
 flask_cors
 python-dotenv
 pytz
-json-store-client
+pymongo[srv,tls]
+jsonpickle
