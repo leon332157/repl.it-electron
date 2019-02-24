@@ -4,9 +4,9 @@ const DiscordRPC = require('discord-rpc');
 const fs = require('fs');
 const ElectronPrompt = require('electron-prompt');
 const ChromeErrors = require('chrome-network-errors');
-const ElectronPreferences = require(__dirname + '/electron-preferences');
+const ElectronPreferences = require('./electron-preferences/index');
 const path = require('path');
-const EBU = require(__dirname + '/electron-basic-updater');
+const EBU = require('./electron-basic-updater/index');
 const ElectronContext = require('electron-context-menu');
 const requests = require('axios');
 
