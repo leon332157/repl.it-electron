@@ -1,5 +1,5 @@
 /* Require Packages */
-const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
+const {app, BrowserWindow, Menu, dialog, shell} = require('electron');
 const DiscordRPC = require('discord-rpc');
 const fs = require('fs');
 const ElectronPrompt = require('electron-prompt');
@@ -15,8 +15,6 @@ let DarkCSS;
 var Dark;
 let mainWindow;
 var subWindow = undefined;
-let Update;
-Themes = {'Dark (Old)': 'old_dark'};
 const clientId = '498635999274991626';
 var startTimestamp = new Date();
 const rpc = new DiscordRPC.Client({
@@ -32,11 +30,13 @@ String.prototype.capitalize = function () {
 String.prototype.toTitleCase = String.prototype.capitalize;
 Array.prototype.append = Array.prototype.push;
 
-/* Theme SetUp's */
+/* App SetUp's */
 
-async function getAllThemes() {
+async function appSetup() {
+    var Themes = {};
     var themes = {};
     var res = await requests.get('https://www.darktheme.tk/themes.json');
+    var theme_instert = [];
     var raw_themes = res.data;
     for (let key in raw_themes) {
         if (raw_themes.hasOwnProperty(key)) {
@@ -44,55 +44,46 @@ async function getAllThemes() {
         }
     }
 
-
+    Themes['Default White'] = '';
+    theme_instert.append({'label': 'Default White', 'value': 'Default White'});
     for (let theme in themes) {
         if (themes.hasOwnProperty(theme)) {
             var resp = await requests.get(`https://www.darktheme.tk/theme.css?${themes[theme]}`);
-            Themes[theme] = resp.data.toString()
+            Themes[theme] = resp.data.toString();
+            theme_instert.append({'label': theme.toString(), 'value': theme.toString()})
         }
     }
-    return Themes;
-}
-
-getAllThemes().catch((reason) => {
-        console.error(reason);
-        let data = fs.readFileSync(__dirname + '/Dark.css');
-        return DarkCSS = data.toString();
-    }
-);
-
-
-/* Preferences */
-const Preferences = new ElectronPreferences({
-    dataStore: path.resolve(app.getPath('userData'), 'Preferences.json'),
-    defaults: {
-        'app-theme': {
-            'premade_theme': null, 'css_string': null, 'enable_custom_css': false
+    /* Preferences */
+    const Preferences = new ElectronPreferences({
+        dataStore: path.resolve(app.getPath('userData'), 'Preferences.json'),
+        defaults: {
+            'app-theme': {
+                'theme': 'Default Dark', 'css_string': null, 'enable_custom_css': false
+            },
+            'update-settings': {
+                'auto-update': true
+            }
         },
-        'update-settings': {
-            'auto-update': true
-        }
-    },
-    onLoad: data => {
-        return data;
-    },
-    'webPreferences': {
-        'devTools': true
-    },
-    'sections': [{
-        'id': 'app-theme',
-        'label': 'App Theme',
-        'icon': 'preferences',
-        'form': {
-            'groups': [
-                /*{
-                    'label': 'Which of the following foods do you like?',
-                    'key': 'premade_theme',
-                    'type': 'dropdown',
-                    'options': Themes,
-                    'help': 'Select one theme and use the window to check it out.'
-                },*/ {
-                    'fields': [{
+        onLoad: data => {
+            return data;
+        },
+        'webPreferences': {
+            'devTools': true
+        },
+        'sections': [{
+            'id': 'app-theme',
+            'label': 'App Theme',
+            'icon': 'widget',
+            'form': {
+                'groups': [{
+                    'fields': [
+                        {
+                            'label': 'Theme Select\n',
+                            'key': 'theme',
+                            'type': 'dropdown',
+                            'options': theme_instert,
+                            'help': 'Select a theme'
+                        }, /*{
                         'label': 'Custom CSS import',
                         'key': 'css_string',
                         'type': 'Text',
@@ -100,9 +91,32 @@ const Preferences = new ElectronPreferences({
                         'help': 'Paste your CSS here to be applied in the app'
                     },
 
-                        {
-                            'label': 'Enable Custom CSS',
-                            'key': 'enable_custom_css',
+                    {
+                        'label': 'Enable Custom CSS',
+                        'key': 'enable_custom_css',
+                        'type': 'radio',
+                        'options': [{
+                            'label': 'Yes',
+                            'value': true
+                        },
+                            {
+                                'label': 'No',
+                                'value': false
+                            }
+                        ]
+                    }*/]
+                }]
+            }
+        },
+            {
+                'id': 'update-settings',
+                'label': 'Update Settings',
+                'icon': 'square-download',
+                'form': {
+                    'groups': [{
+                        'fields': [{
+                            'label': 'Auto Update',
+                            'key': 'auto-update',
                             'type': 'radio',
                             'options': [{
                                 'label': 'Yes',
@@ -112,362 +126,335 @@ const Preferences = new ElectronPreferences({
                                     'label': 'No',
                                     'value': false
                                 }
-                            ]
-                        }],
-                },
-
-                {
-                    'id': 'update-settings',
-                    'label': 'Update Settings',
-                    'icon': 'square-download',
-                    'form': {
-                        'groups': [{
-                            'fields': [{
-                                'label': 'Auto Update',
-                                'key': 'auto-update',
-                                'type': 'radio',
-                                'options': [{
-                                    'label': 'Yes',
-                                    'value': true
-                                },
-                                    {
-                                        'label': 'No',
-                                        'value': false
-                                    }
-                                ],
-                                'help': 'Enable/Disable auto update.'
-                            }]
+                            ],
+                            'help': 'Enable/Disable auto update.'
                         }]
-                    }
-                },
-                /*{
-                    'id': 'editor-settings',
-                    'label': 'Editor Settings',
-                    'icon': 'single-folded-content',
-                    'form': {
-                        'groups': [{
-                            'fields': [{
-                                'label': 'Font size',
-                                'key': 'font-size',
-                                'type': 'text',
-                                'help': 'Font size in px for the editor.'
-                            }]
+                    }]
+                }
+            },
+            /*{
+                'id': 'editor-settings',
+                'label': 'Editor Settings',
+                'icon': 'single-folded-content',
+                'form': {
+                    'groups': [{
+                        'fields': [{
+                            'label': 'Font size',
+                            'key': 'font-size',
+                            'type': 'text',
+                            'help': 'Font size in px for the editor.'
                         }]
-                    }
-                }*/
-            ]
+                    }]
+                }
+            }*/
+        ]
+    });
+    Preferences.on('save', preferences => {
+        console.log(
+            `Preferences were saved.`,
+            //JSON.stringify(preferences, null, 4)
+        );
+        mainWindow.reload();
+        if (subWindow) {
+            subWindow.reload();
         }
-    }]
-});
-Preferences.on('save', preferences => {
-    console.log(
-        `Preferences were saved.`,
-        JSON.stringify(preferences, null, 4)
-    );
-    Dark = Preferences.value('app-theme').dark;
-    mainWindow.reload();
-    if (subWindow) {
-        subWindow.reload();
-    }
-});
+    });
 
-Theme = Preferences.value('app-theme').theme;
-Update = Preferences.value('update-settings')['auto-update'];
 
-/* Menu Template */
-const template = [
-    {
-        label: 'Main',
-        submenu: [
-            {
-                label: 'New Window',
-                accelerator: 'CmdOrCtrl+N',
-                click() {
-                    startSubWindow(mainWindow.webContents.getURL());
-                }
-            },
-            {
-                label: 'Join Multiplayer/Custom Repl.it Links',
-                accelerator: 'CmdOrCtrl+L',
-                click() {
-                    startCustomSession();
-                }
-            },
-            {
-                label: 'Send Sub to Main Window',
-                click() {
-                    if (subWindow) {
-                        var subUrl = subWindow.getURL();
-                        dialog.showMessageBox({
-                            title: "",
-                            message: `Do you want to load ${subUrl} in window 1?`,
-                            type: 'info',
-                            buttons: ["Yes", "No"],
-                            defaultId: 0
-                        }, (index) => {
-                            if (index === 0) {
-                                mainWindow.loadURL(subUrl)
-                            } else {
+    /* Menu Template */
+    const template = [
+        {
+            label: 'Main',
+            submenu: [
+                {
+                    label: 'Sub Window',
+                    accelerator: 'CmdOrCtrl+N',
+                    click() {
+                        startSubWindow(mainWindow.webContents.getURL());
+                    }
+                },
+                {
+                    label: 'Join Multiplayer/Custom Repl.it Links',
+                    accelerator: 'CmdOrCtrl+L',
+                    click() {
+                        startCustomSession();
+                    }
+                },
+                {
+                    label: 'Send Sub to Main Window',
+                    click() {
+                        if (subWindow) {
+                            var subUrl = subWindow.getURL();
+                            dialog.showMessageBox({
+                                title: "",
+                                message: `Do you want to load ${subUrl} in window 1?`,
+                                type: 'info',
+                                buttons: ["Yes", "No"],
+                                defaultId: 0
+                            }, (index) => {
+                                if (index === 0) {
+                                    mainWindow.loadURL(subUrl)
+                                } else {
 
-                            }
-                        })
+                                }
+                            })
+                        }
                     }
+                },
+                {
+                    label: 'Preference',
+                    accelerator: 'CmdOrCtrl+,',
+                    click() {
+                        Preferences.show()
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'quit'
                 }
-            },
-            {
-                label: 'Preference',
-                accelerator: 'CmdOrCtrl+,',
+            ]
+        },
+        {
+            label: 'Edit',
+            submenu: [
+                {
+                    role: 'undo'
+                },
+                {
+                    role: 'redo'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'cut'
+                },
+                {
+                    role: 'copy'
+                },
+                {
+                    role: 'paste'
+                },
+                {
+                    role: 'pasteandmatchstyle'
+                },
+                {
+                    role: 'delete'
+                },
+                {
+                    role: 'selectall'
+                },
+                {
+                    type: 'separator'
+                }
+            ]
+        },
+        {
+            label: 'View',
+            submenu: [
+                {
+                    label: 'Go Back',
+                    click(item, focusedWindow) {
+                        if (focusedWindow.webContents.canGoBack()) {
+                            focusedWindow.webContents.goBack();
+                        }
+                    }
+                },
+                {
+                    label: 'Go Forward',
+                    click(item, focusedWindow) {
+                        if (focusedWindow.webContents.canGoForward()) {
+                            focusedWindow.webContents.goForward();
+                        }
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Open Current Link externally',
+                    click(item, focusedWindow) {
+                        shell.openExternal(focusedWindow.getURL())
+                    }
+                },
+                {
+                    label: 'Select Input',
+                    accelerator: 'CmdOrCtrl+f',
+                    click(item, focusedWindow) {
+                        selectInput(focusedWindow);
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Reload',
+                    accelerator: 'CmdOrCtrl+R',
+                    click(item, focusedWindow) {
+                        if (focusedWindow) focusedWindow.reload();
+                    }
+                },
+                {
+                    label: 'Toggle Developer Tools',
+                    accelerator:
+                        process.platform === 'darwin'
+                            ? 'Alt+Command+I'
+                            : 'Ctrl+Shift+I',
+                    click(item, focusedWindow) {
+                        if (focusedWindow)
+                            focusedWindow.webContents.toggleDevTools();
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'resetzoom'
+                },
+                {
+                    role: 'zoomin'
+                },
+                {
+                    role: 'zoomout'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'togglefullscreen'
+                }
+            ]
+        },
+        {
+            role: 'window',
+            submenu: [
+                {
+                    role: 'minimize'
+                },
+                {
+                    role: 'close'
+                }
+            ]
+        },
+        {
+            role: 'help',
+            submenu: [{
+                label: 'Learn More about repl.it',
                 click() {
-                    Preferences.show()
+                    shell.openExternal('https://repl.it/site/about')
                 }
-            },
+            }]
+        }
+    ];
+    if (process.platform === 'darwin') {
+        const name = app.getName();
+        template.unshift({
+            label: name,
+            submenu: [
+                {
+                    role: 'about'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'services',
+                    submenu: []
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'hide'
+                },
+                {
+                    role: 'hideothers'
+                },
+                {
+                    role: 'unhide'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'quit'
+                }
+            ]
+        });
+        // Edit menu.
+        template[1].submenu.splice(-1);
+        template[2].submenu.push(
             {
                 type: 'separator'
             },
             {
-                role: 'quit'
-            }
-        ]
-    },
-    {
-        label: 'Edit',
-        submenu: [
-            {
-                role: 'undo'
-            },
-            {
-                role: 'redo'
-            },
-            {
-                type: 'separator'
-            },
-            {
-                role: 'cut'
-            },
-            {
-                role: 'copy'
-            },
-            {
-                role: 'paste'
-            },
-            {
-                role: 'pasteandmatchstyle'
-            },
-            {
-                role: 'delete'
-            },
-            {
-                role: 'selectall'
-            },
-            {
-                type: 'separator'
-            }
-        ]
-    },
-    {
-        label: 'View',
-        submenu: [
-            {
-                label: 'Go Back',
-                click(item, focusedWindow) {
-                    if (focusedWindow.webContents.canGoBack()) {
-                        focusedWindow.webContents.goBack();
+                label: 'Speech',
+                submenu: [
+                    {
+                        role: 'startspeaking'
+                    },
+                    {
+                        role: 'stopspeaking'
                     }
-                }
-            },
-            {
-                label: 'Go Forward',
-                click(item, focusedWindow) {
-                    if (focusedWindow.webContents.canGoForward()) {
-                        focusedWindow.webContents.goForward();
-                    }
-                }
-            },
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Dark Mode',
-                accelerator: 'F10',
-                click(item, focusedWindow) {
-                    Dark = true;
-                    Preferences.value('app-theme', { dark: true });
-                    addDark(focusedWindow, Dark);
-                }
-            },
-            {
-                label: 'Dark Mode Off',
-                accelerator: 'F9',
-                click(item, focusedWindow) {
-                    Dark = false;
-                    try {
-                        Preferences.value('app-theme', { dark: false });
-                    } catch (e) {
-                        console.error(e);
-                    }
-                    focusedWindow.reload();
-                }
-            },
-            {
-                label: 'Select Input',
-                accelerator: 'CmdOrCtrl+f',
-                click(item, focusedWindow) {
-                    selectInput(focusedWindow);
-                }
-            },
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Reload',
-                accelerator: 'CmdOrCtrl+R',
-                click(item, focusedWindow) {
-                    if (focusedWindow) focusedWindow.reload();
-                }
-            },
-            {
-                label: 'Toggle Developer Tools',
-                accelerator:
-                    process.platform === 'darwin'
-                        ? 'Alt+Command+I'
-                        : 'Ctrl+Shift+I',
-                click(item, focusedWindow) {
-                    if (focusedWindow)
-                        focusedWindow.webContents.toggleDevTools();
-                }
-            },
-            {
-                type: 'separator'
-            },
-            {
-                role: 'resetzoom'
-            },
-            {
-                role: 'zoomin'
-            },
-            {
-                role: 'zoomout'
-            },
-            {
-                type: 'separator'
-            },
-            {
-                role: 'togglefullscreen'
+                ]
             }
-        ]
-    },
-    {
-        role: 'window',
-        submenu: [
+        );
+        // Window menu.
+        template[4].submenu = [
             {
+                label: 'Close',
+                accelerator: 'CmdOrCtrl+W',
+                role: 'close'
+            },
+            {
+                label: 'Minimize',
+                accelerator: 'CmdOrCtrl+M',
                 role: 'minimize'
             },
             {
-                role: 'close'
+                label: 'Zoom',
+                role: 'zoom'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Bring All to Front',
+                role: 'front'
             }
-        ]
-    },
-    {
-        role: 'help',
-        submenu: [{
-            label: 'Learn More about repl.it',
-            click() {
-                shell.openExternal('https://repl.it/site/about')
-            }
-        }]
+        ];
     }
-];
-if (process.platform === 'darwin') {
-    const name = app.getName();
-    template.unshift({
-        label: name,
-        submenu: [
-            {
-                role: 'about'
-            },
-            {
-                type: 'separator'
-            },
-            {
-                role: 'services',
-                submenu: []
-            },
-            {
-                type: 'separator'
-            },
-            {
-                role: 'hide'
-            },
-            {
-                role: 'hideothers'
-            },
-            {
-                role: 'unhide'
-            },
-            {
-                type: 'separator'
-            },
-            {
-                role: 'quit'
-            }
-        ]
-    });
-    // Edit menu.
-    template[1].submenu.splice(-1);
-    template[2].submenu.push(
-        {
-            type: 'separator'
-        },
-        {
-            label: 'Speech',
-            submenu: [
-                {
-                    role: 'startspeaking'
-                },
-                {
-                    role: 'stopspeaking'
-                }
-            ]
-        }
-    );
-    // Window menu.
-    template[4].submenu = [
-        {
-            label: 'Close',
-            accelerator: 'CmdOrCtrl+W',
-            role: 'close'
-        },
-        {
-            label: 'Minimize',
-            accelerator: 'CmdOrCtrl+M',
-            role: 'minimize'
-        },
-        {
-            label: 'Zoom',
-            role: 'zoom'
-        },
-        {
-            type: 'separator'
-        },
-        {
-            label: 'Bring All to Front',
-            role: 'front'
-        }
-    ];
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
+    doUpdate(Preferences.value('update-settings')['auto-update']);
+    if (mainWindow) {
+        addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']]);
+        mainWindow.webContents.on('did-start-navigation', () => {
+            addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']])
+        })
+    }
+    if (subWindow) {
+        addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']])
+        subWindow.webContents.on('did-start-navigation', () => {
+            addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']])
+        })
+    }
 }
-const menu = Menu.buildFromTemplate(template);
 
+appSetup().then();
 //TODO:Add custom themes from css.
 
 /* Auto update function */
-function doUpdate() {
+function doUpdate(Update) {
     if (!Update) {
         return;
     }
     EBU.init({
         api: 'https://replit-electron-updater.leon332157.repl.co/check/' // The API EBU will talk to
     });
-    EBU.check(function(result) {
+    EBU.check(function (result) {
         console.log(result);
         if (result.toString().startsWith('has_update|')) {
             dialog.showMessageBox(
@@ -475,7 +462,7 @@ function doUpdate() {
                     title: 'Update available',
                     message: `New version ${
                         result.toString().split('|')[1]
-                    } is available, would you like to update it?
+                        } is available, would you like to update it?
 
 New features:
 ${result.toString().split('|')[2]}
@@ -484,10 +471,10 @@ ${result.toString().split('|')[2]}
                     buttons: ['Yes', 'No'],
                     defaultId: 1
                 },
-                function(index) {
+                function (index) {
                     if (index === 0) {
                         //mainWindow.hide();
-                        EBU.download(true, function(result) {
+                        EBU.download(true, function (result) {
                             if (result.toString() === 'success') {
                                 dialog.showMessageBox({
                                     title: 'Update success',
@@ -515,7 +502,7 @@ ${result.toString().split('|')[2]}
 function ErrorMessage(windowObject, errorCode) {
     var id = windowObject.InternalId;
     var reason = ChromeErrors[errorCode];
-    if (reason === "ABORTED" || reason === "FAILED") {
+    if (reason === "ABORTED" || reason === "INVALID_ARGUMENT" || reason === "FAILED") {
         return;
     }
     dialog.showMessageBox({
@@ -534,17 +521,14 @@ function ErrorMessage(windowObject, errorCode) {
     });
 }
 
-function addDark(windowObj, arg) {
-    if (arg) {
-        try {
-            windowObj.webContents.insertCSS(DarkCSS);
-            console.debug(`DarkCSS Added for ${windowObj.InternalId}`);
-        } catch (e) {
-            console.error(`Error adding dark theme on ${e}`);
-        }
-        return;
+function addTheme(windowObj, CSSString) {
+    try {
+        windowObj.webContents.insertCSS(CSSString);
+        console.debug(`Added for ${windowObj.InternalId}`);
+    } catch (e) {
+        console.error(`Error adding dark theme on ${e}`);
     }
-    console.log(`nope for ${windowObj.InternalId}`);
+    windowObj.setBackgroundColor('#FFF');
 }
 
 
@@ -638,8 +622,10 @@ user.classList.add('bot');
 }catch(e){}
 }`
             )
-            .catch(ret => {});
-    } catch (e) {}
+            .catch(ret => {
+            });
+    } catch (e) {
+    }
 }
 
 async function setPlayingDiscord() {
@@ -660,7 +646,7 @@ async function setPlayingDiscord() {
         if (spliturl[3] !== undefined) {
             await mainWindow.webContents.executeJavaScript(
                 "document.getElementsByClassName('board-post-detail-title')[0].textContent",
-                function(result) {
+                function (result) {
                     viewing = `Viewing ${result}`;
                 }
             ); // gets the repl talk post name
@@ -704,19 +690,19 @@ async function setPlayingDiscord() {
         var replLanguage = 'Error';
         await mainWindow.webContents.executeJavaScript(
             "document.querySelector('.file-header-name div').textContent",
-            function(result) {
+            function (result) {
                 fileName = result;
             }
         );
         await mainWindow.webContents.executeJavaScript(
             "document.getElementsByTagName('title')[0].textContent.split('-').pop()",
-            function(result) {
+            function (result) {
                 replName = result;
             }
         );
         await mainWindow.webContents.executeJavaScript(
             "document.querySelector('.workspace-header-description-container img')['title']",
-            function(result) {
+            function (result) {
                 replLanguage = result;
             }
         );
@@ -831,18 +817,8 @@ function startSubWindow(url) {
     } else {
         subWindow.loadURL('https://repl.it/repls');
     }
-    subWindow.webContents.on('did-frame-finish-load', () => {
-        addDark(subWindow, Dark);
-        if (!Dark) {
-            subWindow.setBackgroundColor('#FFF');
-        }
-    });
     subWindow.webContents.on('did-fail-load', (event, errorCode) => {
         ErrorMessage(subWindow, errorCode);
-    });
-    subWindow.on('close', () => {
-        subWindow.prototype = {};
-        subWindow = undefined;
     });
     subWindow.webContents.on('did-start-navigation', (event, url) => {
         if (url.toString().startsWith('about:')) {
@@ -884,38 +860,6 @@ function createWindow() {
     mainWindow.loadURL('https://repl.it/repls');
     mainWindow.webContents.on('did-fail-load', (event, errorCode) => {
         ErrorMessage(mainWindow, errorCode);
-    });
-    Menu.setApplicationMenu(menu);
-    mainWindow.webContents.on('did-frame-finish-load', () => {
-        addDark(mainWindow, Dark);
-        if (!Dark) {
-            mainWindow.setBackgroundColor('#FFF');
-        }
-    });
-    mainWindow.on('close', () => {
-        try {
-            var url = mainWindow.webContents.getURL();
-        } catch (e) {}
-        dialog.showMessageBox(
-            {
-                title: 'Confirm Quit',
-                message: `Are you sure you want to quit?`,
-                type: 'info',
-                buttons: ['Yes', 'No'],
-                defaultId: 0
-            },
-            function(index) {
-                if (index === 1) {
-                    delete mainWindow;
-                    mainWindow = createWindow();
-                    try {
-                        mainWindow.loadURL(url);
-                    } catch (e) {}
-                } else {
-                    process.exit(0);
-                }
-            }
-        );
     });
     mainWindow.webContents.on('did-start-navigation', (event, url) => {
         if (url.toString().startsWith('about:')) {
@@ -960,7 +904,7 @@ rpc.on('ready', () => {
 rpc.on('ready', () => {
     setInterval(setUrl, 1000);
 });
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
     app.quit();
 });
 app.on('ready', () => {

@@ -1,6 +1,6 @@
 {
   "name": "repl.it",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "electron version of repl.it",
   "main": "main.js",
   "scripts": {

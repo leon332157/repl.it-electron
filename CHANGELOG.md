@@ -35,8 +35,10 @@
    
 2. Bug Fix.
 
-# 0.1.0
+# 1.0.0
 
 1. Added menu for sending sub window to main window.
 
-2. Bug Fix. 
+2. Brand new Theme system with [darktheme.tk](www.darktheme.tk/themes)
+
+3. Bug Fix.
