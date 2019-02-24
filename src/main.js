@@ -1,12 +1,12 @@
 /* Require Packages */
 const {app, BrowserWindow, Menu, dialog, shell} = require('electron');
+const path = require('path');
 const DiscordRPC = require('discord-rpc');
 const fs = require('fs');
 const ElectronPrompt = require('electron-prompt');
 const ChromeErrors = require('chrome-network-errors');
-const ElectronPreferences = require('./electron-preferences/index');
-const path = require('path');
-const EBU = require('./electron-basic-updater/index');
+const ElectronPreferences = require(path.resolve('.', 'electron-preferences', 'index'));
+const EBU = require(path.resolve('.', 'electron-basic-updater', 'index'));
 const ElectronContext = require('electron-context-menu');
 const requests = require('axios');
 
