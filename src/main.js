@@ -202,7 +202,7 @@ async function appSetup() {
                     }
                 },
                 {
-                    label: 'Preference',
+                    label: 'Preferences',
                     accelerator: 'CmdOrCtrl+,',
                     click() {
                         Preferences.show()
