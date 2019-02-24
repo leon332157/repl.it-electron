@@ -58,7 +58,7 @@ async function appSetup() {
         dataStore: path.resolve(app.getPath('userData'), 'Preferences.json'),
         defaults: {
             'app-theme': {
-                'theme': 'Default Dark', 'css_string': null, 'enable_custom_css': false
+                'theme': 'Default White', 'css_string': null, 'enable_custom_css': false
             },
             'update-settings': {
                 'auto-update': true
@@ -151,7 +151,7 @@ async function appSetup() {
     });
     Preferences.on('save', preferences => {
         console.log(
-            `Preferences were saved.`,
+            `Preferences were saved. at ${path.resolve(app.getPath('userData'), 'Preferences.json')}`,
             //JSON.stringify(preferences, null, 4)
         );
         mainWindow.reload();
@@ -503,7 +503,7 @@ function ErrorMessage(windowObject, errorCode) {
     var id = windowObject.InternalId;
     var reason = ChromeErrors[errorCode];
     if (reason === "ABORTED" || reason === "INVALID_ARGUMENT" || reason === "FAILED") {
-        return;
+        windowObject.reload(true)
     }
     dialog.showMessageBox({
         title: "Loading Failed",
@@ -524,7 +524,7 @@ function ErrorMessage(windowObject, errorCode) {
 function addTheme(windowObj, CSSString) {
     try {
         windowObj.webContents.insertCSS(CSSString);
-        console.debug(`Added for ${windowObj.InternalId}`);
+        console.debug(`Theme Added for ${windowObj.InternalId}`);
     } catch (e) {
         console.error(`Error adding dark theme on ${e}`);
     }
@@ -540,9 +540,8 @@ function startCustomSession() {
         inputAttrs: {
             type: 'url',
         },
-        customStylesheet: Dark
-            ? __dirname + '/styles/promptDark.css'
-            : __dirname + '/styles/prompt.css'
+        customStylesheet: __dirname + '/styles/promptDark.css'
+
     })
         .then(r => {
             if (r === undefined || r === null) {
@@ -550,7 +549,7 @@ function startCustomSession() {
             }
             if (
                 r.toString().replace(' ', '') === '' ||
-                !r.toString().startsWith('https://repl.it/')
+                !r.toString().startsWith('https://repl.it/') || !r.toString().includes('repl.co' || !r.toString().includes('repl.run'))
             ) {
                 dialog.showMessageBox({
                     title: '',
@@ -806,6 +805,8 @@ function startSubWindow(url) {
     subWindow = new BrowserWindow({
         width: mainWindow.getSize()[0] - 10,
         height: mainWindow.getSize()[1] - 10,
+        minWidth: 600,
+        minHeight: 600,
         title: 'Repl.it',
         icon: path.resolve(__dirname, 'utils/logo.png'),
         parent: mainWindow
@@ -852,6 +853,8 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1280,
         height: 800,
+        minWidth: 600,
+        minHeight: 600,
         title: 'Repl.it',
         icon: path.resolve(__dirname, 'utils/logo.png')
     });
