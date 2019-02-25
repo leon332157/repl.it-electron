@@ -5,14 +5,12 @@ const DiscordRPC = require('discord-rpc');
 const fs = require('fs');
 const ElectronPrompt = require('electron-prompt');
 const ChromeErrors = require('chrome-network-errors');
-const ElectronPreferences = require(path.resolve('.', 'electron-preferences'));
-const EBU = require(path.resolve('.', 'electron-basic-updater'));
+const ElectronPreferences = require(path.resolve(__dirname, 'electron-preferences'));
+const EBU = require(path.resolve(__dirname, 'electron-basic-updater'));
 const ElectronContext = require('electron-context-menu');
 const requests = require('axios');
 
 /* Declare Constants */
-let DarkCSS;
-var Dark;
 let mainWindow;
 var subWindow = undefined;
 const clientId = '498635999274991626';
