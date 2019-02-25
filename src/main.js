@@ -540,7 +540,7 @@ function startCustomSession() {
         inputAttrs: {
             type: 'url',
         },
-        customStylesheet: __dirname + '/styles/promptDark.css'
+        customStylesheet: path.resolve('.', 'promptDark.css')
 
     })
         .then(r => {
