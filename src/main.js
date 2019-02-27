@@ -2,9 +2,7 @@
 const {app, BrowserWindow, Menu, dialog, shell} = require('electron');
 const path = require('path');
 const DiscordRPC = require('discord-rpc');
-const fs = require('fs');
 const ElectronPrompt = require('electron-prompt');
-const ChromeErrors = require('chrome-network-errors');
 const ElectronPreferences = require(path.resolve(__dirname, 'electron-preferences'));
 const EBU = require(path.resolve(__dirname, 'electron-basic-updater'));
 const ElectronContext = require('electron-context-menu');
@@ -33,7 +31,12 @@ Array.prototype.append = Array.prototype.push;
 async function appSetup() {
     var Themes = {};
     var themes = {};
-    var res = await requests.get('https://www.darktheme.tk/themes.json');
+    try {
+        var res = await requests.get('https://www.darktheme.tk/themes.json');
+    } catch (e) {
+        console.error(e)
+        return;
+    }
     var theme_instert = [];
     var raw_themes = res.data;
     for (let key in raw_themes) {
@@ -147,14 +150,16 @@ async function appSetup() {
             }*/
         ]
     });
-    Preferences.on('save', preferences => {
+    Preferences.on('save', (preferences) => {
         console.log(
             `Preferences were saved. at ${path.resolve(app.getPath('userData'), 'Preferences.json')}`,
             //JSON.stringify(preferences, null, 4)
         );
-        mainWindow.reload();
+        if (mainWindow) {
+            addTheme(mainWindow,Themes[Preferences.value('app-theme')['theme']])
+        }
         if (subWindow) {
-            subWindow.reload();
+            addTheme(subWindow,Themes[Preferences.value('app-theme')['theme']])
         }
     });
 
@@ -443,6 +448,7 @@ async function appSetup() {
 
 appSetup().then();
 //TODO:Add custom themes from css.
+//TODO: Add UA switching/ aka ACE editor (requester: taeb)
 
 /* Auto update function */
 function doUpdate(Update) {
@@ -497,15 +503,15 @@ ${result.toString().split('|')[2]}
     });
 }
 
-function ErrorMessage(windowObject, errorCode) {
+function ErrorMessage(windowObject, errorCode, errorDescription) {
     var id = windowObject.InternalId;
-    var reason = ChromeErrors[errorCode];
-    if (reason === "ABORTED" || reason === "INVALID_ARGUMENT" || reason === "FAILED") {
-        windowObject.reload(true)
+    console.log(errorCode > -6);
+    if (errorCode > -6) {
+        return;
     }
     dialog.showMessageBox({
         title: "Loading Failed",
-        message: `loading Failed on window ${id} reason ${reason}, do you want to try again?`,
+        message: `loading Failed on window ${id} reason ${errorDescription}, do you want to try again?`,
         type: 'error',
         buttons: ["Try again please", "Quit"],
         defaultId: 0
@@ -514,12 +520,13 @@ function ErrorMessage(windowObject, errorCode) {
         if (index === 0) {
             windowObject.reload();
         } else {
-            app.quit()
+            process.exit()
         }
     });
 }
 
 function addTheme(windowObj, CSSString) {
+    windowObj.webContents.stop();
     try {
         windowObj.webContents.insertCSS(CSSString);
         console.debug(`Theme Added for ${windowObj.InternalId}`);
@@ -538,7 +545,7 @@ function startCustomSession() {
         inputAttrs: {
             type: 'url',
         },
-        customStylesheet: path.resolve('.', 'promptDark.css')
+        customStylesheet: path.resolve(__dirname, 'promptDark.css')
 
     })
         .then(r => {
@@ -827,7 +834,7 @@ function startSubWindow(url) {
         } else {
             dialog.showMessageBox({
                 title: "Confirm External Links",
-                message: `${url} Lookas like an external link, would you like to load it externally?`,
+                message: `${url} Looks like an external link, would you like to load it externally?`,
                 type: 'info',
                 buttons: ["No", "Yes"],
                 defaultId: 1
@@ -859,8 +866,11 @@ function createWindow() {
     mainWindow.setBackgroundColor('#393c42');
     mainWindow.InternalId = 1;
     mainWindow.loadURL('https://repl.it/repls');
-    mainWindow.webContents.on('did-fail-load', (event, errorCode) => {
-        ErrorMessage(mainWindow, errorCode);
+    mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+        ErrorMessage(mainWindow, errorCode, errorDescription);
+    });
+    mainWindow.on('close', () => {
+        app.quit()
     });
     mainWindow.webContents.on('did-start-navigation', (event, url) => {
         if (url.toString().startsWith('about:')) {
@@ -885,6 +895,7 @@ function createWindow() {
                         mainWindow.webContents.goBack()
                     }
                 }
+
             });
         }
     });
@@ -894,13 +905,15 @@ function createWindow() {
 ElectronContext({
     showCopyImageAddress: true,
     showSaveImageAs: true,
-    showInspectElement: false
+    showInspectElement: true
 });
 rpc.on('ready', () => {
     // activity can only be set every 15 seconds
-    setInterval(() => {
-        setPlayingDiscord().catch({});
-    }, 15e3);
+    setInterval(
+        setPlayingDiscord.catch(() => {
+            console.log("Failed to update Discord status.")
+        })
+        , 15e3)
 });
 rpc.on('ready', () => {
     setInterval(setUrl, 1000);

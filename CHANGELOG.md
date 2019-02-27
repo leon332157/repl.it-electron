@@ -46,3 +46,5 @@
 # 1.0.1 
 
 1. Hot fix for a messed up submodule.
+
+# 1.1.0
