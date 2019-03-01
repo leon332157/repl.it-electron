@@ -49,7 +49,10 @@ async function appSetup() {
     }
 
     Themes['Default White'] = '';
-    theme_instert.append({ label: 'Default White', value: 'Default White' });
+    theme_instert.append({
+        label: 'Default White',
+        value: 'Default White'
+    });
     for (let theme in themes) {
         if (themes.hasOwnProperty(theme)) {
             let resp = await requests.get(
@@ -374,6 +377,12 @@ async function appSetup() {
             role: 'help',
             submenu: [
                 {
+                    role: 'about'
+                },
+                {
+                    type: 'separator'
+                },
+                {
                     label: 'Learn More about repl.it',
                     click() {
                         shell.openExternal('https://repl.it/site/about');
@@ -465,7 +474,7 @@ async function appSetup() {
     doUpdate(Preferences.value('update-settings')['auto-update']);
     if (mainWindow) {
         addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']]);
-        mainWindow.webContents.on('did-start-navigation', () => {
+        mainWindow.webContents.on('did-stop-loading', () => {
             addTheme(
                 mainWindow,
                 Themes[Preferences.value('app-theme')['theme']]
@@ -474,7 +483,7 @@ async function appSetup() {
     }
     if (subWindow) {
         addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']]);
-        subWindow.webContents.on('did-start-navigation', () => {
+        subWindow.webContents.on('did-stop-loading', () => {
             addTheme(
                 subWindow,
                 Themes[Preferences.value('app-theme')['theme']]
@@ -514,7 +523,6 @@ ${result.toString().split('|')[2]}
                 },
                 function(index) {
                     if (index === 0) {
-                        //mainWindow.hide();
                         EBU.download(true, function(result) {
                             if (result.toString() === 'success') {
                                 dialog.showMessageBox({
@@ -867,7 +875,7 @@ function startSubWindow(url) {
     });
     subWindow.webContents.on('did-start-navigation', (event, url) => {
         if (url.toString().startsWith('about:')) {
-            subWindow.reload();
+            subWindow.loadURL('https://repl.it/repls');
         }
         if (
             url.toString().includes('repl.it') ||
@@ -924,7 +932,7 @@ function createWindow() {
     });
     mainWindow.webContents.on('did-start-navigation', (event, url) => {
         if (url.toString().startsWith('about:')) {
-            mainWindow.reload();
+            mainWindow.loadURL('https://repl.it/repls');
         }
         if (
             url.toString().includes('repl.it') ||
@@ -966,12 +974,11 @@ ElectronContext({
 });
 rpc.on('ready', () => {
     // activity can only be set every 15 seconds
-    setInterval(
-        setPlayingDiscord.catch(() => {
+    setInterval(() => {
+        setPlayingDiscord().catch(() => {
             console.log('Failed to update Discord status.');
-        }),
-        15e3
-    );
+        });
+    }, 15e3);
 });
 rpc.on('ready', () => {
     setInterval(setUrl, 1000);
