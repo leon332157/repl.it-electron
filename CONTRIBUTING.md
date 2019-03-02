@@ -26,7 +26,7 @@ If you are contributing code, please make a Pull Request unless the change is ob
 ```
 fix/1.0.3
 misc/BranchNaming
-wip/Add tests
+wip/Add-tests
 feat/offline-editing
 ```
 ## Pull Request Process
