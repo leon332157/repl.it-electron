@@ -35,7 +35,7 @@ async function appSetup() {
     let Themes = {};
     let themes = {};
     try {
-        let res = await requests.get('https://www.darktheme.tk/themes.json');
+        var res = await requests.get('https://www.darktheme.tk/themes.json');
     } catch (e) {
         console.error(e);
         return;
@@ -492,9 +492,14 @@ async function appSetup() {
     }
 }
 
-appSetup().then();
-//TODO:Add custom themes from css.
-//TODO: Add UA switching/ aka ACE editor (requester: taeb)
+appSetup().then(
+    () => {
+        console.log('App setup success.');
+    },
+    reason => {
+        console.error(reason);
+    }
+);
 
 /* Auto update function */
 function doUpdate(Update) {
@@ -550,8 +555,7 @@ ${result.toString().split('|')[2]}
 
 function ErrorMessage(windowObject, errorCode, errorDescription) {
     let id = windowObject.InternalId;
-    console.log(errorCode > -6);
-    if (errorCode > -6) {
+    if (errorCode > -6 || errorCode <= -300) {
         return;
     }
     dialog.showMessageBox(
@@ -584,6 +588,7 @@ function addTheme(windowObj, CSSString) {
     windowObj.setBackgroundColor('#FFF');
 }
 
+/* Custom Session Handler */
 function startCustomSession() {
     ElectronPrompt({
         title: 'Join Multiplayer',
@@ -649,6 +654,44 @@ function getUrl() {
     }
 }
 
+/* Handle External Links in the app */
+
+function handleExternalLink(windowObj, url) {
+    if (!url) {
+        return;
+    }
+    if (url.toString().startsWith('about:')) {
+        windowObj.loadURL('https://repl.it/repls');
+    } else if (
+        url.toString().includes('repl.it') ||
+        url.toString().includes('repl.co') ||
+        url.toString().includes('google.com') ||
+        url.toString().includes('repl.run')
+    ) {
+    } else {
+        dialog.showMessageBox(
+            {
+                title: 'Confirm External Links',
+                message: `${url} Looks like an external link, would you like to load it externally?`,
+                type: 'info',
+                buttons: ['No', 'Yes'],
+                defaultId: 1
+            },
+            function(index) {
+                if (index === 1) {
+                    shell.openExternal(url);
+                    if (mainWindow.webContents.canGoBack()) {
+                        mainWindow.webContents.goBack();
+                    }
+                } else {
+                    if (mainWindow.webContents.canGoBack()) {
+                        mainWindow.webContents.goBack();
+                    }
+                }
+            }
+        );
+    }
+}
 let urlbefore = '';
 let urlnow = '';
 
@@ -724,7 +767,6 @@ async function setPlayingDiscord() {
             default:
                 talkBoard = '';
         }
-        console.log(talkBoard);
         rpc.setActivity({
             state: `${viewing}`,
             details: `In Repl Talk ${talkBoard}`,
@@ -861,7 +903,8 @@ function startSubWindow(url) {
         minHeight: 600,
         title: 'Repl.it',
         icon: path.resolve(__dirname, 'utils/logo.png'),
-        parent: mainWindow
+        parent: mainWindow,
+        webPreferences: { nodeIntegration: false }
     });
     subWindow.setBackgroundColor('#393c42');
     subWindow.InternalId = 2;
@@ -873,40 +916,12 @@ function startSubWindow(url) {
     subWindow.webContents.on('did-fail-load', (event, errorCode) => {
         ErrorMessage(subWindow, errorCode);
     });
-    subWindow.webContents.on('did-start-navigation', (event, url) => {
-        if (url.toString().startsWith('about:')) {
-            subWindow.loadURL('https://repl.it/repls');
-        }
-        if (
-            url.toString().includes('repl.it') ||
-            url.toString().includes('repl.co') ||
-            url.toString().includes('google.com') ||
-            url.toString().includes('repl.run')
-        ) {
-        } else {
-            dialog.showMessageBox(
-                {
-                    title: 'Confirm External Links',
-                    message: `${url} Looks like an external link, would you like to load it externally?`,
-                    type: 'info',
-                    buttons: ['No', 'Yes'],
-                    defaultId: 1
-                },
-                function(index) {
-                    if (index === 1) {
-                        shell.openExternal(url);
-                        if (subWindow.webContents.canGoBack()) {
-                            subWindow.webContents.goBack();
-                        }
-                    } else {
-                        if (subWindow.webContents.canGoBack()) {
-                            subWindow.webContents.goBack();
-                        }
-                    }
-                }
-            );
-        }
+    subWindow.webContents.on('did-start-loading', (event, url) => {
+        handleExternalLink(subWindow, url);
     });
+    subWindow.on('unresponsive', () => {
+        subWindow.reload(true)
+    })
 }
 
 function createWindow() {
@@ -916,6 +931,7 @@ function createWindow() {
         minWidth: 600,
         minHeight: 600,
         title: 'Repl.it',
+        webPreferences: { nodeIntegration: false },
         icon: path.resolve(__dirname, 'utils/logo.png')
     });
     mainWindow.setBackgroundColor('#393c42');
@@ -930,40 +946,12 @@ function createWindow() {
     mainWindow.on('close', () => {
         app.quit();
     });
-    mainWindow.webContents.on('did-start-navigation', (event, url) => {
-        if (url.toString().startsWith('about:')) {
-            mainWindow.loadURL('https://repl.it/repls');
-        }
-        if (
-            url.toString().includes('repl.it') ||
-            url.toString().includes('repl.co') ||
-            url.toString().includes('google.com') ||
-            url.toString().includes('repl.run')
-        ) {
-        } else {
-            dialog.showMessageBox(
-                {
-                    title: 'Confirm External Links',
-                    message: `${url} Looks like an external link, would you like to load it externally?`,
-                    type: 'info',
-                    buttons: ['No', 'Yes'],
-                    defaultId: 1
-                },
-                function(index) {
-                    if (index === 1) {
-                        shell.openExternal(url);
-                        if (mainWindow.webContents.canGoBack()) {
-                            mainWindow.webContents.goBack();
-                        }
-                    } else {
-                        if (mainWindow.webContents.canGoBack()) {
-                            mainWindow.webContents.goBack();
-                        }
-                    }
-                }
-            );
-        }
+    mainWindow.webContents.on('will-navigate', (event, url) => {
+        handleExternalLink(mainWindow, url);
     });
+    mainWindow.on('unresponsive', () => {
+        mainWindow.reload(true)
+    })
     return mainWindow;
 }
 
@@ -987,9 +975,9 @@ app.on('window-all-closed', function() {
     app.quit();
 });
 app.on('ready', () => {
-    doUpdate();
     createWindow();
 });
-rpc.login({
-    clientId
-}).catch(console.error);
+
+rpc.login({ clientId: clientId }).catch(errro => {
+    console.error(error);
+});

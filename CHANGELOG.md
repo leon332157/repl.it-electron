@@ -30,12 +30,12 @@
 
 3. Added right-click menus.
 
-# 0.0.9
+## 0.0.9
 1. Changed some details on the UI.
    
 2. Bug Fix.
 
-# 1.0.0
+## 1.0.0
 
 1. Added menu for sending sub window to main window.
 
@@ -43,10 +43,15 @@
 
 3. Bug Fix.
 
-# 1.0.1 
+## 1.0.1 
 
 1. Hot fix for a messed up submodule.
 
-# 1.0.2 
+## 1.0.2 
 
 1. Various Bug fixes. Including the annoying ABORTED bug.
+
+## 1.0.3
+
+1. Fixed the bug where the app crashes for no reason.
+2. Fixed the Auto Update bug where the preference of update has no effect.
