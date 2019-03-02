@@ -4,7 +4,8 @@
   "description": "electron version of repl.it",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "jest test"
   },
   "keywords": [
     "Electron",
@@ -16,6 +17,7 @@
   "devDependencies": {
     "electron": "^4.0.5",
     "express": "^4.16.4",
+    "jest": "^24.1.0",
     "mobile-detect": "^1.4.3"
   },
   "dependencies": {

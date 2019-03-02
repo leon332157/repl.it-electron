@@ -21,11 +21,9 @@ const rpc = new DiscordRPC.Client({
 });
 
 /* Custom Methods */
-String.prototype.capitalize = function() {
-    return this.replace(/(^|\s)([a-z])/g, function(m, p1, p2) {
-        return p1 + p2.toUpperCase();
-    });
-};
+let capitalizeFn = require('./capitalize');
+String.prototype.capitalize = capitalizeFn;
+
 String.prototype.toTitleCase = String.prototype.capitalize;
 Array.prototype.append = Array.prototype.push;
 

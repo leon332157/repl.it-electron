@@ -21,5 +21,11 @@ npm install --global --production windows-build-tools # windows
 npm install
 ```
 
+### Testing
+Runs Jest test suite at `./test`
+```bash
+npm test
+```
+
 # Licence
 Apache, see LICENSE for details.
