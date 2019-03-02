@@ -21,5 +21,7 @@ npm install --global --production windows-build-tools # windows
 npm install
 ```
 
+And checkout [CONTRIBUTING.md](https://github.com/repl-it-discord/repl.it-electron/blob/master/CONTRIBUTING.md) for PR process and branch naming rules.
+
 # Licence
 Apache, see LICENSE for details.

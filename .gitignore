@@ -2,14 +2,13 @@ node_modules
 repl.it-*
 *.dmg
 .idea
-JetBrains-Discord-Integration-Icons
 .DS_Store
 *distribute
 venv*
 .env
 home*
-update.zip
 updater-log*
 update-window*
 .vscode
 test*
+*coverage
