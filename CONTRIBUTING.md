@@ -6,8 +6,9 @@ If you are contributing code, please make a Pull Request unless the change is ob
 
 ## Branch Naming Rules
 
-##### When naming branches, use short tokens, followed by a 1-3 words of what your branch has. EXCEPT bug fixes, you need to put the target version number of the fix.
+#### When naming branches, use short tokens, followed by a 1-3 words of what your branch has. EXCEPT bug fixes, you need to put the target version number of the fix.
 
+##### Please use the following tokens (words) for grouping.
 - fix
   - For bug fixes.
   
@@ -20,6 +21,14 @@ If you are contributing code, please make a Pull Request unless the change is ob
 - feat
   - New features in progress.
   
+#### Examples
+
+```
+fix/1.0.3
+misc/BranchNaming
+wip/Add tests
+feat/offline-editing
+```
 ## Pull Request Process
 
 1. Make sure your code works
