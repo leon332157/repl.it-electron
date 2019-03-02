@@ -15,7 +15,6 @@
   "author": "leon332157",
   "devDependencies": {
     "electron": "^4.0.5",
-    "electron-store": "^2.0.0",
     "express": "^4.16.4",
     "mobile-detect": "^1.4.3"
   },
