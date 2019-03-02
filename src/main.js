@@ -474,7 +474,7 @@ async function appSetup() {
     doUpdate(Preferences.value('update-settings')['auto-update']);
     if (mainWindow) {
         addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']]);
-        mainWindow.webContents.on('did-stop-loading', () => {
+        mainWindow.webContents.on('did-frame-finish-load', () => {
             addTheme(
                 mainWindow,
                 Themes[Preferences.value('app-theme')['theme']]
@@ -657,10 +657,11 @@ function getUrl() {
 /* Handle External Links in the app */
 
 function handleExternalLink(windowObj, url) {
+    console.log(`External URL: ${url}`)
     if (!url) {
         return;
     }
-    if (url.toString().startsWith('about:')) {
+    if (url.toString().startsWith('about')) {
         windowObj.loadURL('https://repl.it/repls');
     } else if (
         url.toString().includes('repl.it') ||

@@ -51,7 +51,8 @@
 
 1. Various Bug fixes. Including the annoying ABORTED bug.
 
-## 1.0.3
+## 1.0.3 -> 1.0.4
 
 1. Fixed the bug where the app crashes for no reason.
 2. Fixed the Auto Update bug where the preference of update has no effect.
+3. Fixed the issue with poping external link windows.
