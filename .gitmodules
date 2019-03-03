@@ -3,4 +3,4 @@
 	url = https://github.com/leon332157/electron-basic-updater.git
 [submodule "src/lib/electron-preferences"]
 	path = src/lib/electron-preferences
-	url = ../../leon332157/electron-preferences.git
+	url = https://github.com/leon332157/electron-preferences.git
