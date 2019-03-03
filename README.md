@@ -20,12 +20,12 @@ cd "repl.it-electron/src"
 npm install --global --production windows-build-tools # windows
 npm install
 ```
+And checkout [CONTRIBUTING.md](https://github.com/repl-it-discord/repl.it-electron/blob/master/CONTRIBUTING.md) for PR process and branch naming rules.
 
 ### Testing
 Runs Jest test suite at `./test`
 ```bash
 npm test
 ```
-
 # Licence
 Apache, see LICENSE for details.
