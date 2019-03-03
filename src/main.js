@@ -1,15 +1,30 @@
 /* Require Packages */
-const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
+const { app, BrowserWindow, Menu, dialog } = require('electron');
 const path = require('path');
 const DiscordRPC = require('discord-rpc');
 const ElectronPrompt = require('electron-prompt');
-const ElectronPreferences = require(path.resolve(
-    __dirname,
-    'electron-preferences'
-));
-const EBU = require(path.resolve(__dirname, 'electron-basic-updater'));
 const ElectronContext = require('electron-context-menu');
 const requests = require('axios');
+
+/* Local libs */
+const ElectronPreferences = require(path.resolve(
+    __dirname,
+    'lib',
+    'electron-preferences'
+));
+
+const {
+    addTheme,
+    capitalize,
+    doUpdate,
+    errorMessage,
+    getUrl,
+    handleExternalLink,
+    selectInput,
+    setDiscordStatus,
+    setUrl
+} = require(path.resolve(__dirname, 'lib', 'functions'));
+const { appMenuSetup } = require(path.resolve(__dirname, 'lib', 'constants'));
 
 /* Declare Constants */
 let mainWindow;
@@ -19,13 +34,6 @@ let startTimestamp = new Date();
 const rpc = new DiscordRPC.Client({
     transport: 'ipc'
 });
-
-/* Custom Methods */
-let capitalizeFn = require('./capitalize');
-String.prototype.capitalize = capitalizeFn;
-
-String.prototype.toTitleCase = String.prototype.capitalize;
-Array.prototype.append = Array.prototype.push;
 
 /* App SetUp's */
 
@@ -42,12 +50,12 @@ async function appSetup() {
     let raw_themes = res.data;
     for (let key in raw_themes) {
         if (raw_themes.hasOwnProperty(key)) {
-            themes[key.capitalize()] = raw_themes[key];
+            themes[capitalize(key)] = raw_themes[key];
         }
     }
 
     Themes['Default White'] = '';
-    theme_instert.append({
+    theme_instert.push({
         label: 'Default White',
         value: 'Default White'
     });
@@ -57,7 +65,7 @@ async function appSetup() {
                 `https://www.darktheme.tk/theme.css?${themes[theme]}`
             );
             Themes[theme] = resp.data.toString();
-            theme_instert.append({
+            theme_instert.push({
                 label: theme.toString(),
                 value: theme.toString()
             });
@@ -170,6 +178,18 @@ async function appSetup() {
             }*/
         ]
     });
+    Menu.setApplicationMenu(
+        Menu.buildFromTemplate(
+            appMenuSetup(
+                startSubWindow,
+                Preferences,
+                startCustomSession,
+                sendSubToMain,
+                selectInput
+            )
+        )
+    );
+
     Preferences.on('save', preferences => {
         console.log(
             `Preferences were saved. at ${path.resolve(
@@ -192,287 +212,10 @@ async function appSetup() {
         }
     });
 
-    /* Menu Template */
-    const template = [
-        {
-            label: 'Main',
-            submenu: [
-                {
-                    label: 'Sub Window',
-                    accelerator: 'CmdOrCtrl+N',
-                    click() {
-                        startSubWindow(mainWindow.webContents.getURL());
-                    }
-                },
-                {
-                    label: 'Join Multiplayer/Custom Repl.it Links',
-                    accelerator: 'CmdOrCtrl+L',
-                    click() {
-                        startCustomSession();
-                    }
-                },
-                {
-                    label: 'Send Sub to Main Window',
-                    click() {
-                        if (subWindow) {
-                            let subUrl = subWindow.getURL();
-                            dialog.showMessageBox(
-                                {
-                                    title: '',
-                                    message: `Do you want to load ${subUrl} in window 1?`,
-                                    type: 'info',
-                                    buttons: ['Yes', 'No'],
-                                    defaultId: 0
-                                },
-                                index => {
-                                    if (index === 0) {
-                                        mainWindow.loadURL(subUrl);
-                                    } else {
-                                    }
-                                }
-                            );
-                        }
-                    }
-                },
-                {
-                    label: 'Preferences',
-                    accelerator: 'CmdOrCtrl+,',
-                    click() {
-                        Preferences.show();
-                    }
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'quit'
-                }
-            ]
-        },
-        {
-            label: 'Edit',
-            submenu: [
-                {
-                    role: 'undo'
-                },
-                {
-                    role: 'redo'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'cut'
-                },
-                {
-                    role: 'copy'
-                },
-                {
-                    role: 'paste'
-                },
-                {
-                    role: 'pasteandmatchstyle'
-                },
-                {
-                    role: 'delete'
-                },
-                {
-                    role: 'selectall'
-                },
-                {
-                    type: 'separator'
-                }
-            ]
-        },
-        {
-            label: 'View',
-            submenu: [
-                {
-                    label: 'Go Back',
-                    click(item, focusedWindow) {
-                        if (focusedWindow.webContents.canGoBack()) {
-                            focusedWindow.webContents.goBack();
-                        }
-                    }
-                },
-                {
-                    label: 'Go Forward',
-                    click(item, focusedWindow) {
-                        if (focusedWindow.webContents.canGoForward()) {
-                            focusedWindow.webContents.goForward();
-                        }
-                    }
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Open Current Link externally',
-                    click(item, focusedWindow) {
-                        shell.openExternal(focusedWindow.getURL());
-                    }
-                },
-                {
-                    label: 'Select Input',
-                    accelerator: 'CmdOrCtrl+f',
-                    click(item, focusedWindow) {
-                        selectInput(focusedWindow);
-                    }
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Reload',
-                    accelerator: 'CmdOrCtrl+R',
-                    click(item, focusedWindow) {
-                        if (focusedWindow) focusedWindow.reload();
-                    }
-                },
-                {
-                    label: 'Toggle Developer Tools',
-                    accelerator:
-                        process.platform === 'darwin'
-                            ? 'Alt+Command+I'
-                            : 'Ctrl+Shift+I',
-                    click(item, focusedWindow) {
-                        if (focusedWindow)
-                            focusedWindow.webContents.toggleDevTools();
-                    }
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'resetzoom'
-                },
-                {
-                    role: 'zoomin'
-                },
-                {
-                    role: 'zoomout'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'togglefullscreen'
-                }
-            ]
-        },
-        {
-            role: 'window',
-            submenu: [
-                {
-                    role: 'minimize'
-                },
-                {
-                    role: 'close'
-                }
-            ]
-        },
-        {
-            role: 'help',
-            submenu: [
-                {
-                    role: 'about'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Learn More about repl.it',
-                    click() {
-                        shell.openExternal('https://repl.it/site/about');
-                    }
-                }
-            ]
-        }
-    ];
-    if (process.platform === 'darwin') {
-        const name = app.getName();
-        template.unshift({
-            label: name,
-            submenu: [
-                {
-                    role: 'about'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'services',
-                    submenu: []
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'hide'
-                },
-                {
-                    role: 'hideothers'
-                },
-                {
-                    role: 'unhide'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'quit'
-                }
-            ]
-        });
-        // Edit menu.
-        template[1].submenu.splice(-1);
-        template[2].submenu.push(
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Speech',
-                submenu: [
-                    {
-                        role: 'startspeaking'
-                    },
-                    {
-                        role: 'stopspeaking'
-                    }
-                ]
-            }
-        );
-        // Window menu.
-        template[4].submenu = [
-            {
-                label: 'Close',
-                accelerator: 'CmdOrCtrl+W',
-                role: 'close'
-            },
-            {
-                label: 'Minimize',
-                accelerator: 'CmdOrCtrl+M',
-                role: 'minimize'
-            },
-            {
-                label: 'Zoom',
-                role: 'zoom'
-            },
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Bring All to Front',
-                role: 'front'
-            }
-        ];
-    }
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
     doUpdate(Preferences.value('update-settings')['auto-update']);
     if (mainWindow) {
         addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']]);
-        mainWindow.webContents.on('did-frame-finish-load', () => {
+        mainWindow.webContents.on('did-stop-loading', () => {
             addTheme(
                 mainWindow,
                 Themes[Preferences.value('app-theme')['theme']]
@@ -498,93 +241,6 @@ appSetup().then(
         console.error(reason);
     }
 );
-
-/* Auto update function */
-function doUpdate(Update) {
-    if (!Update) {
-        return;
-    }
-    EBU.init({
-        api: 'https://replit-electron-updater.leon332157.repl.co/check/' // The API EBU will talk to
-    });
-    EBU.check(function(result) {
-        console.log(result);
-        if (result.toString().startsWith('has_update|')) {
-            dialog.showMessageBox(
-                {
-                    title: 'Update available',
-                    message: `New version ${
-                        result.toString().split('|')[1]
-                    } is available, would you like to update it?
-
-New features:
-${result.toString().split('|')[2]}
-`,
-                    type: 'info',
-                    buttons: ['Yes', 'No'],
-                    defaultId: 1
-                },
-                function(index) {
-                    if (index === 0) {
-                        EBU.download(true, function(result) {
-                            if (result.toString() === 'success') {
-                                dialog.showMessageBox({
-                                    title: 'Update success',
-                                    message: `Update was successful, please restart the app.`,
-                                    type: 'info'
-                                });
-                                process.exit(0);
-                            } else {
-                                dialog.showMessageBox({
-                                    title: 'Update failed',
-                                    message: `Update failed, please check log file at ${path.dirname(
-                                        app.getAppPath() + path.sep
-                                    ) + path.sep}.`,
-                                    type: 'info'
-                                });
-                            }
-                        });
-                    }
-                }
-            );
-        }
-    });
-}
-
-function ErrorMessage(windowObject, errorCode, errorDescription) {
-    let id = windowObject.InternalId;
-    if (errorCode > -6 || errorCode <= -300) {
-        return;
-    }
-    dialog.showMessageBox(
-        {
-            title: 'Loading Failed',
-            message: `loading Failed on window ${id} reason ${errorDescription}, do you want to try again?`,
-            type: 'error',
-            buttons: ['Try again please', 'Quit'],
-            defaultId: 0
-        },
-        function(index) {
-            // if clicked "Try again please"
-            if (index === 0) {
-                windowObject.reload();
-            } else {
-                process.exit();
-            }
-        }
-    );
-}
-
-function addTheme(windowObj, CSSString) {
-    windowObj.webContents.stop();
-    try {
-        windowObj.webContents.insertCSS(CSSString);
-        console.debug(`Theme Added for ${windowObj.InternalId}`);
-    } catch (e) {
-        console.error(`Error adding dark theme on ${e}`);
-    }
-    windowObj.setBackgroundColor('#FFF');
-}
 
 /* Custom Session Handler */
 function startCustomSession() {
@@ -640,89 +296,8 @@ function startCustomSession() {
         .catch(console.error);
 }
 
-function getUrl() {
-    try {
-        let url = mainWindow.webContents
-            .getURL()
-            .replace(/(^\w+:|^)\/\/repl\.it\//, '');
-        url = url.split('?')[0];
-        return url;
-    } catch (e) {
-        return '';
-    }
-}
-
-/* Handle External Links in the app */
-
-function handleExternalLink(windowObj, url) {
-    console.log(`External URL: ${url}`)
-    if (!url) {
-        return;
-    }
-    if (url.toString().startsWith('about')) {
-        windowObj.loadURL('https://repl.it/repls');
-    } else if (
-        url.toString().includes('repl.it') ||
-        url.toString().includes('repl.co') ||
-        url.toString().includes('google.com') ||
-        url.toString().includes('repl.run')
-    ) {
-    } else {
-        dialog.showMessageBox(
-            {
-                title: 'Confirm External Links',
-                message: `${url} Looks like an external link, would you like to load it externally?`,
-                type: 'info',
-                buttons: ['No', 'Yes'],
-                defaultId: 1
-            },
-            function(index) {
-                if (index === 1) {
-                    shell.openExternal(url);
-                    if (mainWindow.webContents.canGoBack()) {
-                        mainWindow.webContents.goBack();
-                    }
-                } else {
-                    if (mainWindow.webContents.canGoBack()) {
-                        mainWindow.webContents.goBack();
-                    }
-                }
-            }
-        );
-    }
-}
-let urlbefore = '';
-let urlnow = '';
-
-function setUrl() {
-    urlbefore = urlnow;
-    urlnow = getUrl();
-    if (urlbefore !== urlnow) {
-        startTimestamp = new Date();
-    }
-    if (mainWindow === undefined) {
-        return;
-    }
-    try {
-        mainWindow.webContents
-            .executeJavaScript(
-                `
-users=document.querySelectorAll('.jsx-1145327309:not(.leaderboard-list-item),a.jsx-774577553')
-for (user in users) {
-try{
-user=users[user]
-if (user.textContent.startsWith('ReplTalk ')) {
-user.classList.add('bot');
-}
-}catch(e){}
-}`
-            )
-            .catch(ret => {});
-    } catch (e) {}
-}
-
 async function setPlayingDiscord() {
-    let url = getUrl();
+    let url = getUrl(mainWindow);
     let spliturl = url.split('/');
 
     if (spliturl[0] === 'repls') {
@@ -735,106 +310,45 @@ async function setPlayingDiscord() {
             instance: false
         }).then();
     } else if (spliturl[0] === 'talk') {
-        let viewing;
-        if (spliturl[3] !== undefined) {
-            await mainWindow.webContents.executeJavaScript(
-                "document.getElementsByClassName('board-post-detail-title')[0].textContent",
-                function(result) {
-                    viewing = `Viewing ${result}`;
-                }
-            ); // gets the repl talk post name
-        } else {
-            viewing = url;
-        }
-        let talkBoard = 'error';
-        switch (spliturl[1]) {
-            case 'announcements':
-                talkBoard = 'Announcements';
-                break;
-            case 'ask':
-                talkBoard = 'Ask';
-                break;
-            case 'challenge':
-                talkBoard = 'Challenge';
-                break;
-            case 'learn':
-                talkBoard = 'Learn';
-                break;
-            case 'share':
-                talkBoard = 'Share';
-                break;
-            default:
-                talkBoard = '';
-        }
-        rpc.setActivity({
-            state: `${viewing}`,
-            details: `In Repl Talk ${talkBoard}`,
-            startTimestamp,
-            largeImageKey: 'logo',
-            largeImageText: 'Repl.it',
-            smallImageKey: 'talk',
-            smallImageText: 'Repl Talk',
-            instance: false
-        }).then();
+        setDiscordStatus.talkBoard(spliturl, mainWindow).then(
+            res => {
+                rpc.setActivity({
+                    state: `${res.viewing}`,
+                    details: `In Repl Talk ${res.talkBoard}`,
+                    startTimestamp,
+                    largeImageKey: 'logo',
+                    largeImageText: 'Repl.it',
+                    smallImageKey: 'talk',
+                    smallImageText: 'Repl Talk',
+                    instance: false
+                }).catch(reason => {
+                    console.error(`error@talk board ${reason}`);
+                });
+            },
+            reason => {
+                console.error(`Set Talk board Failed ${reason}`);
+            }
+        );
     } else if (spliturl[0][0] === '@' && spliturl[1] !== undefined) {
-        let fileName = 'Error';
-        let replName = 'Error';
-        let replLanguage = 'Error';
-        await mainWindow.webContents.executeJavaScript(
-            "document.querySelector('.file-header-name div').textContent",
-            function(result) {
-                fileName = result;
+        setDiscordStatus.editing(spliturl, mainWindow).then(
+            res => {
+                rpc.setActivity({
+                    details: `Editing: ${res.fileName}`,
+                    state: `${url} `,
+                    startTimestamp,
+                    smallImageKey: 'logo',
+                    smallImageText: 'Repl.it',
+                    largeImageKey: res.lang,
+                    largeImageText: res.lang,
+                    instance: false
+                }).catch(reason => {
+                    console.error(`error@editing ${reason}`);
+                });
+            },
+            reason => {
+                console.error(`Set editing failed ${reason}`);
             }
         );
-        await mainWindow.webContents.executeJavaScript(
-            "document.getElementsByTagName('title')[0].textContent.split('-').pop()",
-            function(result) {
-                replName = result;
-            }
-        );
-        await mainWindow.webContents.executeJavaScript(
-            "document.querySelector('.workspace-header-description-container img')['title']",
-            function(result) {
-                replLanguage = result;
-            }
-        );
-
-        let lang = fileName.split('.').slice(-1)[0]; // gets the file extension
-        if (replLanguage === 'Nodejs') {
-            lang = 'node';
-        }
-        const langsJson = {
-            py: 'python',
-            cpp: 'cpp',
-            cs: 'csharp',
-            html: 'html',
-            css: 'css',
-            js: 'javascript',
-            node: 'nodejs',
-            java: 'java',
-            rb: 'ruby',
-            txt: 'txt',
-            go: 'go',
-            lua: 'lua',
-            sh: 'sh',
-            Unknown: 'txt'
-        };
-
-        if (!(lang in langsJson)) {
-            lang = 'Unknown';
-        }
-        rpc.setActivity({
-            details: `Editing: ${fileName}`,
-            state: `${url} `,
-            startTimestamp,
-            smallImageKey: 'logo',
-            smallImageText: 'Repl.it',
-            largeImageKey: langsJson[lang],
-            largeImageText: langsJson[lang],
-            instance: false
-        }).catch(ret => {
-            console.debug(`error@editing ${ret}`);
-        });
     } else if (spliturl[0] === 'talk') {
         rpc.setActivity({
             details: `In Repl Talk`,
@@ -845,8 +359,8 @@ async function setPlayingDiscord() {
             smallImageKey: 'logo',
             smallImageText: 'Repl.it',
             instance: false
-        }).catch(ret => {
-            console.debug(`error@talk ${ret}`);
+        }).catch(reason => {
+            console.error(`error@talk ${reason}`);
         });
     } else if (spliturl[0][0] === '@') {
         rpc.setActivity({
@@ -856,8 +370,8 @@ async function setPlayingDiscord() {
             largeImageKey: 'logo',
             largeImageText: 'Repl.it',
             instance: false
-        }).catch(ret => {
-            console.debug(`error@profile ${ret}`);
+        }).catch(reason => {
+            console.debug(`error@profile ${reason}`);
         });
     } else if (spliturl[0] === 'account') {
         rpc.setActivity({
@@ -867,8 +381,8 @@ async function setPlayingDiscord() {
             largeImageKey: 'logo',
             largeImageText: 'Repl.it',
             instance: false
-        }).catch(ret => {
-            console.debug(`error@acount ${ret}`);
+        }).catch(reason => {
+            console.debug(`error@acount ${reason}`);
         });
     } else {
         rpc.setActivity({
@@ -878,20 +392,17 @@ async function setPlayingDiscord() {
             largeImageKey: 'logo',
             largeImageText: 'Repl.it',
             instance: false
-        }).catch(ret => {
-            console.debug(`error@main ${ret}`);
+        }).catch(reason => {
+            console.error(`error@main ${reason}`);
         });
     }
 }
 
-function selectInput(focusedWindow) {
-    focusedWindow.webContents.executeJavaScript(
-        `document.getElementsByTagName('input')[0].focus().select()`,
-        false
-    );
-}
-
-function startSubWindow(url) {
+function startSubWindow() {
+    let url = mainWindow.webContents.getURL();
+    if (!url) {
+        url = 'https://repl.it/repls';
+    }
     if (subWindow !== undefined) {
         return;
     }
@@ -912,15 +423,39 @@ function startSubWindow(url) {
     } else {
         subWindow.loadURL('https://repl.it/repls');
     }
-    subWindow.webContents.on('did-fail-load', (event, errorCode) => {
-        ErrorMessage(subWindow, errorCode);
-    });
+    subWindow.webContents.on(
+        'did-fail-load',
+        (event, errorCode, errorDescription) => {
+            errorMessage(subWindow, errorCode, errorDescription);
+        }
+    );
     subWindow.webContents.on('did-start-loading', (event, url) => {
         handleExternalLink(subWindow, url);
     });
     subWindow.on('unresponsive', () => {
-        subWindow.reload(true)
-    })
+        subWindow.reload(true);
+    });
+}
+
+function sendSubToMain() {
+    if (subWindow) {
+        let subUrl = subWindow.getURL();
+        dialog.showMessageBox(
+            {
+                title: '',
+                message: `Do you want to load ${subUrl} in window 1?`,
+                type: 'info',
+                buttons: ['Yes', 'No'],
+                defaultId: 0
+            },
+            index => {
+                if (index === 0) {
+                    mainWindow.loadURL(subUrl);
+                } else {
+                }
+            }
+        );
+    }
 }
 
 function createWindow() {
@@ -939,7 +474,7 @@ function createWindow() {
     mainWindow.webContents.on(
         'did-fail-load',
         (event, errorCode, errorDescription) => {
-            ErrorMessage(mainWindow, errorCode, errorDescription);
+            errorMessage(mainWindow, errorCode, errorDescription);
         }
     );
     mainWindow.on('close', () => {
@@ -949,8 +484,8 @@ function createWindow() {
         handleExternalLink(mainWindow, url);
     });
     mainWindow.on('unresponsive', () => {
-        mainWindow.reload(true)
-    })
+        mainWindow.reload();
+    });
     return mainWindow;
 }
 
@@ -959,11 +494,12 @@ ElectronContext({
     showSaveImageAs: true,
     showInspectElement: true
 });
+
 rpc.on('ready', () => {
     // activity can only be set every 15 seconds
     setInterval(() => {
-        setPlayingDiscord().catch(() => {
-            console.log('Failed to update Discord status.');
+        setPlayingDiscord().catch(reason => {
+            console.log('Failed to update Discord status. ' + reason);
         });
     }, 15e3);
 });
@@ -977,6 +513,6 @@ app.on('ready', () => {
     createWindow();
 });
 
-rpc.login({ clientId: clientId }).catch(errro => {
+rpc.login({ clientId: clientId }).catch(errror => {
     console.error(error);
 });
