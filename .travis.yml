@@ -1,6 +1,7 @@
 sudo: false
 language: node_js
 node_js:
+  - 'node'
   - '8'
 
 cache:
@@ -8,6 +9,7 @@ cache:
   - node_modules
 
 before_install:
+- cd src
 - npm update
 
 install:

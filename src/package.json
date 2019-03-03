@@ -10,15 +10,16 @@
   "keywords": [
     "Electron",
     "repl.it",
-    "discord-rpc",
-    "darktheme"
+    "discord-rpc"
   ],
-  "author": "leon332157",
+  "author": "leon332157&repl.it-discord",
   "devDependencies": {
-    "electron": "^4.0.5",
+    "electron": "^4.0.6",
     "express": "^4.16.4",
     "jest": "^24.1.0",
-    "mobile-detect": "^1.4.3"
+    "mobile-detect": "^1.4.3",
+    "react": "^16.7.0",
+    "react-color": "^2.14.1"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -28,12 +29,10 @@
     "eventemitter2": "^5.0.1",
     "fs-extra": "^5.0.0",
     "lodash": "^4.17.4",
-    "react": "^16.7.0",
-    "react-color": "^2.14.1",
     "register-scheme": "github:devsnek/node-register-scheme",
     "restler": "^3.4.0",
     "zip-local": "^0.3.4"
   },
-  "repository": "https://github.com/leon332157/repl.it-electron",
+  "repository": "https://github.com/repl-it-discord/repl.it-electron",
   "license": "Apache-2.0"
 }
