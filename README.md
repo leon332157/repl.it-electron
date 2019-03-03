@@ -1,4 +1,7 @@
 # repl.it-electron
+
+[![Build Status](https://travis-ci.org/repl-it-discord/repl.it-electron.svg?branch=master)](https://travis-ci.org/repl-it-discord/repl.it-electron)
+
 Native Un-Official Electron app for [repl.it](https://repl.it).
 
 Supports Discord Rich Presence using DiscordRPC library.

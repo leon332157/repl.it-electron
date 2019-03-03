@@ -5,7 +5,11 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "jest test"
+    "test": "jest test --passWithNoTests&&codecov"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   },
   "keywords": [
     "Electron",
