@@ -179,12 +179,14 @@ async function appSetup() {
         ]
     });
     Menu.setApplicationMenu(
-        appMenuSetup(
-            startSubWindow,
-            Preferences,
-            startCustomSession,
-            sendSubToMain,
-            selectInput
+        Menu.buildFromTemplate(
+            appMenuSetup(
+                startSubWindow,
+                Preferences,
+                startCustomSession,
+                sendSubToMain,
+                selectInput
+            )
         )
     );
 
@@ -213,7 +215,7 @@ async function appSetup() {
     doUpdate(Preferences.value('update-settings')['auto-update']);
     if (mainWindow) {
         addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']]);
-        mainWindow.webContents.on('did-frame-finish-load', () => {
+        mainWindow.webContents.on('did-stop-loading', () => {
             addTheme(
                 mainWindow,
                 Themes[Preferences.value('app-theme')['theme']]

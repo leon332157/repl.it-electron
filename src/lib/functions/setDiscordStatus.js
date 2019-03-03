@@ -39,19 +39,19 @@ async function editing(spliturl, windowObj) {
     let fileName = 'Error';
     //let replName = 'Error';
     let replLanguage = 'Error';
-    await mainWindow.webContents.executeJavaScript(
+    await windowObj.webContents.executeJavaScript(
         "document.querySelector('.file-header-name div').textContent",
         result => {
             fileName = result;
         }
     );
-    /*await mainWindow.webContents.executeJavaScript(
+    /*await windowObj.webContents.executeJavaScript(
         "document.getElementsByTagName('title')[0].textContent.split('-').pop()",
         function (result) {
             replName = result;
         }
     );*/
-    await mainWindow.webContents.executeJavaScript(
+    await windowObj.webContents.executeJavaScript(
         "document.querySelector('.workspace-header-description-container img')['title']",
         result => {
             replLanguage = result;
@@ -82,6 +82,6 @@ async function editing(spliturl, windowObj) {
     if (!(lang in langsJson)) {
         lang = 'Unknown';
     }
-    return {"fileName":fileName,"lang":lang}
+    return { fileName: fileName, lang: lang };
 }
 module.exports.editing = editing;

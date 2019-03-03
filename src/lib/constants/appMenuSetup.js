@@ -1,6 +1,12 @@
-const {app, shell} = require('electron');
+const { app, shell } = require('electron');
 
-function appMenuSetup(startSubWindow, Preferences, startCustomSession, sendSubToMain, selectInput) {
+function appMenuSetup(
+    startSubWindow,
+    Preferences,
+    startCustomSession,
+    sendSubToMain,
+    selectInput
+) {
     const template = [
         {
             label: 'Main',
@@ -258,8 +264,9 @@ function appMenuSetup(startSubWindow, Preferences, startCustomSession, sendSubTo
     if (process.platform !== 'darwin') {
         template[-1].submenu.push({
             role: 'about'
-        },)
+        });
     }
+    return template;
 }
 
 module.exports = appMenuSetup;
