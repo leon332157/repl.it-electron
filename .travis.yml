@@ -3,6 +3,11 @@ language: node_js
 node_js:
   - 'node'
 
+dist: xenial
+os: 
+ - windows
+ - osx
+
 cache:
   directories:
   - node_modules
