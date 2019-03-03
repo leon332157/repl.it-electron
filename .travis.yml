@@ -2,11 +2,11 @@ sudo: false
 language: node_js
 node_js:
   - 'node'
-
-dist: xenial
 os: 
  - windows
  - osx
+ - linux
+dist: xenial
 
 cache:
   directories:
