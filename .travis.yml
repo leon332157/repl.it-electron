@@ -2,7 +2,6 @@ sudo: false
 language: node_js
 node_js:
   - 'node'
-  - '8'
 
 cache:
   directories:
@@ -17,3 +16,4 @@ install:
 
 script:
   - npm test
+  - codecov
