@@ -10,7 +10,6 @@ home*
 updater-log*
 update-window*
 .vscode
-test*
 *coverage
 *bashrc
 *nyc*
