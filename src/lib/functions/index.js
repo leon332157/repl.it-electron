@@ -16,5 +16,3 @@ exports.selectInput = require(path.resolve(__dirname,'selectInput'));
 
 exports.setDiscordStatus = require(path.resolve(__dirname,'setDiscordStatus'));
 
-exports.setUrl = require(path.resolve(__dirname,'setUrl'));
-

@@ -503,9 +503,6 @@ rpc.on('ready', () => {
         });
     }, 15e3);
 });
-rpc.on('ready', () => {
-    setInterval(setUrl, 1000);
-});
 app.on('window-all-closed', function() {
     app.quit();
 });
