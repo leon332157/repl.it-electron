@@ -1,17 +1,17 @@
-let capitalize = require('../lib/functions/capitalize');
-let assert = require('assert');
-
+const path = require('path');
+const capitalizeFn = require(path.join('..', 'lib', 'functions', 'capitalize'));
+const { test, describe } = require('mocha');
+const expect = require('chai').expect;
 describe('capitalize', () => {
-    it('one word', () => {
-        let text = 'iota'
-        let capitalizedText = capitalize(text);
-        assert(capitalizedText, 'Iota');
+    test('one word', () => {
+        let text = 'iota';
+        let capitalizedText = capitalizeFn(text);
+        expect(capitalizedText).to.eq('Iota');
     });
 
-    it('two words', () => {
-        let text = 'delta echo'
-        let newString = capitalize(text);
-        assert(newString, 'Delta Echo');
+    test('two words', () => {
+        let text = 'delta echo';
+        let newString = capitalizeFn(text);
+        expect(newString).to.eq('Delta Echo');
     });
 });
-
