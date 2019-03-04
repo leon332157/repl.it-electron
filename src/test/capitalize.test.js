@@ -1,18 +1,17 @@
-let capitalizeFn = require('../capitalize');
+let capitalize = require('../lib/functions/capitalize');
+let assert = require('assert');
 
 describe('capitalize', () => {
-    String.prototype.capitalize = capitalizeFn;
-
-    test('one word', () => {
+    it('one word', () => {
         let text = 'iota'
-        let capitalizedText = text.capitalize();
-        expect(capitalizedText).toBe('Iota');
+        let capitalizedText = capitalize(text);
+        assert(capitalizedText, 'Iota');
     });
 
-    test('two words', () => {
+    it('two words', () => {
         let text = 'delta echo'
-        let newString = text.capitalize();
-        expect(newString).toBe('Delta Echo');
+        let newString = capitalize(text);
+        assert(newString, 'Delta Echo');
     });
 });
 
