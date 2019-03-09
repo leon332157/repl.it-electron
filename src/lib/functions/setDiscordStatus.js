@@ -1,5 +1,6 @@
 async function talkBoard(spliturl, windowObj) {
     let viewing;
+    console.log(spliturl);
     if (spliturl[3] !== undefined) {
         await windowObj.webContents.executeJavaScript(
             "document.getElementsByClassName('board-post-detail-title')[0].textContent",
@@ -7,8 +8,11 @@ async function talkBoard(spliturl, windowObj) {
                 viewing = `Viewing ${result}`;
             }
         ); // gets the repl talk post name
-    } else {
-        viewing = url;
+    } else if (spliturl[2]!==undefined) {
+        viewing = `Viewing ${spliturl[2]}`;
+    }
+    else {
+        viewing = `Viewing ${spliturl[1]}`;
     }
     let talkBoard = 'error';
     switch (spliturl[1]) {
@@ -30,14 +34,14 @@ async function talkBoard(spliturl, windowObj) {
         default:
             talkBoard = '';
     }
+    console.log(viewing);
     return { viewing: viewing, talkBoard: talkBoard };
 }
 
 module.exports.talkBoard = talkBoard;
 
-async function editing(spliturl, windowObj) {
+async function editing(windowObj) {
     let fileName = 'Error';
-    //let replName = 'Error';
     let replLanguage = 'Error';
     await windowObj.webContents.executeJavaScript(
         "document.querySelector('.file-header-name div').textContent",
@@ -45,12 +49,6 @@ async function editing(spliturl, windowObj) {
             fileName = result;
         }
     );
-    /*await windowObj.webContents.executeJavaScript(
-        "document.getElementsByTagName('title')[0].textContent.split('-').pop()",
-        function (result) {
-            replName = result;
-        }
-    );*/
     await windowObj.webContents.executeJavaScript(
         "document.querySelector('.workspace-header-description-container img')['title']",
         result => {

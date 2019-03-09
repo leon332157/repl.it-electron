@@ -28,4 +28,5 @@ install:
 
 script:
   - npm test
+  - nyc report --reporter=text-lcov > coverage.lcov
   - codecov

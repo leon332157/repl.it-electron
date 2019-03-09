@@ -1,4 +1,4 @@
-const {dialog} = require('electron');
+const { dialog } = require('electron');
 const path = require('path');
 const EBU = require(path.join(__dirname, '../electron-basic-updater'));
 
@@ -9,7 +9,7 @@ function doUpdate(Update) {
     EBU.init({
         api: 'https://replit-electron-updater.leon332157.repl.co/check/' // The API EBU will talk to
     });
-    EBU.check(function (result) {
+    EBU.check(function(result) {
         console.log(result);
         if (result.toString().startsWith('has_update|')) {
             dialog.showMessageBox(
@@ -17,7 +17,7 @@ function doUpdate(Update) {
                     title: 'Update available',
                     message: `New version ${
                         result.toString().split('|')[1]
-                        } is available, would you like to update it?
+                    } is available, would you like to update it?
 
 New features:
 ${result.toString().split('|')[2]}
@@ -26,9 +26,9 @@ ${result.toString().split('|')[2]}
                     buttons: ['Yes', 'No'],
                     defaultId: 1
                 },
-                function (index) {
+                function(index) {
                     if (index === 0) {
-                        EBU.download(true, function (result) {
+                        EBU.download(true, function(result) {
                             if (result.toString() === 'success') {
                                 dialog.showMessageBox({
                                     title: 'Update success',

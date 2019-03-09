@@ -1,4 +1,4 @@
-const { app, shell } = require('electron');
+const { app, shell, clipboard } = require('electron');
 
 function appMenuSetup(
     startSubWindow,
@@ -78,6 +78,12 @@ function appMenuSetup(
                 },
                 {
                     type: 'separator'
+                },
+                {
+                    label: 'Copy URL to clipboard',
+                    click(item, focusedWindow) {
+                        clipboard.writeText(focusedWindow.webContents.getURL());
+                    }
                 }
             ]
         },

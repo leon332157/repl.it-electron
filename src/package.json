@@ -1,11 +1,11 @@
 {
     "name": "repl.it",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "electron version of repl.it",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "test": "mocha"
+        "test": "nyc mocha"
     },
     "keywords": [
         "Electron",
@@ -18,10 +18,11 @@
         "chai-as-promised": "^7.1.1",
         "chat": "^0.6.0",
         "codecov": "^3.2.0",
-        "electron": "^4.0.6",
+        "electron": "^4.0.8",
         "express": "^4.16.4",
         "mobile-detect": "^1.4.3",
         "mocha": "^6.0.2",
+        "nyc": "^13.3.0",
         "prettier": "^1.16.4",
         "react": "^16.7.0",
         "react-color": "^2.14.1",
@@ -38,6 +39,9 @@
         "register-scheme": "github:devsnek/node-register-scheme",
         "restler": "^3.4.0",
         "zip-local": "^0.3.4"
+    },
+    "resolutions": {
+        "spectron/**/electron-chromedriver": "^4.0.0-beta.1"
     },
     "repository": "https://github.com/repl-it-discord/repl.it-electron",
     "license": "Apache-2.0"

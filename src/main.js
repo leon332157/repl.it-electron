@@ -22,7 +22,6 @@ const {
     handleExternalLink,
     selectInput,
     setDiscordStatus,
-    setUrl
 } = require(path.resolve(__dirname, 'lib', 'functions'));
 const { appMenuSetup } = require(path.resolve(__dirname, 'lib', 'constants'));
 
@@ -214,6 +213,13 @@ async function appSetup() {
 
     doUpdate(Preferences.value('update-settings')['auto-update']);
     if (mainWindow) {
+        mainWindow.on('ready-to-show', () => {
+            addTheme(
+                mainWindow,
+                Themes[Preferences.value('app-theme')['theme']]
+            );
+            mainWindow.show();
+        })
         addTheme(mainWindow, Themes[Preferences.value('app-theme')['theme']]);
         mainWindow.webContents.on('did-stop-loading', () => {
             addTheme(
@@ -466,11 +472,11 @@ function createWindow() {
         minHeight: 600,
         title: 'Repl.it',
         webPreferences: { nodeIntegration: false },
+        show:false,
         icon: path.resolve(__dirname, 'utils/logo.png')
     });
     mainWindow.setBackgroundColor('#393c42');
     mainWindow.InternalId = 1;
-    mainWindow.loadURL('https://repl.it/repls');
     mainWindow.webContents.on(
         'did-fail-load',
         (event, errorCode, errorDescription) => {
@@ -486,6 +492,7 @@ function createWindow() {
     mainWindow.on('unresponsive', () => {
         mainWindow.reload();
     });
+    mainWindow.loadURL('https://repl.it/repls');
     return mainWindow;
 }
 
@@ -498,7 +505,7 @@ ElectronContext({
 rpc.on('ready', () => {
     // activity can only be set every 15 seconds
     setInterval(() => {
-        setPlayingDiscord().catch(reason => {
+        setPlayingDiscord().catch((reason) => {
             console.log('Failed to update Discord status. ' + reason);
         });
     }, 15e3);
@@ -510,6 +517,6 @@ app.on('ready', () => {
     createWindow();
 });
 
-rpc.login({ clientId: clientId }).catch(errror => {
+rpc.login({ clientId: clientId }).catch((error) => {
     console.error(error);
 });
