@@ -472,7 +472,7 @@ function createWindow() {
         minHeight: 600,
         title: 'Repl.it',
         webPreferences: { nodeIntegration: false },
-        show:false,
+        //show:false,
         icon: path.resolve(__dirname, 'utils/logo.png')
     });
     mainWindow.setBackgroundColor('#393c42');
@@ -491,9 +491,9 @@ function createWindow() {
     });
     mainWindow.on('unresponsive', () => {
         mainWindow.reload();
-    });
+    })
     mainWindow.loadURL('https://repl.it/repls');
-    return mainWindow;
+    
 }
 
 ElectronContext({

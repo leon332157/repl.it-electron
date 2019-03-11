@@ -5,7 +5,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "test": "nyc mocha"
+        "test": "jest"
     },
     "keywords": [
         "Electron",
@@ -14,14 +14,15 @@
     ],
     "author": "leon332157&repl.it-discord",
     "devDependencies": {
+        "@jest-runner/electron": "^1.1.1",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
         "chat": "^0.6.0",
         "codecov": "^3.2.0",
         "electron": "^4.0.8",
         "express": "^4.16.4",
+        "jest": "^24.3.1",
         "mobile-detect": "^1.4.3",
-        "mocha": "^6.0.2",
         "nyc": "^13.3.0",
         "prettier": "^1.16.4",
         "react": "^16.7.0",
@@ -44,5 +45,11 @@
         "spectron/**/electron-chromedriver": "^4.0.0-beta.1"
     },
     "repository": "https://github.com/repl-it-discord/repl.it-electron",
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "jest": {
+        "runner": "@jest-runner/electron/main",
+        "testEnvironment": "node",
+        "verbose":true,
+        "testPathIgnorePatterns":["/WorkInProgress/","/dev/"]
+    }
 }
