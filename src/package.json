@@ -57,6 +57,7 @@
         "coverageDirectory": "./coverage/",
         "cache": false,
         "watchman": false,
-        "notify":true
+        "notify":true,
+        "useStderr":true
     }
 }
