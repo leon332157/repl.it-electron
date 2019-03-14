@@ -5,7 +5,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "test": "PATH = './node_modules/.bin' jest",
+        "test": "PATH='./node_modules/.bin' jest",
         "build": "pwd && ls && node ../utils/building.js"
     },
     "keywords": [
