@@ -25,5 +25,5 @@ script:
   - npm test
   - codecov
   - cd ..
-  - npm i -g electron-installer-zip electron-installer-dmg electron-packager
+  - npm i -g electron-packager
   - node utils/building.js
