@@ -26,5 +26,6 @@ script:
   - echo $PATH
   - npm test
   - npm run build
+
 after_success:
   - codecov
