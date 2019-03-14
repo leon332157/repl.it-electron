@@ -5,8 +5,8 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "test": "PATH='./node_modules/.bin' jest __test__ --verbose",
-        "build": "pwd && ls && node ../utils/building.js"
+        "test": "jest __test__ --verbose",
+        "build": "node ../utils/building.js"
     },
     "keywords": [
         "Electron",

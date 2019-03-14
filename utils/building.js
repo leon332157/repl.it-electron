@@ -1,31 +1,40 @@
 process.env['DEBUG'] = 'electron-packager';
 const path = require('path');
-const packager = require(path.resolve('..', 'src', 'node_modules', 'electron-packager'));
 let sourceDir = path.resolve('..', 'src');
 let windowsIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/ico/logo.ico';
 let macIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/icns/icon.icns';
 let linuxIconPath = '/Users/lynnzheng/Desktop/repl.it/utils/logo.png ';
+let Debug = true;
 if ('TRAVIS' in process.env && 'CI' in process.env) {
     windowsIconPath = '';
     macIconPath = '';
     linuxIconPath = '';
-    sourceDir = path.resolve('.')
+    sourceDir = path.resolve('.');
+    Debug = false;
+    process.env['DEBUG'] = '';
 }
+const packager = require(path.resolve('..', 'src', 'node_modules', 'electron-packager'));
 
 function shouldIgnore(filePath) {
     //console.log(filePath);
     if (filePath.includes('test') || filePath.includes('WorkInProgress') || filePath.includes('.git') || path.basename(filePath).startsWith('.')) {
-        console.log(`Ignored ${filePath}`);
+        if (Debug) {
+            console.log(`Ignored ${filePath}`);
+        }
         return true;
     }
     if (/node_modules/.test(filePath)) {
 
         if (/\/(obj|test.*?|spec.*?|htdocs|demo|dist|example.*?|sample.*?)[\/$]/i.test(filePath)) {
-            console.log(`Ignored ${filePath}`);
+            if (Debug) {
+                console.log(`Ignored ${filePath}`);
+            }
             return true;
         }
         if (/^(\..*|.*\.(sln|pdb|exp|lib|map|md|sh|gypi|gyp|h|cpp|xml|yml|html)|vcxproj.*|LICENSE|README|CONTRIBUTORS|vagrant|Dockerfile|Makefile)$/i.test(path.basename(filePath))) {
-            console.log(`Ignored ${filePath}`);
+            if (Debug) {
+                console.log(`Ignored ${filePath}`);
+            }
             return true;
         }
     }
