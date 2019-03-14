@@ -3,7 +3,7 @@ repl.it-*
 *.dmg
 .idea
 .DS_Store
-*distribute
+*dist
 venv*
 .env
 home*

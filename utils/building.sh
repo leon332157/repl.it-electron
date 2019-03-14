@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
-cd ~/desktop/repl.it/pre-distribute
+cd ~/desktop/repl.it/pre-dist
 
-DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=win32 --arch=ia32 --icon='/Users/lynnzheng/Desktop/repl.it/logos/ico/logo.ico'
+node ../utils/building.js
 
-DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=win32 --arch=x64 --icon='/Users/lynnzheng/Desktop/repl.it/logos/ico/logo.ico'
+#DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=win32 --arch=ia32 --icon='/Users/lynnzheng/Desktop/repl.it/logos/ico/logo.ico'
 
-DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=darwin --icon='/Users/lynnzheng/Desktop/repl.it/logos/icns/icon.icns'
+#DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=win32 --arch=x64 --icon='/Users/lynnzheng/Desktop/repl.it/logos/ico/logo.ico'
 
-DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=linux --arch=ia32
+#DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=darwin --icon='/Users/lynnzheng/Desktop/repl.it/logos/icns/icon.icns'
 
-DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=linux --arch=x64
+#DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=linux --arch=ia32 --ignore='/tests/'
+
+#DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=linux --arch=x64 --ignore='/tests/'
 
 cd ~/desktop/repl.it/distribute
 
