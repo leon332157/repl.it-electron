@@ -1,12 +1,16 @@
 process.env['DEBUG'] = 'electron-packager';
 const packager = require('electron-packager');
 const path = require('path');
-
-const sourceDir = path.resolve('..', 'src');
+let sourceDir = path.resolve('..', 'src');
 let windowsIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/ico/logo.ico';
 let macIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/icns/icon.icns';
 let linuxIconPath = '/Users/lynnzheng/Desktop/repl.it/utils/logo.png ';
-
+if ('TRAVIS' in process.env && 'CI' in process.env) {
+    windowsIconPath = '';
+    macIconPath = '';
+    linuxIconPath = '';
+    sourceDir = path.resolve('.')
+}
 function shouldIgnore(filePath) {
     //console.log(filePath);
     if (filePath.includes('test') || filePath.includes('WorkInProgress') || filePath.includes('.git') || path.basename(filePath).startsWith('.')) {
@@ -28,11 +32,6 @@ function shouldIgnore(filePath) {
 
 }
 
-if ('TRAVIS' in process.env && 'CI' in process.env) {
-    windowsIconPath = '';
-    macIconPath = '';
-    linuxIconPath = '';
-}
 
 packager({
     dir: sourceDir,
