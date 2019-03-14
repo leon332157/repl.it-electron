@@ -12,6 +12,10 @@ before_install:
   - cd src
 
 addons:
+  homebrew:
+    packages:
+      - wine
+
   apt:
     packages:
       - xvfb
@@ -29,3 +33,9 @@ script:
 
 after_success:
   - codecov
+
+env:
+  global:
+    # prevent wine popup dialogs about installing additional packages
+    - WINEDLLOVERRIDES="mscoree,mshtml="
+    - WINEDEBUG="-all"
