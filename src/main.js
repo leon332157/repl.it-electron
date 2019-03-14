@@ -1,5 +1,5 @@
 /* Require Packages */
-const { app, BrowserWindow, Menu, dialog } = require('electron');
+const {app, BrowserWindow, Menu, dialog} = require('electron');
 const path = require('path');
 const DiscordRPC = require('discord-rpc');
 const ElectronPrompt = require('electron-prompt');
@@ -23,7 +23,7 @@ const {
     selectInput,
     setDiscordStatus,
 } = require(path.resolve(__dirname, 'lib', 'functions'));
-const { appMenuSetup } = require(path.resolve(__dirname, 'lib', 'constants'));
+const {appMenuSetup} = require(path.resolve(__dirname, 'lib', 'constants'));
 
 /* Declare Constants */
 let mainWindow;
@@ -420,7 +420,7 @@ function startSubWindow() {
         title: 'Repl.it',
         icon: path.resolve(__dirname, 'utils/logo.png'),
         parent: mainWindow,
-        webPreferences: { nodeIntegration: false }
+        webPreferences: {nodeIntegration: false}
     });
     subWindow.setBackgroundColor('#393c42');
     subWindow.InternalId = 2;
@@ -471,7 +471,7 @@ function createWindow() {
         minWidth: 600,
         minHeight: 600,
         title: 'Repl.it',
-        webPreferences: { nodeIntegration: false },
+        webPreferences: {nodeIntegration: false},
         //show:false,
         icon: path.resolve(__dirname, 'utils/logo.png')
     });
@@ -493,7 +493,7 @@ function createWindow() {
         mainWindow.reload();
     })
     mainWindow.loadURL('https://repl.it/repls');
-    
+
 }
 
 ElectronContext({
@@ -510,13 +510,13 @@ rpc.on('ready', () => {
         });
     }, 15e3);
 });
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
     app.quit();
 });
 app.on('ready', () => {
     createWindow();
 });
 
-rpc.login({ clientId: clientId }).catch((error) => {
+rpc.login({clientId: clientId}).catch((error) => {
     console.error(error);
 });

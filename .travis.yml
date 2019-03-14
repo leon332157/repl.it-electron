@@ -24,6 +24,6 @@ install:
 script:
   - npm test
   - codecov
-  - cd ..
-  - npm i -g electron-packager
-  - node utils/building.js
+  - cd ../pre-dist
+  - npm i electron-packager
+  - node ../utils/building.js
