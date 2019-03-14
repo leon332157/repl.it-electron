@@ -49,7 +49,7 @@
         "testEnvironment": "node",
         "verbose": true,
         "testPathIgnorePatterns": [
-            "/WorkInProgress.obj/",
+            "/WorkInProgress/",
             "/dev.obj/"
         ],
         "collectCoverage": true,
