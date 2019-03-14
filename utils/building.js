@@ -1,6 +1,6 @@
 process.env['DEBUG'] = 'electron-packager';
-const packager = require('electron-packager');
 const path = require('path');
+const packager = require(path.resolve('..', 'src', 'node_modules', 'electron-packager'));
 let sourceDir = path.resolve('..', 'src');
 let windowsIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/ico/logo.ico';
 let macIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/icns/icon.icns';
@@ -71,7 +71,7 @@ packager({
 }, (error) => {
     console.error(error)
 });
-
+/*
 packager({
     dir: sourceDir,
     asar: true,
@@ -84,7 +84,7 @@ packager({
 }, (error) => {
     console.error(error)
 });
-
+*/
 packager({
     dir: sourceDir,
     asar: true,
