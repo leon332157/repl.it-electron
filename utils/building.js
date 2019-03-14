@@ -11,6 +11,7 @@ if ('TRAVIS' in process.env && 'CI' in process.env) {
     linuxIconPath = '';
     sourceDir = path.resolve('.')
 }
+
 function shouldIgnore(filePath) {
     //console.log(filePath);
     if (filePath.includes('test') || filePath.includes('WorkInProgress') || filePath.includes('.git') || path.basename(filePath).startsWith('.')) {

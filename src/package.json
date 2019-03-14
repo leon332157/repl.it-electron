@@ -6,7 +6,7 @@
     "scripts": {
         "start": "electron .",
         "test": "jest",
-        "build": "node ../utils/building.js"
+        "build": "pwd && ls && node ../utils/building.js"
     },
     "keywords": [
         "Electron",
