@@ -3,9 +3,9 @@ const packager = require('electron-packager');
 const path = require('path');
 
 const sourceDir = path.resolve('..', 'src');
-const windowsIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/ico/logo.ico';
-const macIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/icns/icon.icns';
-const linuxIconPath = '/Users/lynnzheng/Desktop/repl.it/utils/logo.png ';
+let windowsIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/ico/logo.ico';
+let macIconPath = '/Users/lynnzheng/Desktop/repl.it/logos/icns/icon.icns';
+let linuxIconPath = '/Users/lynnzheng/Desktop/repl.it/utils/logo.png ';
 
 function shouldIgnore(filePath) {
     //console.log(filePath);
@@ -26,6 +26,12 @@ function shouldIgnore(filePath) {
     }
 
 
+}
+
+if ('TRAVIS' in process.env && 'CI' in process.env) {
+    windowsIconPath = '';
+    macIconPath = '';
+    linuxIconPath = '';
 }
 
 packager({

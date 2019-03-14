@@ -53,6 +53,8 @@
         "testPathIgnorePatterns": [
             "/WorkInProgress/",
             "/dev.obj/"
-        ]
+        ],
+        "collectCoverage": true,
+        "coverageDirectory": "./coverage/"
     }
 }

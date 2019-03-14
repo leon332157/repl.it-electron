@@ -15,15 +15,15 @@ node ../utils/building.js
 
 cd ~/desktop/repl.it/distribute
 
-electron-installer-zip ../pre-distribute/repl.it-win32-ia32/repl.it.exe 'repl.it-win-x32.zip' --verbose
+electron-installer-zip ../pre-dist/repl.it-win32-ia32/repl.it.exe 'repl.it-win-x32.zip' --verbose
 
-electron-installer-zip ../pre-distribute/repl.it-linux-ia32/repl.it 'repl.it-linux-x32.zip' --verbose
+electron-installer-zip ../pre-dist/repl.it-linux-ia32/repl.it 'repl.it-linux-x32.zip' --verbose
 
-electron-installer-zip ../pre-distribute/repl.it-win32-x64/repl.it.exe 'repl.it-win-x64.zip' --verbose
+electron-installer-zip ../pre-dist/repl.it-win32-x64/repl.it.exe 'repl.it-win-x64.zip' --verbose
 
-electron-installer-zip ../pre-distribute/repl.it-linux-x64/repl.it 'repl.it-linux-x64.zip' --verbose
+electron-installer-zip ../pre-dist/repl.it-linux-x64/repl.it 'repl.it-linux-x64.zip' --verbose
 
-electron-installer-dmg ../pre-distribute/repl.it-darwin-x64/repl.it.app repl.it --debug --icon='/Users/lynnzheng/Desktop/repl.it/logos/icns/logo_256x256.icns'
+electron-installer-dmg ../pre-dist/repl.it-darwin-x64/repl.it.app repl.it --debug --icon='/Users/lynnzheng/Desktop/repl.it/logos/icns/logo_256x256.icns'
 
 cd ~/desktop/repl.it
 
