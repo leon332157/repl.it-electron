@@ -1,12 +1,11 @@
 sudo: false
 language: node_js
 node_js:
-  - 'node'
+  - "node"
 os:
   - osx
   - linux
 dist: xenial
-
 
 before_install:
   - cd src
@@ -22,17 +21,17 @@ addons:
       - wine
 
 install:
-  - export DISPLAY=':99.0'
-  - xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
   - npm i
   - npm i electron-packager
 
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
 script:
   - echo $PATH
   - npm test
   - npm run build
-
-after_success:
   - codecov
 
 env:

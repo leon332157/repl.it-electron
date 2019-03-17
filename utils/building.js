@@ -13,73 +13,97 @@ if ('TRAVIS' in process.env && 'CI' in process.env) {
     Debug = false;
     process.env['DEBUG'] = '';
 }
-const packager = require(path.resolve('..', 'src', 'node_modules', 'electron-packager'));
+const packager = require(path.resolve(
+    '..',
+    'src',
+    'node_modules',
+    'electron-packager'
+));
 
 function shouldIgnore(filePath) {
     //console.log(filePath);
-    if (filePath.includes('test') || filePath.includes('WorkInProgress') || filePath.includes('.git') || path.basename(filePath).startsWith('.')) {
+    if (
+        filePath.includes('test') ||
+        filePath.includes('WorkInProgress') ||
+        filePath.includes('.git') ||
+        path.basename(filePath).startsWith('.') ||
+        filePath.includes('coverage')
+    ) {
         if (Debug) {
             console.log(`Ignored ${filePath}`);
         }
         return true;
     }
     if (/node_modules/.test(filePath)) {
-
-        if (/\/(obj|test.*?|spec.*?|htdocs|demo|dist|example.*?|sample.*?)[\/$]/i.test(filePath)) {
+        if (
+            /\/(obj|test.*?|spec.*?|htdocs|demo|dist|example.*?|sample.*?)[\/$]/i.test(
+                filePath
+            )
+        ) {
             if (Debug) {
                 console.log(`Ignored ${filePath}`);
             }
             return true;
         }
-        if (/^(\..*|.*\.(sln|pdb|exp|lib|map|md|sh|gypi|gyp|h|cpp|xml|yml|html)|vcxproj.*|LICENSE|README|CONTRIBUTORS|vagrant|Dockerfile|Makefile)$/i.test(path.basename(filePath))) {
+        if (
+            /^(\..*|.*\.(sln|pdb|exp|lib|map|md|sh|gypi|gyp|h|cpp|xml|yml|html)|vcxproj.*|LICENSE|README|CONTRIBUTORS|vagrant|Dockerfile|Makefile)$/i.test(
+                path.basename(filePath)
+            )
+        ) {
             if (Debug) {
                 console.log(`Ignored ${filePath}`);
             }
             return true;
         }
     }
-
-
 }
 
-
 packager({
     dir: sourceDir,
     asar: true,
-    platform: "win32",
-    arch: "ia32",
+    platform: 'win32',
+    arch: 'ia32',
     icon: windowsIconPath,
     ignore: shouldIgnore
-}).then((appPath) => {
-    console.log(`Win32 ${appPath}`)
-}, (error) => {
-    console.error(error)
-});
+}).then(
+    appPath => {
+        console.log(`Win32 ${appPath}`);
+    },
+    error => {
+        console.error(error);
+    }
+);
 
 packager({
     dir: sourceDir,
     asar: true,
-    platform: "win32",
-    arch: "x64",
+    platform: 'win32',
+    arch: 'x64',
     icon: windowsIconPath,
     ignore: shouldIgnore
-}).then((appPath) => {
-    console.log(`Win64 ${appPath}`)
-}, (error) => {
-    console.error(error)
-});
+}).then(
+    appPath => {
+        console.log(`Win64 ${appPath}`);
+    },
+    error => {
+        console.error(error);
+    }
+);
 
 packager({
     dir: sourceDir,
     asar: true,
-    platform: "darwin",
+    platform: 'darwin',
     icon: macIconPath,
     ignore: shouldIgnore
-}).then((appPath) => {
-    console.log(`Mac ${appPath}`)
-}, (error) => {
-    console.error(error)
-});
+}).then(
+    appPath => {
+        console.log(`Mac ${appPath}`);
+    },
+    error => {
+        console.error(error);
+    }
+);
 /*
 packager({
     dir: sourceDir,
@@ -97,12 +121,15 @@ packager({
 packager({
     dir: sourceDir,
     asar: true,
-    platform: "linux",
+    platform: 'linux',
     arch: 'x64',
     icon: linuxIconPath,
     ignore: shouldIgnore
-}).then((appPath) => {
-    console.log(`Linux64 ${appPath}`)
-}, (error) => {
-    console.error(error)
-});
+}).then(
+    appPath => {
+        console.log(`Linux64 ${appPath}`);
+    },
+    error => {
+        console.error(error);
+    }
+);

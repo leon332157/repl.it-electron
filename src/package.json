@@ -5,7 +5,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "test": "jest __test__ --debug -u",
+        "test": "jest --debug --detectOpenHandles",
         "build": "node ../utils/building.js"
     },
     "keywords": [
@@ -23,11 +23,13 @@
         "electron": "^4.1.0",
         "electron-packager": "^13.1.1",
         "express": "^4.16.4",
+        "jasmine": "^3.3.1",
         "jest": "^24.3.1",
         "mobile-detect": "^1.4.3",
         "prettier": "^1.16.4",
         "react": "^16.7.0",
-        "react-color": "^2.14.1"
+        "react-color": "^2.14.1",
+        "spectron": "^5.0.0"
     },
     "dependencies": {
         "axios": "^0.18.0",
@@ -46,7 +48,7 @@
     "repository": "https://github.com/repl-it-discord/repl.it-electron",
     "license": "Apache-2.0",
     "jest": {
-        
+        "runner": "@jest-runner/electron/main",
         "testEnvironment": "node",
         "verbose": true,
         "testPathIgnorePatterns": [
@@ -57,7 +59,7 @@
         "coverageDirectory": "./coverage/",
         "cache": false,
         "watchman": false,
-        "notify":true,
-        "useStderr":true
+        "notify": true,
+        "useStderr": true
     }
 }
