@@ -261,15 +261,14 @@ async function appSetup() {
         });
     }
     if (subWindow) {
-            addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']]);
-            subWindow.webContents.on('did-start-navigation', () => {
-                addTheme(
-                    subWindow,
-                    Themes[Preferences.value('app-theme')['theme']]
-                );
-            });
-        }
-    
+        addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']]);
+        subWindow.webContents.on('did-start-navigation', () => {
+            addTheme(
+                subWindow,
+                Themes[Preferences.value('app-theme')['theme']]
+            );
+        });
+    }
 }
 
 appSetup().then(
@@ -478,7 +477,7 @@ function createSubWindow() {
         icon: path.resolve(__dirname, 'utils/logo.png'),
         parent: mainWindow,
         webPreferences: { nodeIntegration: false },
-        show:false
+        show: false
     });
     subWindow.setBackgroundColor('#393c42');
     subWindow.InternalId = 2;
@@ -494,10 +493,10 @@ function createSubWindow() {
     subWindow.on('unresponsive', () => {
         subWindow.reload();
     });
-    subWindow.on('close', (event) => {
+    subWindow.on('close', event => {
         event.preventDefault();
-        subWindow.hide()
-    })
+        subWindow.hide();
+    });
 }
 
 function createWindow() {
@@ -519,7 +518,7 @@ function createWindow() {
         }
     );
     mainWindow.on('close', () => {
-        process.exit(0)
+        process.exit(0);
     });
     mainWindow.webContents.on('will-navigate', (event, url) => {
         handleExternalLink(mainWindow, url);
