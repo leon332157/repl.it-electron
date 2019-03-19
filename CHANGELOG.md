@@ -68,14 +68,14 @@
 
 ## 1.1.0
 
-1. Added changing editor
+1. Added a restore button in the menu incase the page goes blank
 
-2. Added a restore button in the menu incase the page goes blank
+2. Added a check update button in the menu
 
-3. Added a check update button in the menu
+3. Fixed issue with RPC display
 
-4. Fixed the bug where the loading failes for no reason
+4. Fixed issue with subwindow
 
-5. Fixed issue with RPC display
- 
-6. Fixed issue with subwindow
+5. Added changing editor
+
+6. Fixed the bug where the loading failes for no reason 
