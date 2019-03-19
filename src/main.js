@@ -7,6 +7,7 @@ const ElectronContext = require('electron-context-menu');
 const requests = require('axios');
 
 /* Local libs */
+
 const ElectronPreferences = require(path.resolve(
     __dirname,
     'lib',
@@ -14,6 +15,7 @@ const ElectronPreferences = require(path.resolve(
 ));
 
 /* Require files */
+
 const {
     addTheme,
     capitalize,
@@ -27,6 +29,7 @@ const {
 const { appMenuSetup } = require(path.resolve(__dirname, 'lib', 'constants'));
 
 /* Declare Constants */
+
 let mainWindow;
 let subWindow = undefined;
 const clientId = '498635999274991626';
@@ -308,7 +311,7 @@ function startCustomSession() {
                     defaultId: 0
                 });
             } else {
-                if (subWindow !== undefined) {
+                if (!subWindow.isVisible()) {
                     dialog.showMessageBox(
                         {
                             title: '',

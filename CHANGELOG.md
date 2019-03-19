@@ -77,3 +77,5 @@
 4. Fixed the bug where the loading failes for no reason
 
 5. Fixed issue with RPC display
+ 
+6. Fixed issue with subwindow
