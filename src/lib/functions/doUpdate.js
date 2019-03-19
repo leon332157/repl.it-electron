@@ -2,7 +2,7 @@ const { dialog } = require('electron');
 const path = require('path');
 const EBU = require(path.join(__dirname, '../electron-basic-updater'));
 
-function doUpdate(Update) {
+function doUpdate(Update, Manual) {
     if (!Update) {
         return;
     }
@@ -49,6 +49,14 @@ ${result.toString().split('|')[2]}
                     }
                 }
             );
+        } else {
+            if (Manual) {
+                dialog.showMessageBox({
+                    title: 'No New Update available',
+                    message: `Congratulations, you are already using the latest version`,
+                    type: 'info'
+                })
+            };
         }
     });
 }

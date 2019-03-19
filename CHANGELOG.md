@@ -56,3 +56,17 @@
 1. Fixed bug where the app crashes for no reason.
 2. Fixed Auto Update bug where the preference of update has no effect.
 3. Fixed issue with poping external link windows.
+
+## 1.0.5
+1. Bug fixes.
+
+## 1.1.0
+1. Added changing editor
+
+2. Added a restore button in the menu incase the page goes blank
+
+3. Added a check update button in the menu
+
+4. Fixed the bug where the loading failes for no reason
+
+5. Fixed issue with RPC display

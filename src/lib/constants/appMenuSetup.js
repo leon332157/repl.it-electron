@@ -5,7 +5,8 @@ function appMenuSetup(
     Preferences,
     startCustomSession,
     sendSubToMain,
-    selectInput
+    selectInput,
+    doUpdate
 ) {
     const template = [
         {
@@ -32,6 +33,9 @@ function appMenuSetup(
                     }
                 },
                 {
+                    type: 'separator'
+                },
+                {
                     label: 'Preferences',
                     accelerator: 'CmdOrCtrl+,',
                     click() {
@@ -39,8 +43,10 @@ function appMenuSetup(
                     }
                 },
                 {
-                    type: 'separator'
-                },
+                    label: 'Check Update Manually',
+                    click() {
+                        doUpdate(true,true)
+                    }},
                 {
                     role: 'quit'
                 }
@@ -82,7 +88,9 @@ function appMenuSetup(
                 {
                     label: 'Copy URL to clipboard',
                     click(item, focusedWindow) {
-                        clipboard.writeText(focusedWindow.webContents.getURL());
+                        clipboard.writeText(
+                            focusedWindow.webContents.getURL()
+                        );
                     }
                 }
             ]
@@ -113,6 +121,12 @@ function appMenuSetup(
                     label: 'Open Current Link externally',
                     click(item, focusedWindow) {
                         shell.openExternal(focusedWindow.getURL());
+                    }
+                },
+                {
+                    label: 'Restore Blank Page',
+                    click(item, focusedWindow) {
+                        focusedWindow.loadURL('https://repl.it/repls');
                     }
                 },
                 {
@@ -268,7 +282,7 @@ function appMenuSetup(
         ];
     }
     if (process.platform !== 'darwin') {
-        template[-1].submenu.push({
+        template[template.length - 1].submenu.push({
             role: 'about'
         });
     }

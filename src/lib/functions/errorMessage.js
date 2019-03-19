@@ -8,7 +8,7 @@ function errorMessage(windowObject, errorCode, errorDescription) {
     dialog.showMessageBox(
         {
             title: 'Loading Failed',
-            message: `loading Failed on window ${id} reason ${errorDescription}, do you want to try again?`,
+            message: `loading Failed on window ${id} reason ${errorDescription} code ${errorCode}, do you want to try again?`,
             type: 'error',
             buttons: ['Try again please', 'Quit'],
             defaultId: 0

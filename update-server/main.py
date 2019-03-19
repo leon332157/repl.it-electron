@@ -8,9 +8,9 @@ from datetime import datetime
 
 import dotenv
 import flask
-import jsonpickle
 import pymongo
 import requests
+import jsonpickle
 from pytz import utc, timezone
 from werkzeug.wsgi import FileWrapper
 
@@ -36,7 +36,7 @@ if platform != 'darwin':
         format="%(asctime)s %(message)s")
 app = flask.Flask(__name__, root_path=os.getcwd())
 client = pymongo.MongoClient(
-    f'mongodb+srv://leon332157:{os.getenv("PASSWORD")}@cluster0-ysgtf.mongodb.net/test?retryWrites=true&authSource=admin')
+    f'mongodb+srv://leon332157:{os.getenv("PASSWORD")}@electron-updater-ysgtf.azure.mongodb.net/test?retryWrites=true')
 db = client['main']
 main = db['main']
 
@@ -164,4 +164,4 @@ def ping_myself():
 
 thread = threading.Thread(target=ping_myself)
 thread.start()
-app.run(host='0.0.0.0', port=3430)
+app.run(host='0.0.0.0', port=3732)

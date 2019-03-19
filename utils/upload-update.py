@@ -12,7 +12,7 @@ dotenv.load_dotenv('update-server/.env')
 TOKEN = os.getenv('TOKEN')
 logging.basicConfig(level=logging.INFO)
 client = pymongo.MongoClient(
-    f'mongodb+srv://leon332157:{os.getenv("PASSWORD")}@cluster0-ysgtf.mongodb.net/test?retryWrites=true&authSource=admin')
+    f'mongodb+srv://leon332157:{os.getenv("PASSWORD")}@electron-updater-ysgtf.azure.mongodb.net/test?retryWrites=true')
 print('Connected')
 db = client['main']
 main = db['main']
@@ -28,11 +28,11 @@ while True:
 print(lines)
 change_log = '\n'.join(lines)
 version = json.load(open('src/package.json'))['version']
-update = zipfile.ZipFile(f'pre-distribute/{version}.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9)
-update.write('pre-distribute/repl.it-win32-ia32/resources/app.asar', arcname='app.asar')
+update = zipfile.ZipFile(f'pre-dist/{version}.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9)
+update.write('pre-dist/repl.it-win32-ia32/resources/app.asar', arcname='app.asar')
 update.close()
 
-file = io.BytesIO(open(f'pre-distribute/{version}.zip', 'rb').read())
+file = io.BytesIO(open(f'pre-dist/{version}.zip', 'rb').read())
 print('Deleted Count:', main.delete_many({'version': version}).deleted_count)
 main.insert_one({'version': version, 'change_log': change_log, 'file': jsonpickle.encode(file)})
 # # os.remove(f'pre-distribute/{version}.zip')

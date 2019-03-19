@@ -27,7 +27,7 @@ And checkout [CONTRIBUTING.md](https://github.com/repl-it-discord/repl.it-electr
 
 ## Testing
 
-Runs Jest test suite at `./test`
+Runs Jest test suite at `src/__test__`
 
 ```bash
 npm test

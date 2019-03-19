@@ -13,7 +13,7 @@ node ../utils/building.js
 
 #DEBUG=electron-packager electron-packager ../src 'repl.it' --asar --platform=linux --arch=x64 --ignore='/tests/'
 
-cd ~/desktop/repl.it/distribute
+cd ~/desktop/repl.it/dist
 
 electron-installer-zip ../pre-dist/repl.it-win32-ia32/repl.it.exe 'repl.it-win-x32.zip' --verbose
 
