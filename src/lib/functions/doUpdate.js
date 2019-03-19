@@ -1,4 +1,4 @@
-const { dialog } = require('electron');
+const { dialog, app } = require('electron');
 const path = require('path');
 const EBU = require(path.join(__dirname, '../electron-basic-updater'));
 
@@ -53,10 +53,10 @@ ${result.toString().split('|')[2]}
             if (Manual) {
                 dialog.showMessageBox({
                     title: 'No New Update available',
-                    message: `Congratulations, you are already using the latest version`,
+                    message: `Congratulations, you are already using the latest version ${app.getVersion()}`,
                     type: 'info'
-                })
-            };
+                });
+            }
         }
     });
 }

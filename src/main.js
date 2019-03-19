@@ -212,10 +212,10 @@ async function appSetup() {
             //JSON.stringify(preferences, null, 4)
         );
         if (mainWindow) {
-            /*addTheme(
+            addTheme(
                 mainWindow,
                 Themes[Preferences.value('app-theme')['theme']]
-            );*/
+            );
             if (Preferences.value('editor-settings')['editor'] === 'ace') {
                 mainWindow.webContents.setUserAgent(
                     `Mozilla/5.0 (iPad) repl.it/${app.getVersion()}`
@@ -250,14 +250,7 @@ async function appSetup() {
                 `Mozilla/5.0 (iPad) repl.it/${app.getVersion()}`
             );
         }
-        mainWindow.on('ready-to-show', () => {
-            addTheme(
-                mainWindow,
-                Themes[Preferences.value('app-theme')['theme']]
-            );
-            mainWindow.show();
-        });
-        mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.webContents.on('did-start-navigation', () => {
             addTheme(
                 mainWindow,
                 Themes[Preferences.value('app-theme')['theme']]
@@ -265,14 +258,15 @@ async function appSetup() {
         });
     }
     if (subWindow) {
-        addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']]);
-        subWindow.webContents.on('did-finish-load', () => {
-            addTheme(
-                subWindow,
-                Themes[Preferences.value('app-theme')['theme']]
-            );
-        });
-    }
+            addTheme(subWindow, Themes[Preferences.value('app-theme')['theme']]);
+            subWindow.webContents.on('did-start-navigation', () => {
+                addTheme(
+                    subWindow,
+                    Themes[Preferences.value('app-theme')['theme']]
+                );
+            });
+        }
+    
 }
 
 appSetup().then(
@@ -461,13 +455,17 @@ function sendSubToMain() {
     }
 }
 function startSubWindow() {
+    if (subWindow.isVisible()) {
+        return;
+    }
     let url = mainWindow.webContents.getURL();
     if (!url) {
         url = 'https://repl.it/repls';
     }
-    if (subWindow !== undefined) {
-        return;
-    }
+    subWindow.loadURL(url);
+    subWindow.show();
+}
+function createSubWindow() {
     subWindow = new BrowserWindow({
         width: mainWindow.getSize()[0] - 10,
         height: mainWindow.getSize()[1] - 10,
@@ -476,20 +474,11 @@ function startSubWindow() {
         title: 'Repl.it',
         icon: path.resolve(__dirname, 'utils/logo.png'),
         parent: mainWindow,
-        webPreferences: { nodeIntegration: false }
+        webPreferences: { nodeIntegration: false },
+        show:false
     });
-    if (Preferences.value('editor-settings')['editor'] === 'ace') {
-        mainWindow.webContents.setUserAgent(
-            `Mozilla/5.0 (iPad) repl.it/${app.getVersion()}`
-        );
-    }
     subWindow.setBackgroundColor('#393c42');
     subWindow.InternalId = 2;
-    if (url) {
-        subWindow.loadURL(url);
-    } else {
-        subWindow.loadURL('https://repl.it/repls');
-    }
     subWindow.webContents.on(
         'did-fail-load',
         (event, errorCode, errorDescription) => {
@@ -500,8 +489,12 @@ function startSubWindow() {
         handleExternalLink(subWindow, url);
     });
     subWindow.on('unresponsive', () => {
-        subWindow.reload(true);
+        subWindow.reload();
     });
+    subWindow.on('close', (event) => {
+        event.preventDefault();
+        subWindow.hide()
+    })
 }
 
 function createWindow() {
@@ -515,7 +508,6 @@ function createWindow() {
         icon: path.resolve(__dirname, 'utils/logo.png')
     });
     defaultUserAgent = mainWindow.webContents.getUserAgent();
-    mainWindow.setBackgroundColor('#393c42');
     mainWindow.InternalId = 1;
     mainWindow.webContents.on(
         'did-fail-load',
@@ -524,15 +516,16 @@ function createWindow() {
         }
     );
     mainWindow.on('close', () => {
-        app.quit();
+        process.exit(0)
     });
-    /*mainWindow.webContents.on('will-navigate', (event, url) => {
+    mainWindow.webContents.on('will-navigate', (event, url) => {
         handleExternalLink(mainWindow, url);
-    });*/
+    });
     mainWindow.on('unresponsive', () => {
         mainWindow.reload();
     });
     mainWindow.loadURL('https://repl.it/repls');
+    createSubWindow();
 }
 
 ElectronContext({

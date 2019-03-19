@@ -1,5 +1,4 @@
 function addTheme(windowObj, CSSString) {
-    //windowObj.webContents.stop();
     for (let i = 0; i <= 3; i++) {
         try {
         
@@ -13,4 +12,4 @@ function addTheme(windowObj, CSSString) {
     windowObj.setBackgroundColor('#FFF');
 }
 
-module.exports = addTheme;Z
+module.exports = addTheme;

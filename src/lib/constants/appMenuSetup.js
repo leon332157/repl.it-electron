@@ -36,17 +36,19 @@ function appMenuSetup(
                     type: 'separator'
                 },
                 {
+                    label: 'Check Update Manually',
+                    click() {
+                        doUpdate(true, true);
+                    }
+                },
+                {
                     label: 'Preferences',
                     accelerator: 'CmdOrCtrl+,',
                     click() {
                         Preferences.show();
                     }
                 },
-                {
-                    label: 'Check Update Manually',
-                    click() {
-                        doUpdate(true,true)
-                    }},
+
                 {
                     role: 'quit'
                 }
@@ -88,9 +90,7 @@ function appMenuSetup(
                 {
                     label: 'Copy URL to clipboard',
                     click(item, focusedWindow) {
-                        clipboard.writeText(
-                            focusedWindow.webContents.getURL()
-                        );
+                        clipboard.writeText(focusedWindow.webContents.getURL());
                     }
                 }
             ]
