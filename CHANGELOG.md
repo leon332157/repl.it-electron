@@ -56,7 +56,11 @@
 
 1. Various Bug fixes. Including the annoying ABORTED bug.
 
-## 1.0.3 -> 1.0.4
+## 1.0.3
+
+1. Failed fix for bugs in version 1.0.2, skipped to 1.0.4 instead.
+   
+## 1.0.4
 
 1. Fixed bug where the app crashes for no reason.
 2. Fixed Auto Update bug where the preference of update has no effect.
