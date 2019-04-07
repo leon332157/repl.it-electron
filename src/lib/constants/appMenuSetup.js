@@ -6,7 +6,8 @@ function appMenuSetup(
     startCustomSession,
     sendSubToMain,
     selectInput,
-    doUpdate
+    doUpdate,
+    openBrowser
 ) {
     const template = [
         {
@@ -30,6 +31,13 @@ function appMenuSetup(
                     label: 'Send Sub to Main Window',
                     click() {
                         sendSubToMain();
+                    }
+                },
+                {
+                    label: 'Search',
+                    accelerator: 'CmdOrCtrl+S',
+                    click() {
+                        openBrowser();
                     }
                 },
                 {
