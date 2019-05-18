@@ -1,15 +1,32 @@
-# repl-it-electron
+<div align="center">
+	  <br />
+	  <p>
+	  <a href="https://discordapp.com/invite/5gcPC6B"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Repl.it_logo.svg/220px-Repl.it_logo.svg.png" width="50%"></a>
+	 </p>
+	  <p>
+	    <a href="http://repl.it/"><img src="https://img.shields.io/github/languages/top/repl-it-discord/repl-it-electron.svg?colorB=f0db4f&style=for-the-badge" alt="Language"/>
+	    </a>
+	<a href="https://github.com/repl-it-discord/repl-it-electron/issues">
+	    <img src="https://img.shields.io/github/issues/repl-it-discord/repl-it-electron.svg?style=for-the-badge&colorB=37f149" alt="Issues">
+	</a>
+	<a href="https://github.com/repl-it-discord/repl-it-electron/pulls">
+	    <img src="https://img.shields.io/github/issues-pr/repl-it-discord/repl-it-electron.svg?style=for-the-badge&colorB=37f149" alt="Pull Request">
+	</a>
+	<a>
+	  <img src="https://forthebadge.com/images/badges/built-with-love.svg" width="20%">
+	</a>
+	  </p>
+	</br>
+	</div>
 
-[![Build Status](https://travis-ci.org/repl-it-discord/repl-it-electron.svg?branch=dev)](https://travis-ci.org/repl-it-discord/repl-it-electron)
+## About
 
-## Summary
-[repl.it](https://repl.it) is an online coding platform that provides an IDE all in your browser. `repl-it-electron` is an unofficial native desktop application that interfaces wth repl.it. It intends to improve developer experience through simplicity. As an electron app you can use it on Mac OS, Windows 7,8 and 10.
-
+[repl.it](https://repl.it) is an online coding platform that provides an IDE all in your browser. `repl-it-electron` is an unofficial native desktop application that interfaces wth repl.it. It intends to improve developer experience through simplicity. As an electron app you can use it on Mac OS, Windows 7, 8 and 10.
 ## Features
 * Discord Rich Presence (using DiscordRPC)
 * Work with two windows simultaneously
 * Change themes (other than *Light* and *Dark*)
-
+* Works on macOS and Windows 7, 8, 10
 ## Contributing
 
 ```bash
