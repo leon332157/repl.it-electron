@@ -4,16 +4,15 @@
 	  <a href="https://discordapp.com/invite/5gcPC6B"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Repl.it_logo.svg/220px-Repl.it_logo.svg.png" width="50%"></a>
 	 </p>
 	  <p>
-	    <a href="http://repl.it/"><img src="https://img.shields.io/github/languages/top/repl-it-discord/repl-it-electron.svg?colorB=f0db4f&style=for-the-badge" alt="Language"/>
-	    </a>
+	    <a href="https://discord.gg/jQdFFH6"><img src="https://img.shields.io/discord/437048931827056642.svg?colorB=Blue&logo=discord&label=Support&style=for-the-badge" alt="Discord server" /></a>
+	    <a href="https://discordapp.com/invite/5gcPC6B">
+    <img src="https://img.shields.io/travis/repl-it-discord/repl-it-electron/dev.svg?style=for-the-badge" alt="Build">
+</a>
 	<a href="https://github.com/repl-it-discord/repl-it-electron/issues">
 	    <img src="https://img.shields.io/github/issues/repl-it-discord/repl-it-electron.svg?style=for-the-badge&colorB=37f149" alt="Issues">
 	</a>
 	<a href="https://github.com/repl-it-discord/repl-it-electron/pulls">
 	    <img src="https://img.shields.io/github/issues-pr/repl-it-discord/repl-it-electron.svg?style=for-the-badge&colorB=37f149" alt="Pull Request">
-	</a>
-	<a>
-	  <img src="https://forthebadge.com/images/badges/built-with-love.svg" width="20%">
 	</a>
 	  </p>
 	</br>
@@ -44,3 +43,4 @@ See feature implementation details on the [roadmap](https://github.com/repl-it-d
 ## Acknowledgements
 
 [@mat1](https://repl.it/@mat1) for Discord Rich Presence Integration
+[@MoniS10](https://monis10.github.io) for makeing this look pretty.
