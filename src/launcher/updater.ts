@@ -4,7 +4,7 @@ import * as path from 'path';
 import Axios from 'axios';
 import { decode } from '../lib/run-length-helper';
 
-class Updater {
+export class Updater {
     pathSep: string = path.sep;
     appPath: string = app.getAppPath() + this.pathSep;
     upperAppPath: string = path.dirname(this.appPath) + this.pathSep;

@@ -1,5 +1,6 @@
 import { dialog, shell } from 'electron';
 import { ElectronWindow } from '../class';
+import MessageBoxReturnValue = Electron.MessageBoxReturnValue;
 
 function handleExternalLink(windowObj: ElectronWindow, url: string) {
     console.log(`External URL: ${url}`);
@@ -15,15 +16,16 @@ function handleExternalLink(windowObj: ElectronWindow, url: string) {
         url.toString().includes('repl.run')
     ) {
     } else {
-        dialog.showMessageBox(
-            {
+        dialog
+            .showMessageBox({
                 title: 'Confirm External Links',
                 message: `${url} Looks like an external link, would you like to load it externally?`,
                 type: 'info',
                 buttons: ['No', 'Yes'],
                 defaultId: 1
-            },
-            function(index) {
+            })
+            .then(function(resp: MessageBoxReturnValue) {
+                var index = resp.response;
                 if (index === 1) {
                     shell.openExternal(url);
                     if (windowObj.webContents.canGoBack()) {
@@ -34,8 +36,7 @@ function handleExternalLink(windowObj: ElectronWindow, url: string) {
                         windowObj.webContents.goBack();
                     }
                 }
-            }
-        );
+            });
     }
 }
 

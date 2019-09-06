@@ -2,4 +2,4 @@ require('@babel/register')({
     extensions: ['.js', '.ts']
 });
 
-require('./main.ts');
+require("../launcher/main.ts");

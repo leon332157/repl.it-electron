@@ -1,4 +1,5 @@
-import { app, Menu, dialog } from 'electron';
+import { app, dialog, Menu } from 'electron';
+// @ts-ignore
 import path from 'path';
 // @ts-ignore
 import DiscordRPC from 'discord-rpc';
@@ -11,7 +12,6 @@ import axios from 'axios';
 // @ts-ignore
 import ElectronPreferences from '../lib/electron-preferences';
 import { ElectronWindow } from '../class';
-
 /* Require files */
 import {
     addTheme,
@@ -26,6 +26,7 @@ import {
 } from '../util';
 
 import { appMenuSetup } from './menu';
+import MessageBoxReturnValue = Electron.MessageBoxReturnValue;
 
 /* Declare Constants */
 let mainWindow: ElectronWindow;
@@ -322,21 +323,21 @@ function startCustomSession() {
                 });
             } else {
                 if (!subWindow.isVisible()) {
-                    dialog.showMessageBox(
-                        {
+                    dialog
+                        .showMessageBox({
                             title: '',
                             message: `Do you want to load ${r} in window 2?`,
                             type: 'info',
                             buttons: ['Yes', 'No'],
                             defaultId: 0
-                        },
-                        index => {
+                        })
+                        .then(function(resp: MessageBoxReturnValue) {
+                            const index = resp.response;
                             if (index === 0) {
                                 subWindow.loadURL(r);
                             } else {
                             }
-                        }
-                    );
+                        });
                 } else {
                     startSubWindow();
                 }
@@ -450,21 +451,21 @@ async function setPlayingDiscord() {
 function sendSubToMain() {
     if (subWindow) {
         let subUrl = subWindow.webContents.getURL();
-        dialog.showMessageBox(
-            {
+        dialog
+            .showMessageBox({
                 title: '',
                 message: `Do you want to load ${subUrl} in window 1?`,
                 type: 'info',
                 buttons: ['Yes', 'No'],
                 defaultId: 0
-            },
-            index => {
+            })
+            .then(function(resp: MessageBoxReturnValue) {
+                const index = resp.response;
                 if (index === 0) {
                     mainWindow.loadURL(subUrl);
                 } else {
                 }
-            }
-        );
+            });
     }
 }
 

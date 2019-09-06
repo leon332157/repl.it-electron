@@ -1,8 +1,9 @@
-import { dialog, app } from 'electron';
+import { app, dialog } from 'electron';
 //@ts-ignore
 import path from 'path';
 //@ts-ignore
 import EBU from '../lib/electron-basic-updater';
+import MessageBoxReturnValue = Electron.MessageBoxReturnValue;
 
 function doUpdate(Update: boolean, Manual: boolean) {
     if (!Update) {
@@ -14,8 +15,8 @@ function doUpdate(Update: boolean, Manual: boolean) {
     EBU.check(function(result: string) {
         console.log(result);
         if (result.toString().startsWith('has_update|')) {
-            dialog.showMessageBox(
-                {
+            dialog
+                .showMessageBox({
                     title: 'Update available',
                     message: `New version ${
                         result.toString().split('|')[1]
@@ -25,8 +26,9 @@ function doUpdate(Update: boolean, Manual: boolean) {
                     type: 'info',
                     buttons: ['Yes', 'No'],
                     defaultId: 1
-                },
-                function(index: number) {
+                })
+                .then(function(resp: MessageBoxReturnValue) {
+                    const index = resp.response;
                     if (index === 0) {
                         EBU.download(true, function(result: string) {
                             if (result.toString() === 'success') {
@@ -47,8 +49,7 @@ function doUpdate(Update: boolean, Manual: boolean) {
                             }
                         });
                     }
-                }
-            );
+                });
         } else {
             if (Manual) {
                 dialog.showMessageBox({
