@@ -10,6 +10,7 @@ Thumbs.db
 # dist
 dist
 pre-dist
+ts-out
 
 # npm
 node_modules
@@ -21,4 +22,5 @@ venv/
 .env
 coverage/
 *.log
+.bashrc
 

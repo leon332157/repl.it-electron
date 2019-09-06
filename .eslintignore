@@ -2,4 +2,4 @@ electron-basic-updater/
 electron-preferences/
 node_modules/
 dist/
-
+ts-out/
