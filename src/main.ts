@@ -11,7 +11,7 @@ function createUpdaterWindow() {
         webPreferences: { nodeIntegration: false }
         //icon:
     });
-    
+
     mainWindow.on('unresponsive', () => {
         mainWindow.reload();
     });
