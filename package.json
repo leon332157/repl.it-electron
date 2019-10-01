@@ -12,6 +12,7 @@
         "build:run": "electron dist/main.bundle.js",
         "build:ts": "tsc -b tsconfig.json && npm run build:ts:static",
         "build:ts:static": "copyfiles package.json ts-out && copyfiles src/lib/electron-preferences/* ts-out/lib/electron-preferences/ -V -u 3 && copyfiles src/lib/electron-preferences/**/* ts-out/lib/electron-preferences/ -V -u 3"
+        "build:ts:start": "electron ./ts-out"
     },
     "keywords": [
         "electron",
