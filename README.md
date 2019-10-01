@@ -64,11 +64,15 @@ Runs the production build of the website.
 
 ### `build:ts`
 
-Use the typescript compiler to produce a ts-out directory of a js copy of src.
+Use the typescript compiler to produce a ts-out directory of a js copy of src. Also running `build:ts:static` and `ts:start`
 
 ### `build:ts:static`
 
 Copying the static non-ts files into the ts-out folder.
+
+### `ts:start`
+
+Start the electron process in ts-out.
 
 ## Acknowledgements
 
