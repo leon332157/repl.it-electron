@@ -6,7 +6,7 @@
 
 2. Added a check update button in the menu
 
-3. Fixed issue with RPC display
+3. Fixed issue with Discord RPC display
 
 4. Fixed issue with subwindow
 
