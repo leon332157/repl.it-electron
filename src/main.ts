@@ -90,9 +90,7 @@ async function initUpdater() {
     }
 }
 
-app.on('window-all-closed', () => {
-    app.quit();
+app.on('window-all-closed', () => {app.quit();
 });
-app.once('ready', () => {
-    initLauncher();
+app.once('ready', () => {initLauncher();
 });
