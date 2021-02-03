@@ -30,3 +30,6 @@ Nodejs 14 is recommended as Electron uses it.
 To contribute, see [CONTRIBUTING.md](./.github/CONTRIBUTING.md)
 
 See feature implementation details on the [roadmap](https://github.com/repl-it-discord/repl-it-electron/projects)
+
+GitHub Projects: [**here**](https://github.com/repl-it-discord/repl-it-electron/projects)
+Trello Board: [**here**](https://trello.com/b/tLDD8fnB/replit-electron)
