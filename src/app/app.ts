@@ -178,7 +178,8 @@ class App extends EventEmitter {
                     description,
                     validateUrl
                 );
-        });
+            }
+        );
     }
 
     async addTheme(windowObj: ElectronWindow) {

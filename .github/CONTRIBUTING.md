@@ -1,54 +1,61 @@
 # Contributing
 
-👋 Hey! Thanks for thinking about contributing! Make sure you read the following three sections before contributing.
+👋 Hey! Thanks for thinking about contributing! Make sure you read the following sections before contributing.
+If you want to be added as a collaborator, DM Leon on discord. `leon332157#6808`
+
+## Tools
+I recommend using VSCode on a PC with a few extensions like TypeScript, Eslint and Prettier, which will ensure maxium integration with our code. 
+
+You can also write code in [Repl.it](https://repl.it/@leon332157/repl-it-electron) however is not recommended since it's not optimal for electron. 
+## Scripts
+
+### `start`
+
+Runs `npm run build` and `npm run build:run`, used for running electron with compiled ts files in a devlopmemt enviroment. 
+
+### `lint:check`
+
+Identifies all linting issues with eslint. Lints TypeScript as well as JavaScript.
+
+### `lint`
+
+This formats code according to Prettier style guides. Use `npm run lint` to correct all correctable errors.
+
+### `build`
+
+Uses gulp to create a JavaScript build of the app.
+
+### `build:run`
+
+Run
+
+### `build:prod`
+Builds a production JS version of the app.
+
+### `dist`
+Builds the app for release. 
 
 ## Pull Requests
 
 Before you make a PR
 
-1. *Create an Issue of what you plan to add*
-2. *Do **not** commit to `dev` or `master` branch*
+1. Name the PR your feature/changes. 
+2. Merge into the dev branch. 
 
-Of course, if you're change is relatively small, this may not be required.
+PRs will be reviewed by [Leon](https://github.com/leon332157) and other team members.
 
-PRs will be reviewed by [Leon](https://github.com/leon332157) and [Edwin](https://github.com/EanKeen).
-
-## Commit Naming
+## Commits
 
 * Keep commits short and meaningful
-* Use the imperative, present tense ('change' rather than 'changed' or 'changes')
 * Do not capitalize the first letter
 * Do not add a period
 
-Here are some high-quality examples. Note that you don't need to match the formatting, just the guidelines stated above :ok_hand:
-
-```md
-feat(ts): convert util/addTheme.js to ts
-fix(renderer): inject css styles
-```
-
-### Some handy keywords
-
-`(feat|fix|polish|docs|style|refactor|perf|test|workflow|ci|chore|types)`
-
 ## Branch Naming
 
-Be sure to create a new branch when contributing. *Do **not** commit to the `dev` or `master` branch*. Use tokens to categorize branches. Add blurb about branch, separated by token with forward slash. See [this](https://stackoverflow.com/a/6065944) for more information.
-
-### Tokens
-
-```bash
-fix  # Bug fixes, hotfixes
-misc # Miscellaneous
-wip  # New feature with unclear completion time
-feat # New feature with clear completion time
-```
-
-### Examples
+Be sure to create a new branch when contributing. *Do **not** commit to the `dev` or `master` branch directly*. Use your name and feature name to name branches. 
+#### Examples
 
 ```bash
-fix/webpack-fail-start
-misc/org-assets # organize assets directory
-wip/offline-editing
-feat/util-tests
+leon-format-code
+jdog-new-cache-system
 ```
