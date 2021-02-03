@@ -1,0 +1,25 @@
+name: 'Lint using ESLint'
+description: 'Setup a Node.js environment by adding problem matchers and optionally downloading and adding it to the PATH'
+author: 'GitHub'
+on:
+  [push, pull_request]
+
+jobs:
+  eslint-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: mrdivyansh/eslint-action@1.0.7
+        if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }} 
+        with:
+          repo-token: ${{secrets.GITHUB_TOKEN}}
+          eslint-rc: .eslintrc.js
+          execute-on-files:
+            - ./src
+  eslint:
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+    with:
+        node-version: '14'
+    - run: npm run lint:check
