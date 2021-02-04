@@ -11,7 +11,7 @@ You can also write code in [Repl.it](https://repl.it/@leon332157/repl-it-electro
 
 ### `start`
 
-Runs `npm run build` and `npm run build:run`, used for running electron with compiled ts files in a devlopmemt enviroment. 
+Runs `npm run build` and `npm run build:run`, used for running electron with compiled ts files in a development enviroment. 
 
 ### `lint:check`
 
@@ -52,7 +52,7 @@ PRs will be reviewed by [Leon](https://github.com/leon332157) and other team mem
 
 ## Branch Naming
 
-Be sure to create a new branch when contributing. *Do **not** commit to the `dev` or `master` branch directly*. Use your name and feature name to name branches. 
+Be sure to create a new branch when contributing. *Do **not** commit to the `dev` or `master` branch directly*. Use your name and feature name to name branches.
 #### Examples
 
 ```bash
