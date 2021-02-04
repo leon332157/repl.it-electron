@@ -1,4 +1,4 @@
-const { src, dest, series } = require('gulp');
+const gulp = require('gulp');
 const terser = require('gulp-terser-js');
 const jeditor = require('gulp-json-editor');
 const ts = require('gulp-typescript');
@@ -6,9 +6,11 @@ const tsProject = ts.createProject('tsconfig.json');
 const child_process = require('child_process');
 const { platform } = require('os');
 const htmlmin = require('gulp-htmlmin');
+const cache = require('gulp-cached');
+const runEc = require('gulp-run-electron');
 
 async function copyFilesProd() {
-    src('package.json')
+    gulp.src('package.json')
         .pipe(
             jeditor((json) => {
                 delete json.build;
@@ -22,9 +24,9 @@ async function copyFilesProd() {
                 return json;
             })
         )
-        .pipe(dest('dist'));
+        .pipe(gulp.dest('dist'));
 
-    src('src/**/*.html')
+    gulp.src('gulp.src/**/*.html')
         .pipe(
             htmlmin({
                 minifyCss: true,
@@ -32,20 +34,20 @@ async function copyFilesProd() {
                 collapseWhitespace: true
             })
         )
-        .pipe(dest('dist'));
-    src('src/**/*.css')
+        .pipe(gulp.dest('dist'));
+    gulp.src('gulp.src/**/*.css')
         .pipe(
             htmlmin({
                 minifyCss: true,
                 collapseWhitespace: true
             })
         )
-        .pipe(dest('dist'));
-    src('logos/replit-logo/256x256.png').pipe(dest('dist'));
+        .pipe(gulp.dest('dist'));
+    gulp.src('logos/replit-logo/256x256.png').pipe(gulp.dest('dist'));
 }
 
 async function buildProd() {
-    src('src/**/*.ts')
+    gulp.src('gulp.src/**/*.ts')
         .pipe(tsProject())
         .pipe(
             terser({
@@ -58,7 +60,7 @@ async function buildProd() {
         .on('error', (e) => {
             this.emit('end');
         })
-        .pipe(dest('dist'));
+        .pipe(gulp.dest('dist'));
 }
 
 async function buildApp() {
@@ -81,17 +83,33 @@ async function buildApp() {
 }
 
 async function copyFilesDev() {
-    src('package.json').pipe(dest('ts-out'));
+    gulp.src('package.json').pipe(gulp.dest('ts-out'));
 
-    src('src/**/*.html').pipe(dest('ts-out'));
-    src('src/**/*.css').pipe(dest('ts-out'));
-    src('logos/replit-logo/256x256.png').pipe(dest('ts-out'));
+    gulp.src('gulp.src/**/*.html').pipe(gulp.dest('ts-out'));
+    gulp.src('gulp.src/**/*.css').pipe(gulp.dest('ts-out'));
+    gulp.src('logos/replit-logo/256x256.png').pipe(gulp.dest('ts-out'));
+}
+
+async function watchDev() {
+    gulp.watch('src/*', { delay: 500 }, gulp.series(buildDev, reRunElectron));
+    runElectron();
 }
 
 async function buildDev() {
-    src('src/**/*.ts').pipe(tsProject()).pipe(dest('ts-out/'));
+    gulp.src('gulp.src/**/*.ts')
+        .pipe(cache('buildDev'))
+        .pipe(tsProject())
+        .pipe(gulp.dest('ts-out/'));
 }
 
-module.exports.buildDev = series(buildDev, copyFilesDev);
-module.exports.buildProd = series(buildProd, copyFilesProd);
-module.exports.buildApp = series(buildApp);
+async function runElectron() {
+    gulp.src('ts-out').pipe(runEc());
+}
+
+async function reRunElectron() {
+    runEc.rerun({ cwd: 'ts-out' });
+}
+module.exports.watchDev - gulp.task(watchDev);
+module.exports.buildDev = gulp.series(buildDev, copyFilesDev, runElectron);
+module.exports.buildProd = gulp.series(buildProd, copyFilesProd);
+module.exports.buildApp = gulp.series(buildApp);

@@ -20,7 +20,8 @@
     "dist": "npm run build:prod && npm run build:app",
     "lint:check": "eslint \"**/*.{js,ts,json}\"",
     "lint": "eslint \"**/*.{js,ts,json}\" --fix",
-    "start": "npm run build:dev && npm run build:run"
+    "start": "npm run build:dev && npm run build:run",
+    "watchDev": "gulp watchDev"
   },
   "dependencies": {
     "discord-rpc": "^3.1.4",
@@ -52,8 +53,10 @@
     "eslint-plugin-json-format": "^2.0.1",
     "eslint-plugin-prettier": "^3.3.1",
     "gulp": "^4.0.2",
+    "gulp-cached": "^1.1.1",
     "gulp-htmlmin": "^5.0.1",
     "gulp-json-editor": "^2.5.4",
+    "gulp-run-electron": "^3.0.2",
     "gulp-terser-js": "^5.2.2",
     "gulp-typescript": "^6.0.0-alpha.1",
     "prettier": "^2.2.1",
