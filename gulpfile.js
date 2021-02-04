@@ -41,7 +41,7 @@ async function copyFilesProd() {
             })
         )
         .pipe(dest('dist'));
-    src('src/assets/replit-logo/256x256.png').pipe(dest('dist'));
+    src('logos/replit-logo/256x256.png').pipe(dest('dist'));
 }
 
 async function buildProd() {
@@ -85,7 +85,7 @@ async function copyFilesDev() {
 
     src('src/**/*.html').pipe(dest('ts-out'));
     src('src/**/*.css').pipe(dest('ts-out'));
-    src('src/assets/replit-logo/256x256.png').pipe(dest('ts-out'));
+    src('logos/replit-logo/256x256.png').pipe(dest('ts-out'));
 }
 
 async function buildDev() {
