@@ -86,7 +86,6 @@ class Updater extends EventEmitter {
                     this.downloadUrls.macOSUrl = asset.browser_download_url;
                 } else if (asset.name.includes('tar.gz')) {
                     this.downloadUrls.linuxUrl = asset.browser_download_url;
-                } else {
                 }
             }
             if (
