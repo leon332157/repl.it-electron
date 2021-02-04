@@ -165,7 +165,7 @@ class App extends EventEmitter {
         });
         window.webContents.on('did-stop-loading', () => {
             if (!this.isOffline) {
-                this.addTheme(window).then();
+                // this.addTheme(window).then();
             }
         });
         window.webContents.on(

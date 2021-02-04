@@ -1,18 +1,14 @@
 import { Launcher, Updater } from './launcher/launcher';
 import { app } from 'electron';
-import { sep } from 'path';
+import * as path from 'path';
 import { PLATFORM, promptYesNoSync } from './common';
 import { App } from './app/app';
 import DidFailLoadEvent = Electron.DidFailLoadEvent;
 
-app.setPath(
-    'appData',
-    app.getPath('home') + sep + '.repl.it' + sep + 'appData' + sep
-);
-app.setPath(
-    'userData',
-    app.getPath('home') + sep + '.repl.it' + sep + 'userData' + sep
-);
+app.setPath('appData', path.join(app.getPath('home'), '.repl.it', 'appData'));
+app.setPath('userData', path.join(app.getPath('home'), '.repl.it', 'userData'));
+app.disableHardwareAcceleration();
+
 process.on('unhandledRejection', (rejection: any) => {
     console.error(`[Unhandled Promise Rejction] ${rejection.stack}`);
 });
@@ -22,6 +18,7 @@ let mainApp: App;
 
 function initLauncher() {
     launcher = new Launcher();
+
     launcher.init();
     launcher.window.webContents.once('did-finish-load', () => {
         launcher.window.show();
