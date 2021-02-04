@@ -53,7 +53,6 @@ function appMenuSetup(
                         mainApp.clearCookies(false).then();
                     }
                 },
-
                 { type: 'separator' },
                 {
                     role: 'quit'
@@ -120,9 +119,7 @@ function appMenuSetup(
                         }
                     }
                 },
-                {
-                    type: 'separator'
-                },
+                { type: 'separator' },
                 {
                     label: 'Open Current Link in Default Browser',
                     click(_: any, focusedWindow: ElectronWindow) {
@@ -144,9 +141,7 @@ function appMenuSetup(
                         selectInput(focusedWindow);
                     }
                 },
-                {
-                    type: 'separator'
-                },
+                { type: 'separator' },
                 {
                     accelerator: 'CmdOrCtrl+R',
                     click(_: any, focusedWindow: ElectronWindow) {
@@ -165,9 +160,7 @@ function appMenuSetup(
                             focusedWindow.webContents.toggleDevTools();
                     }
                 },
-                {
-                    type: 'separator'
-                },
+                { type: 'separator' },
                 {
                     role: 'resetZoom'
                 },
@@ -195,7 +188,7 @@ function appMenuSetup(
             role: 'help',
             submenu: [
                 {
-                    label: 'Learn More about repl.it',
+                    label: 'What is replit?',
                     click() {
                         shell.openExternal('https://repl.it/site/about').then();
                     }

@@ -3,19 +3,22 @@ import { app } from 'electron';
 import { sep } from 'path';
 import { PLATFORM, promptYesNoSync } from './common';
 import { App } from './app/app';
-import DidFailLoadEvent = Electron.DidFailLoadEvent;
+// import DidFailLoadEvent = Electron.DidFailLoadEvent;
 
 app.setPath(
     'appData',
     app.getPath('home') + sep + '.repl.it' + sep + 'appData' + sep
 );
+
 app.setPath(
     'userData',
     app.getPath('home') + sep + '.repl.it' + sep + 'userData' + sep
 );
+
 process.on('unhandledRejection', (rejection: any) => {
     console.error(`[Unhandled Promise Rejction] ${rejection.stack}`);
 });
+
 let launcher: Launcher;
 let updater: Updater;
 let mainApp: App;
@@ -33,10 +36,12 @@ async function initApp() {
     mainApp = new App();
     mainApp.mainWindow.loadURL('https://repl.it/~').catch(console.debug);
     await mainApp.clearCookies(true);
+
     mainApp.mainWindow.webContents.once('did-finish-load', () => {
         mainApp.mainWindow.show();
         launcher.window.close();
     });
+
     mainApp.mainWindow.on('close', () => {
         app.quit();
     });
@@ -52,14 +57,17 @@ async function initUpdater() {
         });
         updater.cleanUp(true);
     }
+
     updater.once('download-error', (e) => {
         console.error(e);
         updater.cleanUp();
     });
+
     updater.once('all-done', () => {
         launcher.updateStatus({ text: 'Launching app' });
         initApp();
     });
+
     if (res['hasUpdate']) {
         launcher.updateStatus({ text: 'Update detected' });
         if (
@@ -85,14 +93,13 @@ async function initUpdater() {
                     break;
             }
         }
-    } else {
-        updater.cleanUp(true);
-    }
+    } else updater.cleanUp(true);
 }
 
 app.on('window-all-closed', () => {
     app.quit();
 });
+
 app.once('ready', () => {
     initLauncher();
 });

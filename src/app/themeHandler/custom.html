@@ -84,27 +84,55 @@
     }
 </script>
 <div id="content">
-    <form action="javascript:getCustom()" id="generate-theme"
-          style="max-width:40%">
-        Main text:<br>
-        <input class="color" name="text" type="text" value="c0c0c0"><br>
-        Link hover:<br>
-        <input class="color" name="text2" type="text" value="adadad"><br>
-        Paragraphs:<br>
-        <input class="color" name="text3" type="text" value="a8a8a8"><br>
-        Background:<br>
-        <input class="color" name="bg" type="text" value="111c31"><br>
-        Main:<br>
-        <input class="color" name="main" type="text" value="212e44"><br>
-        Upvote:
-        <input class="color" name="upvote" type="text" value=""><br>
-        Fallback text:
-        <input class="color" name="fallback" type="text" value=""><br>
-        Announcements:
-        <input class="color" name="announcements" type="text"
-               value="232528"><br>
-        Default logo:
-        <input class="color" name="graylogo" type="checkbox" value="off"><br>
+    <form action="javascript:getCustom()" id="generate-theme" style="max-width:40%">
+        <div>
+            <label>
+                <div>Main text:</div>
+                <input class="color" name="text" type="text" value="c0c0c0">
+            </label>
+        </div>
+        <div>
+            <label>
+                <div>Link hover:</div>
+                <input class="color" name="text2" type="text" value="adadad">
+            </label>
+        </div>
+        <div>
+            <label>
+                <div>Paragraphs:</div>
+                <input class="color" name="text3" type="text" value="a8a8a8">
+            </label>
+        <div>
+            <label>
+                <div>Background:</div>
+                <input class="color" name="bg" type="text" value="111c31">
+            </label>
+        <div>
+            <label>
+                <div>Main:</div>
+                <input class="color" name="main" type="text" value="212e44">
+            </label>
+        <div>
+            <label>
+                <div>Upvote:</div>
+                <input class="color" name="upvote" type="text" value="">
+            </label>
+        <div>
+            <label>
+                <div>Fallback text:</div>
+                <input class="color" name="fallback" type="text" value="">
+            </label>
+        <div>
+            <label>
+                <div>Announcements:</div>
+                <input class="color" name="announcements" type="text"
+               value="232528">
+            </label>
+        <div>
+            <label>
+                <div>Default logo:</div>
+                <input class="color" name="graylogo" type="checkbox" value="off">
+            </label>
         <br>
 
         <button onclick="getCustom()">Install</button>
