@@ -91,17 +91,15 @@ class App extends EventEmitter {
 
     toggleAce(menu?: MenuItem) {
         let userAgent: string;
-        if (menu) {
-            if (menu.checked == true) {
-                this.settingsHandler.set('enable-ace', true);
-                userAgent = IPAD_USER_AGENT;
-            } else {
-                this.settingsHandler.set('enable-ace', false);
-                userAgent = app.userAgentFallback;
-            }
-        } else {
+
+        if (menu?.checked == true) {
+            this.settingsHandler.set('enable-ace', true);
             userAgent = IPAD_USER_AGENT;
+        } else {
+            this.settingsHandler.set('enable-ace', false);
+            userAgent = app.userAgentFallback;
         }
+
         this.windowArray.forEach((window) => {
             window.webContents.userAgent = userAgent;
             window.reload();

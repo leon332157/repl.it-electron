@@ -22,12 +22,12 @@ function appMenuSetup(
             submenu: [
                 {
                     label: 'Choose Theme',
-                    click(i: MenuItem, win: ElectronWindow) {
+                    click(_: MenuItem, win: ElectronWindow) {
                         themeHandler.openThemeWindow(win);
                     }
                 },
                 {
-                    label: 'Use Ace Editor',
+                    label: 'Use Mobile View',
                     type: 'checkbox',
                     checked: <boolean>settings.get('enable-ace'),
                     click(item: MenuItem) {
@@ -95,7 +95,7 @@ function appMenuSetup(
                 },
                 {
                     label: 'Copy URL to clipboard',
-                    click(item: MenuItem, focusedWindow: ElectronWindow) {
+                    click(_: MenuItem, focusedWindow: ElectronWindow) {
                         clipboard.writeText(focusedWindow.webContents.getURL());
                     }
                 }
@@ -106,7 +106,7 @@ function appMenuSetup(
             submenu: [
                 {
                     label: 'Go Back',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(_: any, focusedWindow: ElectronWindow) {
                         if (focusedWindow.webContents.canGoBack()) {
                             focusedWindow.webContents.goBack();
                         }
@@ -114,7 +114,7 @@ function appMenuSetup(
                 },
                 {
                     label: 'Go Forward',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(_: any, focusedWindow: ElectronWindow) {
                         if (focusedWindow.webContents.canGoForward()) {
                             focusedWindow.webContents.goForward();
                         }
@@ -125,22 +125,22 @@ function appMenuSetup(
                 },
                 {
                     label: 'Open Current Link in Default Browser',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(_: any, focusedWindow: ElectronWindow) {
                         shell
                             .openExternal(focusedWindow.webContents.getURL())
-                            .then((r) => {});
+                            .then(() => {});
                     }
                 },
                 {
                     label: 'Go to Home',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(_: any, focusedWindow: ElectronWindow) {
                         focusedWindow.loadURL('https://repl.it/~').catch();
                     }
                 },
                 {
                     accelerator: 'CmdOrCtrl+f',
                     label: 'Select Input',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(_: any, focusedWindow: ElectronWindow) {
                         selectInput(focusedWindow);
                     }
                 },
@@ -149,7 +149,7 @@ function appMenuSetup(
                 },
                 {
                     accelerator: 'CmdOrCtrl+R',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(_: any, focusedWindow: ElectronWindow) {
                         if (focusedWindow) focusedWindow.reload();
                     },
                     label: 'Reload'
@@ -160,7 +160,7 @@ function appMenuSetup(
                         process.platform === 'darwin'
                             ? 'Alt+Command+I'
                             : 'Ctrl+Shift+I',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(_: any, focusedWindow: ElectronWindow) {
                         if (focusedWindow)
                             focusedWindow.webContents.toggleDevTools();
                     }
