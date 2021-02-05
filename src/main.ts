@@ -1,5 +1,5 @@
 import { Launcher, Updater } from './launcher/launcher';
-import { app } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import { PLATFORM, promptYesNoSync } from './common';
 import { App } from './app/app';
@@ -33,6 +33,22 @@ async function initApp() {
     mainApp.mainWindow.webContents.once('did-finish-load', () => {
         mainApp.mainWindow.show();
         launcher.window.close();
+    });
+    mainApp.mainWindow.webContents.on('new-window', (event, url) => {
+        if (url != 'https://repl.it/auth/google/get?close=1') return;
+        console.log(url);
+        event.preventDefault();
+        const win = new BrowserWindow({
+            show: false,
+            webPreferences: {
+                preload: `${__dirname}/Auth.js`
+            }
+        });
+        win.once('ready-to-show', () => win.show());
+        win.loadURL(url, {
+            userAgent: 'chrome'
+        });
+        event.newGuest = win;
     });
     mainApp.mainWindow.on('close', () => {
         app.quit();
