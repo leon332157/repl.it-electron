@@ -2,15 +2,14 @@ const gulp = require('gulp');
 const terser = require('gulp-terser-js');
 const jeditor = require('gulp-json-editor');
 const ts = require('gulp-typescript');
-const tsProject = ts.createProject('tsconfig.json');
 const child_process = require('child_process');
 const { platform } = require('os');
 const htmlmin = require('gulp-htmlmin');
 const cache = require('gulp-cached');
-
 const electron = require('electron');
 const proc = require('child_process');
 
+const tsProject = ts.createProject('tsconfig.json');
 let child = null;
 
 function printEc(data) {
@@ -23,7 +22,7 @@ function runElectron() {
 
     if (child) child.kill();
 
-    child = proc.spawn(electron, ['--no-sandbox', './ts-out/']);
+    child = proc.spawn(electron, ['--no-sandbox', '.'], { cwd: './ts-out' });
 
     child.on('error', function (err) {
         errored = true;
@@ -108,6 +107,16 @@ async function buildApp() {
 }
 
 async function copyFilesDev() {
+    gulp.src('package.json').pipe(cache('copyDev')).pipe(gulp.dest('ts-out'));
+
+    gulp.src('src/**/*.html').pipe(cache('copyDev')).pipe(gulp.dest('ts-out'));
+    gulp.src('src/**/*.css').pipe(cache('copyDev')).pipe(gulp.dest('ts-out'));
+    gulp.src('logos/replit-logo/256x256.png')
+        .pipe(cache('copyDev'))
+        .pipe(gulp.dest('ts-out'));
+}
+
+async function copyFilesDevNoCache() {
     gulp.src('package.json').pipe(gulp.dest('ts-out'));
 
     gulp.src('src/**/*.html').pipe(gulp.dest('ts-out'));
@@ -117,7 +126,11 @@ async function copyFilesDev() {
 
 async function watchDev() {
     gulp.series(buildDev, copyFilesDev)();
-    gulp.watch('src/*', { delay: 500 }, gulp.series(buildDev, runElectron));
+    gulp.watch(
+        'src/*',
+        { delay: 500 },
+        gulp.series(buildDev, copyFilesDev, runElectron)
+    );
     runElectron();
 }
 
@@ -128,7 +141,7 @@ async function buildDev() {
         .pipe(gulp.dest('ts-out/'));
 }
 
-module.exports.watchDev - gulp.task(watchDev);
-module.exports.buildDev = gulp.series(buildDev, copyFilesDev);
+gulp.task(watchDev);
+gulp.task('buildDev', gulp.series(buildDev, copyFilesDevNoCache));
 module.exports.buildProd = gulp.series(buildProd, copyFilesProd);
 module.exports.buildApp = gulp.series(buildApp);
