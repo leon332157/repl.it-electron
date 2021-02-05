@@ -111,6 +111,7 @@ async function copyFilesDev() {
 
     gulp.src('src/**/*.html').pipe(cache('copyDev')).pipe(gulp.dest('ts-out'));
     gulp.src('src/**/*.css').pipe(cache('copyDev')).pipe(gulp.dest('ts-out'));
+    gulp.src('src/**/*.js').pipe(cache('copyDev')).pipe(gulp.dest('ts-out'));
     gulp.src('logos/replit-logo/256x256.png')
         .pipe(cache('copyDev'))
         .pipe(gulp.dest('ts-out'));
@@ -121,6 +122,7 @@ async function copyFilesDevNoCache() {
 
     gulp.src('src/**/*.html').pipe(gulp.dest('ts-out'));
     gulp.src('src/**/*.css').pipe(gulp.dest('ts-out'));
+    gulp.src('src/**/*.js').pipe(gulp.dest('ts-out'));
     gulp.src('logos/replit-logo/256x256.png').pipe(gulp.dest('ts-out'));
 }
 
