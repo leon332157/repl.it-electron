@@ -27,30 +27,6 @@ class App extends EventEmitter {
             width: 1280
         });
         this.mainWindow.maximize();
-<<<<<<< HEAD
-        /*this.mainWindow.webContents.on(
-            'new-window',
-            (
-                e: NewWindowEvent,
-                url: string,
-                frameName: string,
-                disposition: string,
-                options: BrowserWindowConstructorOptions
-            ) => {
-                console.log(disposition)
-                e.preventDefault();
-                const window: ElectronWindow = new ElectronWindow({
-                    // @ts-ignore
-                    webContents: options.webContents, // use existing webContents if provided
-                    show: false
-                });
-                window.show();
-                e.newGuest = window;
-            }
-        );*/
-=======
-
->>>>>>> dev
         this.settingsHandler = new SettingHandler();
         this.windowArray = [];
         this.discordHandler = new DiscordHandler(this.mainWindow);
