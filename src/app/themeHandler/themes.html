@@ -1,174 +1,38 @@
-<html>
-<head>
-    <style>
-        body {
-            font-family: sans-serif;
-            text-align: center;
-            background-color: #111;
-            color: #ccc;
-        }
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="script.js"></script>
+<title>Reflux Marketplace</title>
 
-        h1 {
-            font-size: 5em
-        }
+<style>
+	.card-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1fr;
+  grid-template-columns: repeat(3, 1fr);
+}
+.card {
+  width: 100%;
+  height: 100%;
+}
+</style>
+<div class="alert alert-success" role="alert">
+  	Sponsored by the creator of Reflux!
+</div>
 
-        h3 {
-            font-size: 3em
-        }
-
-        a {
-            color: #339;
-            text-decoration: none;
-        }
-
-        .theme {
-            width: 90%;
-            text-align: center;
-            margin: 0 auto;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        iframe {
-            width: 100%;
-            height: 50vh;
-            overflow: hidden;
-        }
-
-        .themeData div {
-            width: 10px;
-            height: 100%;
-            background-color: #000
-        }
-    </style>
-</head>
-<body>
-<h1>Themes</h1>
-<!--a onclick="openCustom();">Make your own!</a-->
-<div id="themes">
-    <div class="theme viewed" id="theme-0"><h3><a
-        href="javascript:sendTheme('bg=111c31&main=212e44')">Blue (Default)</a>
-    </h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?bg=111c31&main=212e44">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-14"><h3><a
-        href="javascript:sendTheme('monospace=true&text=00aa00&text2=00ff00&text3=00aa00&bg=000000&main=111111&upvote=005500&announcements=121212')">Terminal
-        (special)</a></h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?monospace=true&text=00aa00&text2=00ff00&text3=00aa00&bg=000000&main=111111&upvote=005500&announcements=121212">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-1"><h3><a
-        href="javascript:sendTheme('bg=232528&main=393c42')">Gray</a>
-    </h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?bg=232528&main=393c42">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-2"><h3><a
-        href="javascript:sendTheme('text=c0c0c0&text2=adadad&text3=a8a8a8&bg=10182b&main=0d101e&upvote=&graylogo=on&announcements=0d101e')">Bluer
-        Blue</a></h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?text=c0c0c0text2=adadad&text3=a8a8a8&bg=10182b&main=0d101e&upvote=&graylogo=on&announcements=0d101e">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-3"><h3><a
-        href="javascript:sendTheme('text=839496&text2=819090&text3=839496&bg=002b36&main=073642&upvote=586e75&fallback=586e75&announcements=073642&announcements=073642')">Solarized
-        Dark</a></h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?text=839496&text2=819090&text3=839496&bg=002b36&main=073642&upvote=586e75&fallback=586e75&announcements=073642&announcements=073642">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-4"><h3><a
-        href="javascript:sendTheme('text=fff&text2=fff&text3=fff&bg=000&main=000&upvote=fff&graylogo=on&announcements=000')">Black
-        Contrast</a></h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?text=fff&text2=fff&text3=fff&bg=000&main=000&upvote=fff&graylogo=on&announcements=000">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-5"><h3><a
-        href="javascript:sendTheme('text=ffff64&text2=ffd932&text3=ffd932&bg=2c0400&main=f05b00&upvote=ffe93e&graylogo=on&announcements=f05b00')">Volcano</a>
-    </h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?text=ffff64&text2=ffd932&text3=ffd932&bg=2c0400&main=f05b00&upvote=ffe93e&graylogo=on&announcements=f05b00">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-6"><h3><a
-        href="javascript:sendTheme('text=0f0&text2=fff&text3=fff&bg=f00&main=00f&upvote=fff&fallback=ff0&graylogo=off&announcements=00f')">Actually
-        Bad</a></h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?text=0f0&text2=fff&text3=fff&bg=f00&main=00f&upvote=fff&fallback=ff0&graylogo=off&announcements=00f">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-7"><h3><a
-        href="javascript:sendTheme('text=d321b2&text2=900376&text3=611d55&bg=231e22&main=393c42&upvote=f848d8&fallback=ac2493&announcements=393c42')">Purple
-        Night</a></h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?text=d321b2&text2=900376&text3=611d55&bg=231e22&main=393c42&upvote=f848d8&fallback=ac2493&announcements=393c42">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-8"><h3><a
-        href="javascript:sendTheme('text=b4f7f4&text2=8ece44&text3=358c07&bg=10da82&main=7cda10&upvote=358c07&announcements=7cda10')">Mint
-        Breeze</a></h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?text=b4f7f4&text2=8ece44&text3=358c07&bg=10da82&main=7cda10&upvote=358c07&announcements=7cda10&fallback=">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-9"><h3><a
-        href="javascript:sendTheme('text=ffd866&text2=fc9867&text3=ab9df2&bg=2c292d&main=2c292d&upvote=a9dc76&fallback=78dce8&announcements=2c292d')">Monokai</a>
-    </h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?text=ffd866&text2=fc9867&text3=ab9df2&bg=2c292d&main=2c292d&upvote=a9dc76&fallback=78dce8&announcements=2c292d">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed" id="theme-10"><h3><a
-        href="javascript:sendTheme('grayscale=true')">Grayscale
-        (special)</a></h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?grayscale=true">
-            Loading...
-        </iframe>
-    </div>
-    <div class="theme viewed"><h3><a
-        href="javascript:sendTheme('white-theme')">White</a>
-    </h3>
-        <iframe
-            src="https://darktheme.matdoes.dev/proxy/talk/all?bg=ffffff&main=ffffff">
-            Loading...
-        </iframe>
-    </div>
+<div class="card-group" id="group">
 </div>
 <script>
-    //TODO: Known Bug, if darktheme site is down, theme will be reset to default blue
-    //TODO: Make Local preview possible
-
-    const { ipcRenderer } = require('electron');
-    document.getElementsByName('iframe').forEach((item) => {
-        item.on('load', (e) => {
-            console.log('loaded');
-            e.item.visibility = 'visible';
-        });
-    });
-
-    function sendTheme(url) {
-        ipcRenderer.send('choose-theme', url);
-    }
-
-    function openCustom() {
-    }
+	let Start = async() => {
+  let url = "https://reflux-marketplace.coolcodersj.repl.co/apiv1";
+  let data = await fetch(url);
+  data = await data.json();
+  const themes2 = Object.values(data)
+  themes = themes2[0]
+  for (let item in themes) {
+	  document.getElementById("group").innerHTML += "<style>.card-title, .card-text {margin: 10px;}</style><div class='card' id="+themes[item]['id']+"><img src="+themes[item]['img']+"><h5 class='card-title'>"+themes[item]['name']+", by "+themes[item]['user']+"</h5><p class='card-text'>"+themes[item]['desc']+"</p><button class='btn btn-primary' onclick='let Start2 = async() =>{await webContents.executeJavascript("+themes[item]["code-jswa"]+"[, userGesture])}Start2();'>Install</button>";
+  }
+}
+Start()
 </script>
-</body>
-</html>
