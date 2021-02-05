@@ -7,7 +7,7 @@ module.exports = {
     },
     mac: {
         target: 'pkg',
-        icon: 'src/assets/replit-logo/icns/icon_set.icns'
+        icon: 'logos/icns/icon_set.icns'
     },
     pkg: {
         isVersionChecked: false,
@@ -16,7 +16,7 @@ module.exports = {
     },
     win: {
         target: 'nsis',
-        icon: 'src/assets/replit-logo/ico/logo.ico'
+        icon: 'logos/replit-logo/ico/logo.ico'
     },
     nsis: {
         oneClick: false,
