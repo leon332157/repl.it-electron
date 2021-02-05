@@ -56,7 +56,6 @@
     "gulp-cached": "^1.1.1",
     "gulp-htmlmin": "^5.0.1",
     "gulp-json-editor": "^2.5.4",
-    "gulp-run-electron": "^3.0.2",
     "gulp-terser-js": "^5.2.2",
     "gulp-typescript": "^6.0.0-alpha.1",
     "prettier": "^2.2.1",
