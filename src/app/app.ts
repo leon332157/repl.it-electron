@@ -11,8 +11,6 @@ import { SettingHandler } from './settingHandler';
 import contextMenu from 'electron-context-menu';
 import { appMenuSetup } from './menu/appMenuSetup';
 import { EventEmitter } from 'events';
-// Offline Handler
-import { ConnectionHandler } from './connectionHandler';
 
 class App extends EventEmitter {
     public readonly mainWindow: ElectronWindow;
@@ -20,6 +18,7 @@ class App extends EventEmitter {
     public readonly discordHandler: DiscordHandler;
     protected windowArray: ElectronWindow[];
     private readonly settingsHandler: SettingHandler;
+    private isOffline: boolean;
 
     constructor() {
         super();
@@ -28,26 +27,7 @@ class App extends EventEmitter {
             width: 1280
         });
         this.mainWindow.maximize();
-        /*this.mainWindow.webContents.on(
-            'new-window',
-            (
-                e: NewWindowEvent,
-                url: string,
-                frameName: string,
-                disposition: string,
-                options: BrowserWindowConstructorOptions
-            ) => {
-                console.log(disposition)
-                e.preventDefault();
-                const window: ElectronWindow = new ElectronWindow({
-                    // @ts-ignore
-                    webContents: options.webContents, // use existing webContents if provided
-                    show: false
-                });
-                window.show();
-                e.newGuest = window;
-            }
-        );*/
+
         this.settingsHandler = new SettingHandler();
         this.windowArray = [];
         this.discordHandler = new DiscordHandler(this.mainWindow);
@@ -62,10 +42,31 @@ class App extends EventEmitter {
             this.themeHandler,
             this.settingsHandler
         );
-        //Set Up menu
+        this.isOffline = false;
+    }
 
-        // Handle Connection
-        new ConnectionHandler(this.windowArray);
+    handleLoadingError(
+        event: Event,
+        windowObject: ElectronWindow,
+        errorCode: number,
+        errorDescription: string,
+        validateUrl: string
+    ) {
+        if (errorCode > -6 || errorCode <= -300) {
+            return;
+        }
+        this.isOffline = true;
+        this.windowArray.forEach((win: ElectronWindow) => {
+            win.loadFile('app/offline.html')
+                .then(() => {
+                    win.webContents
+                        .executeJavaScript(
+                            `updateError("${errorCode} ${errorDescription}","${validateUrl}")`
+                        )
+                        .catch(console.log);
+                })
+                .catch(console.log);
+        });
     }
 
     toggleAce(menu?: MenuItem) {
@@ -142,6 +143,23 @@ class App extends EventEmitter {
                 this.toggleAce();
             }
         });
+        window.webContents.on('did-stop-loading', () => {
+            if (!this.isOffline) {
+                // this.addTheme(window).then();
+            }
+        });
+        window.webContents.on(
+            'did-fail-load',
+            (e, code, description, validateUrl) => {
+                this.handleLoadingError(
+                    e,
+                    window,
+                    code,
+                    description,
+                    validateUrl
+                );
+            }
+        );
     }
 
     async addTheme(windowObj: ElectronWindow) {
