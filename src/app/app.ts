@@ -25,9 +25,9 @@ class App extends EventEmitter {
         this.mainWindow = new ElectronWindow({
             height: 720,
             width: 1280
-            //show: false
         });
         this.mainWindow.maximize();
+<<<<<<< HEAD
         /*this.mainWindow.webContents.on(
             'new-window',
             (
@@ -48,6 +48,9 @@ class App extends EventEmitter {
                 e.newGuest = window;
             }
         );*/
+=======
+
+>>>>>>> dev
         this.settingsHandler = new SettingHandler();
         this.windowArray = [];
         this.discordHandler = new DiscordHandler(this.mainWindow);
@@ -63,7 +66,6 @@ class App extends EventEmitter {
             this.settingsHandler
         );
         this.isOffline = false;
-        //Set Up menu
     }
 
     handleLoadingError(
@@ -76,8 +78,8 @@ class App extends EventEmitter {
         if (errorCode > -6 || errorCode <= -300) {
             return;
         }
+        this.isOffline = true;
         this.windowArray.forEach((win: ElectronWindow) => {
-            this.isOffline = true;
             win.loadFile('app/offline.html')
                 .then(() => {
                     win.webContents
