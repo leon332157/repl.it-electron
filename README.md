@@ -2,7 +2,7 @@
 
 ## Summary
 
-[Repl.it](https://repl.it) is an online coding platform that provides a browser-based IDE. `repl-it-electron` is an unofficial electron application that interfaces with repl.it. It intends to improve the developer experience and boost efficiency.
+[Repl.it](https://repl.it) is an online coding platform that provides a browser-based IDE. `repl-it-electron` is an unofficial electron application that interfaces with repl.it. It's intentions is to improve the developer experience and boost efficiency.
 
 ## Features
 
@@ -32,7 +32,7 @@ npm start
 ## Contributing
 To contribute, see [CONTRIBUTING.md](./.github/CONTRIBUTING.md)
 
-Also, before opening a Pull Request or Issue, please take a look at out project boards:
+Also, before opening a Pull Request or Issue, please take a look at our project boards:
 
 | Board           | Link                                                               |
 |:----------------|:------------------------------------------------------------------:|
