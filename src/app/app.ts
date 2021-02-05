@@ -11,6 +11,8 @@ import { SettingHandler } from './settingHandler';
 import contextMenu from 'electron-context-menu';
 import { appMenuSetup } from './menu/appMenuSetup';
 import { EventEmitter } from 'events';
+// Offline Handler
+import { ConnectionHandler } from './connectionHandler';
 
 class App extends EventEmitter {
     public readonly mainWindow: ElectronWindow;
@@ -63,6 +65,9 @@ class App extends EventEmitter {
         );
         this.isOffline = false;
         //Set Up menu
+
+        // Handle Connection
+        new ConnectionHandler(this.windowArray);
     }
 
     handleLoadingError(
