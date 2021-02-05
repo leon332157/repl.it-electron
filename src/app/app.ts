@@ -20,15 +20,14 @@ class App extends EventEmitter {
     public readonly discordHandler: DiscordHandler;
     protected windowArray: ElectronWindow[];
     private readonly settingsHandler: SettingHandler;
-    private isOffline: boolean;
 
     constructor() {
         super();
         this.mainWindow = new ElectronWindow({
             height: 720,
             width: 1280
-            //show: false
         });
+        this.mainWindow.maximize();
         /*this.mainWindow.webContents.on(
             'new-window',
             (
@@ -63,35 +62,10 @@ class App extends EventEmitter {
             this.themeHandler,
             this.settingsHandler
         );
-        this.isOffline = false;
         //Set Up menu
 
         // Handle Connection
         new ConnectionHandler(this.windowArray);
-    }
-
-    handleLoadingError(
-        event: Event,
-        windowObject: ElectronWindow,
-        errorCode: number,
-        errorDescription: string,
-        validateUrl: string
-    ) {
-        if (errorCode > -6 || errorCode <= -300) {
-            return;
-        }
-        this.windowArray.forEach((win: ElectronWindow) => {
-            this.isOffline = true;
-            win.loadFile('app/offline.html')
-                .then(() => {
-                    win.webContents
-                        .executeJavaScript(
-                            `updateError("${errorCode} ${errorDescription}","${validateUrl}")`
-                        )
-                        .catch(console.log);
-                })
-                .catch(console.log);
-        });
     }
 
     toggleAce(menu?: MenuItem) {
@@ -168,23 +142,6 @@ class App extends EventEmitter {
                 this.toggleAce();
             }
         });
-        window.webContents.on('did-stop-loading', () => {
-            if (!this.isOffline) {
-                // this.addTheme(window).then();
-            }
-        });
-        window.webContents.on(
-            'did-fail-load',
-            (e, code, description, validateUrl) => {
-                this.handleLoadingError(
-                    e,
-                    window,
-                    code,
-                    description,
-                    validateUrl
-                );
-            }
-        );
     }
 
     async addTheme(windowObj: ElectronWindow) {

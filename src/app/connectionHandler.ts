@@ -1,14 +1,13 @@
-import { BrowserWindow } from 'electron';
 import { ElectronWindow } from '../common';
 import { EventEmitter } from 'events';
 import Connection = require('is-online');
 
 class ConnectionHandler extends EventEmitter {
     public Online: boolean;
-    private Offline: BrowserWindow;
+    private Offline: ElectronWindow;
     constructor(Windows: ElectronWindow[]) {
         super();
-        this.Offline = new BrowserWindow({
+        this.Offline = new ElectronWindow({
             show: false
         });
         this.Offline.loadURL(`file://${__dirname}/offline.html`);
