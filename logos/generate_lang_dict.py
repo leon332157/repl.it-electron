@@ -3,14 +3,13 @@ import json
 import base64
 
 
-STRING = open("langs.txt", "rb").read()
-known = json.loads(base64.b64decode(STRING))
+known = json.load(open('known.json'))
 langs = {}
 for each in known:
     # print(each)
-    link = known[each]["icon"]
+    link = each["icon"]
     # print(link)
-    langs[each] = link.split("/")[-1].replace(".svg", "").replace(".png", "")
+    langs[each['name']] = link.split("/")[-1].replace(".svg", "").replace(".png", "")
 
 langs["css"] = "css"
 langs["html"] = "html"
@@ -22,7 +21,7 @@ for key, value in langs.items():
         langs[key] = "deno"
 
 for key, value in langs.items():
-    matches = [f for f in os.listdir("lang-logos") if f.startswith(value)]
+    matches = [f for f in os.listdir("langs") if f.startswith(value)]
     if len(matches) == 0:
         print(f"{value} is missing")
 
