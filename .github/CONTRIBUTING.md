@@ -7,10 +7,10 @@ If you want to be added as a collaborator, DM Leon on discord. `leon332157#6808`
 We recommend using the following tools:
 
 + VSCode as your **IDE**.
-+ Git Bash or Desktop as your **Version Control**.
++ Git Bash or GitHub Desktop as your **Version Control**.
 + TypeScript, Eslint and Prettier as your VSC **extensions**.
 
-You can also write code in [Repl.it](https://repl.it/@leon332157/repl-it-electron) however is not recommended since it's not optimal for electron.
+You can also write code in [Repl.it](https://repl.it/@leon332157/repl-it-electron) however it is not recommended since it's not optimal for electron.
 
 ## Scripts
 
@@ -20,11 +20,11 @@ These are the scripts that can be run with `npm {script-name}`:
 |:--------------:|:-------------------------------------------------------------------------------------------------------------------------|
 |`start`         |Runs `npm run build` and `npm run build:run`, used for running electron with compiled ts files in a devlopmemt enviroment.|
 |`lint:check`    |Identifies all linting issues with eslint. Lints TypeScript as well as JavaScript.                                        |
-|`lint`          |This formats code according to Prettier style guides. Use `npm run lint` to correct all correctable errors.               |
+|`lint`          |This formats code according to Prettier style guides.                                                                     |
 |`build`         |Uses gulp to create a JavaScript build of the app.                                                                        |
 |`build:run`     |Run electron from ts-out                                                                                                  |
 |`build:prod`    |Builds a production JS version of the app.                                                                                |
-|`watchDev`      |Watch for changes in src and rebuild and relauncher electron every time if there's a change.                              |
+|`watchDev`      |Watch for changes in src and rebuild and relaunch electron every time if there's a change.                                |
 |`dist`          |Builds the app for release.                                                                                               | 
 
 ## Pull Requests
