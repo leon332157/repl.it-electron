@@ -1,4 +1,0 @@
-{
-    "terminal.integrated.automationShell.windows": "powershell.exe",
-    "terminal.integrated.shell.windows": "powershell.exe"
-}

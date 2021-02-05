@@ -3,7 +3,6 @@ import { app } from 'electron';
 import * as path from 'path';
 import { PLATFORM, promptYesNoSync } from './common';
 import { App } from './app/app';
-import DidFailLoadEvent = Electron.DidFailLoadEvent;
 
 app.setPath('appData', path.join(app.getPath('home'), '.repl.it', 'appData'));
 app.setPath('userData', path.join(app.getPath('home'), '.repl.it', 'userData'));
