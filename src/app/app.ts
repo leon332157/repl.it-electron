@@ -27,6 +27,7 @@ class App extends EventEmitter {
             width: 1280
             //show: false
         });
+        this.mainWindow.maximize();
         /*this.mainWindow.webContents.on(
             'new-window',
             (

@@ -1,5 +1,5 @@
 import { Launcher, Updater } from './launcher/launcher';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { PLATFORM, promptYesNoSync } from './common';
 import { App } from './app/app';
@@ -35,7 +35,7 @@ async function initApp() {
     });
     mainApp.mainWindow.webContents.on('new-window', (event, url) => {
         if (url != 'https://repl.it/auth/google/get?close=1') return;
-        console.log(url);
+        mainApp.clearCookies(true);
         event.preventDefault();
         const win = new BrowserWindow({
             show: false,
@@ -43,9 +43,15 @@ async function initApp() {
                 preload: `${__dirname}/Auth.js`
             }
         });
+        win.maximize();
         win.once('ready-to-show', () => win.show());
         win.loadURL(url, {
             userAgent: 'chrome'
+        });
+        // Handle The Login Process
+        ipcMain.on('auth', () => {
+            win.destroy();
+            mainApp.mainWindow.loadURL('https://repl.it/~');
         });
         event.newGuest = win;
     });
