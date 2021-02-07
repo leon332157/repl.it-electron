@@ -4,7 +4,15 @@ import {
     promptYesNoSync,
     IPAD_USER_AGENT
 } from '../common';
-import { app, Cookie, ipcMain, session, MenuItem, dialog } from 'electron';
+import {
+    app,
+    Cookie,
+    ipcMain,
+    session,
+    MenuItem,
+    NewWindowWebContentsEvent,
+    HandlerDetails
+} from 'electron';
 import { ThemeHandler } from './themeHandler/themeHandler';
 import { DiscordHandler } from './discordHandler';
 import { SettingHandler } from './settingHandler';
@@ -23,30 +31,9 @@ class App extends EventEmitter {
     constructor() {
         super();
         this.mainWindow = new ElectronWindow({
-            height: 720,
-            width: 1280
-            //show: false
+            height: 900,
+            width: 1600
         });
-        /*this.mainWindow.webContents.on(
-            'new-window',
-            (
-                e: NewWindowEvent,
-                url: string,
-                frameName: string,
-                disposition: string,
-                options: BrowserWindowConstructorOptions
-            ) => {
-                console.log(disposition)
-                e.preventDefault();
-                const window: ElectronWindow = new ElectronWindow({
-                    // @ts-ignore
-                    webContents: options.webContents, // use existing webContents if provided
-                    show: false
-                });
-                window.show();
-                e.newGuest = window;
-            }
-        );*/
         this.settingsHandler = new SettingHandler();
         this.windowArray = [];
         this.discordHandler = new DiscordHandler(this.mainWindow);
@@ -62,7 +49,41 @@ class App extends EventEmitter {
             this.settingsHandler
         );
         this.isOffline = false;
-        //Set Up menu
+
+        // Handle The Login
+        this.mainWindow.webContents.on('new-window', (event, url) => {
+            console.log(url);
+            if (
+                url == 'https://repl.it/auth/google/get?close=1' ||
+                url == 'https://repl.it/auth/github/get?close=1'
+            ) {
+                this.handleOAuth(event, url);
+            }
+        });
+    }
+    handleNewWindow(details: HandlerDetails) {
+        // TODO: use this instead of new-window event
+    }
+
+    handleOAuth(event: NewWindowWebContentsEvent, url: string) {
+        this.clearCookies(true);
+        event.preventDefault();
+        const authWin = new ElectronWindow(
+            {
+                height: 900,
+                width: 1600
+            },
+            'auth.js'
+        );
+        authWin.loadURL(url, {
+            userAgent: 'chrome'
+        });
+
+        // Handle The Login Process
+        ipcMain.once('authDone', () =>
+            this.mainWindow.loadURL('https://repl.it/~')
+        );
+        event.newGuest = authWin;
     }
 
     handleLoadingError(
@@ -75,8 +96,8 @@ class App extends EventEmitter {
         if (errorCode > -6 || errorCode <= -300) {
             return;
         }
+        this.isOffline = true;
         this.windowArray.forEach((win: ElectronWindow) => {
-            this.isOffline = true;
             win.loadFile('app/offline.html')
                 .then(() => {
                     win.webContents

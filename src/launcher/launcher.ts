@@ -7,11 +7,11 @@ import {
     UpdateAssetsUrls,
     Version
 } from '../common';
-import * as fs from 'fs';
-import * as path from 'path';
+import fs = require('fs');
+import path = require('path');
 import fetch from 'node-fetch';
 import { EventEmitter } from 'events';
-import * as semver from 'semver';
+import semver = require('semver');
 
 class Updater extends EventEmitter {
     public downloadUrls: UpdateAssetsUrls = {
@@ -86,7 +86,6 @@ class Updater extends EventEmitter {
                     this.downloadUrls.macOSUrl = asset.browser_download_url;
                 } else if (asset.name.includes('tar.gz')) {
                     this.downloadUrls.linuxUrl = asset.browser_download_url;
-                } else {
                 }
             }
             if (
@@ -170,6 +169,7 @@ class Launcher {
                 width: 250,
                 frame: false
             },
+            ``,
             true
         );
     }

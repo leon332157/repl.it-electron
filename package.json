@@ -16,7 +16,7 @@
     "build:app:test": "electron-builder -c electron-builder.conf.js --dir",
     "build:dev": "gulp buildDev",
     "build:prod": "gulp buildProd",
-    "build:run": "electron --no-sandbox ./ts-out/",
+    "build:run": "electron --trace-warnings -no-sandbox ./ts-out/",
     "dist": "npm run build:prod && npm run build:app",
     "lint:check": "eslint \"**/*.{js,ts,json}\"",
     "lint": "eslint \"**/*.{js,ts,json}\" --fix",
@@ -28,7 +28,7 @@
     "ejs": "^3.1.5",
     "electron-context-menu": "^2.1.0",
     "electron-prompt": "^1.5.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.19",
     "node-fetch": "^2.6.1",
     "semver": "^7.3.4",
     "write-file-atomic": "^3.0.3"

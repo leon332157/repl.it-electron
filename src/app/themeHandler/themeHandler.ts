@@ -98,15 +98,13 @@ class ThemeHandler {
                     parent: parentWindow,
                     show: false
                 },
+                '',
                 true
             );
             this.themeWindow.on('close', () => {
                 this.themeWindow = null;
             });
             this.themeWindow.loadFile('app/themeHandler/themes.html').catch();
-            this.themeWindow.on('ready-to-show', () => {
-                this.themeWindow.show();
-            });
         }
     }
 }
