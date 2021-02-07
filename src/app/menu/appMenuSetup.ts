@@ -22,9 +22,20 @@ function appMenuSetup(
             submenu: [
                 {
                     label: 'Choose Theme',
-                    click(i: MenuItem, win: ElectronWindow) {
-                        themeHandler.openThemeWindow(win);
-                    }
+                    submenu: [
+                        {
+                            label: 'Light',
+                            click(i: MenuItem, win: ElectronWindow) {
+                                themeHandler.openThemeWindow(win, 'Light');
+                            }
+                        },
+                        {
+                            label: 'Dark',
+                            click(i: MenuItem, win: ElectronWindow) {
+                                themeHandler.openThemeWindow(win, 'Dark');
+                            }
+                        }
+                    ]
                 },
                 {
                     label: 'Use Ace Editor',

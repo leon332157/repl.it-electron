@@ -143,11 +143,6 @@ class App extends EventEmitter {
                 this.toggleAce();
             }
         });
-        window.webContents.on('did-stop-loading', () => {
-            if (!this.isOffline) {
-                // this.addTheme(window).then();
-            }
-        });
         window.webContents.on(
             'did-fail-load',
             (e, code, description, validateUrl) => {
@@ -160,21 +155,6 @@ class App extends EventEmitter {
                 );
             }
         );
-    }
-
-    async addTheme(windowObj: ElectronWindow) {
-        for (let i = 1; i <= 3; i++) {
-            try {
-                await windowObj.webContents.insertCSS(
-                    this.themeHandler.getString()
-                );
-
-                console.log(`Theme Added for window attempt ${i}`);
-                break;
-            } catch (e) {
-                console.error(`Error adding theme on window ${e} attempt ${i}`);
-            }
-        }
     }
 }
 
