@@ -1,5 +1,5 @@
 import { Client } from 'discord-rpc';
-import { CustomWindow, getUrl } from '../common';
+import { ElectronWindow, getUrl } from '../common';
 import Timeout = NodeJS.Timeout;
 
 const startTimestamp = new Date();
@@ -61,10 +61,10 @@ const logosDiscordDict: { [key: string]: string } = {
 
 class DiscordHandler {
     private client: Client;
-    private readonly window: CustomWindow;
+    private readonly window: ElectronWindow;
     private discordTimer: Timeout;
 
-    constructor(window: CustomWindow) {
+    constructor(window: ElectronWindow) {
         this.window = window;
         this.client = null;
         this.connectDiscord();
@@ -215,7 +215,7 @@ class DiscordHandler {
         }
     }
 
-    async setTalkBoard(spliturl: Array<string>, windowObj: CustomWindow) {
+    async setTalkBoard(spliturl: Array<string>, windowObj: ElectronWindow) {
         let viewing: string = 'Viewing ';
         if (spliturl[3] !== undefined) {
             viewing += await windowObj.webContents.executeJavaScript(
@@ -250,7 +250,7 @@ class DiscordHandler {
         return { viewing: viewing, talkBoard: talkBoard };
     }
 
-    async setEditing(windowObj: CustomWindow) {
+    async setEditing(windowObj: ElectronWindow) {
         const fileName: string = await windowObj.webContents.executeJavaScript(
             "document.querySelector('.file-header-name div').textContent"
         );

@@ -1,5 +1,5 @@
 import {
-    CustomWindow,
+    ElectronWindow,
     handleExternalLink,
     promptYesNoSync,
     IPAD_USER_AGENT
@@ -10,7 +10,8 @@ import {
     ipcMain,
     session,
     MenuItem,
-    NewWindowWebContentsEvent
+    NewWindowWebContentsEvent,
+    HandlerDetails
 } from 'electron';
 import { ThemeHandler } from './themeHandler/themeHandler';
 import { DiscordHandler } from './discordHandler';
@@ -20,16 +21,16 @@ import { appMenuSetup } from './menu/appMenuSetup';
 import { EventEmitter } from 'events';
 
 class App extends EventEmitter {
-    public readonly mainWindow: CustomWindow;
+    public readonly mainWindow: ElectronWindow;
     public readonly themeHandler: ThemeHandler;
     public readonly discordHandler: DiscordHandler;
-    protected windowArray: CustomWindow[];
+    protected windowArray: ElectronWindow[];
     private readonly settingsHandler: SettingHandler;
     private isOffline: boolean;
 
     constructor() {
         super();
-        this.mainWindow = new CustomWindow({
+        this.mainWindow = new ElectronWindow({
             height: 900,
             width: 1600
         });
@@ -60,19 +61,19 @@ class App extends EventEmitter {
             }
         });
     }
-    handleNewWindow(details: any) {
+    handleNewWindow(details: HandlerDetails) {
         // TODO: use this instead of new-window event
     }
 
     handleOAuth(event: NewWindowWebContentsEvent, url: string) {
         this.clearCookies(true);
         event.preventDefault();
-        const authWin = new CustomWindow(
+        const authWin = new ElectronWindow(
             {
                 height: 900,
                 width: 1600
             },
-            `${__dirname}/preload/Auth.js`
+            'auth.js'
         );
         authWin.loadURL(url, {
             userAgent: 'chrome'
@@ -87,7 +88,7 @@ class App extends EventEmitter {
 
     handleLoadingError(
         event: Event,
-        windowObject: CustomWindow,
+        windowObject: ElectronWindow,
         errorCode: number,
         errorDescription: string,
         validateUrl: string
@@ -96,7 +97,7 @@ class App extends EventEmitter {
             return;
         }
         this.isOffline = true;
-        this.windowArray.forEach((win: CustomWindow) => {
+        this.windowArray.forEach((win: ElectronWindow) => {
             win.loadFile('app/offline.html')
                 .then(() => {
                     win.webContents
@@ -171,7 +172,7 @@ class App extends EventEmitter {
         }
     }
 
-    addWindow(window: CustomWindow) {
+    addWindow(window: ElectronWindow) {
         contextMenu({ window: window });
         this.windowArray.push(window);
         ipcMain.on('choose-theme', () => {
@@ -202,7 +203,7 @@ class App extends EventEmitter {
         );
     }
 
-    async addTheme(windowObj: CustomWindow) {
+    async addTheme(windowObj: ElectronWindow) {
         for (let i = 1; i <= 3; i++) {
             try {
                 await windowObj.webContents.insertCSS(

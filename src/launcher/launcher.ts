@@ -1,7 +1,7 @@
 import { app, shell } from 'electron';
 import {
     checkUpdateResult,
-    CustomWindow,
+    ElectronWindow,
     githubReleaseResponse,
     launcherStatus,
     UpdateAssetsUrls,
@@ -158,10 +158,10 @@ class Updater extends EventEmitter {
 }
 
 class Launcher {
-    window: CustomWindow;
+    window: ElectronWindow;
 
     constructor() {
-        this.window = new CustomWindow(
+        this.window = new ElectronWindow(
             {
                 show: false,
                 resizable: false,
@@ -169,7 +169,7 @@ class Launcher {
                 width: 250,
                 frame: false
             },
-            '',
+            ``,
             true
         );
     }
