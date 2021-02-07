@@ -5,7 +5,7 @@ import {
     MenuItem,
     shell
 } from 'electron';
-import { ElectronWindow, PLATFORM, selectInput } from '../../common';
+import { CustomWindow, PLATFORM, selectInput } from '../../common';
 import { ThemeHandler } from '../themeHandler/themeHandler';
 import { App } from '../app';
 import { SettingHandler } from '../settingHandler';
@@ -22,7 +22,7 @@ function appMenuSetup(
             submenu: [
                 {
                     label: 'Choose Theme',
-                    click(i: MenuItem, win: ElectronWindow) {
+                    click(i: MenuItem, win: CustomWindow) {
                         themeHandler.openThemeWindow(win);
                     }
                 },
@@ -95,7 +95,7 @@ function appMenuSetup(
                 },
                 {
                     label: 'Copy URL to clipboard',
-                    click(item: MenuItem, focusedWindow: ElectronWindow) {
+                    click(item: MenuItem, focusedWindow: CustomWindow) {
                         clipboard.writeText(focusedWindow.webContents.getURL());
                     }
                 }
@@ -106,7 +106,7 @@ function appMenuSetup(
             submenu: [
                 {
                     label: 'Go Back',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(item: any, focusedWindow: CustomWindow) {
                         if (focusedWindow.webContents.canGoBack()) {
                             focusedWindow.webContents.goBack();
                         }
@@ -114,7 +114,7 @@ function appMenuSetup(
                 },
                 {
                     label: 'Go Forward',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(item: any, focusedWindow: CustomWindow) {
                         if (focusedWindow.webContents.canGoForward()) {
                             focusedWindow.webContents.goForward();
                         }
@@ -125,7 +125,7 @@ function appMenuSetup(
                 },
                 {
                     label: 'Open Current Link in Default Browser',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(item: any, focusedWindow: CustomWindow) {
                         shell
                             .openExternal(focusedWindow.webContents.getURL())
                             .then((r) => {});
@@ -133,14 +133,14 @@ function appMenuSetup(
                 },
                 {
                     label: 'Go to Home',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(item: any, focusedWindow: CustomWindow) {
                         focusedWindow.loadURL('https://repl.it/~').catch();
                     }
                 },
                 {
                     accelerator: 'CmdOrCtrl+f',
                     label: 'Select Input',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(item: any, focusedWindow: CustomWindow) {
                         selectInput(focusedWindow);
                     }
                 },
@@ -149,7 +149,7 @@ function appMenuSetup(
                 },
                 {
                     accelerator: 'CmdOrCtrl+R',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(item: any, focusedWindow: CustomWindow) {
                         if (focusedWindow) focusedWindow.reload();
                     },
                     label: 'Reload'
@@ -160,7 +160,7 @@ function appMenuSetup(
                         process.platform === 'darwin'
                             ? 'Alt+Command+I'
                             : 'Ctrl+Shift+I',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(item: any, focusedWindow: CustomWindow) {
                         if (focusedWindow)
                             focusedWindow.webContents.toggleDevTools();
                     }

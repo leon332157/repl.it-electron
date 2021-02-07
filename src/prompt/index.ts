@@ -1,4 +1,4 @@
-import { ElectronWindow } from '../common';
+import { CustomWindow } from '../common';
 import { ipcMain } from 'electron';
 
 const url = require('url');
@@ -7,7 +7,7 @@ const path = require('path');
 const DEFAULT_WIDTH = 370;
 const DEFAULT_HEIGHT = 160;
 
-function electronPrompt(options: Object, parentWindow: ElectronWindow) {
+function electronPrompt(options: Object, parentWindow: CustomWindow) {
     return new Promise((resolve, reject) => {
         const id = `${new Date().getTime()}-${Math.random()}`;
 
@@ -41,7 +41,7 @@ function electronPrompt(options: Object, parentWindow: ElectronWindow) {
             return reject(new Error('"selectOptions" must be an object'));
         }
 
-        let promptWindow = new ElectronWindow({
+        let promptWindow = new CustomWindow({
             width: opts.width,
             height: opts.height,
             minWidth: opts.minWidth,

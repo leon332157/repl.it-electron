@@ -1,4 +1,4 @@
-import { ElectronWindow } from '../../common';
+import { CustomWindow } from '../../common';
 import { SettingHandler } from '../settingHandler';
 import { ipcMain } from 'electron';
 import ejs from 'ejs';
@@ -42,7 +42,7 @@ const DEFAULT_THEME: themeQuery = {
 };
 
 class ThemeHandler {
-    public themeWindow: ElectronWindow;
+    public themeWindow: CustomWindow;
     private readonly settings: SettingHandler;
 
     constructor(settings: SettingHandler) {
@@ -91,22 +91,20 @@ class ThemeHandler {
         return <string>this.settings.get('theme.cssString');
     }
 
-    openThemeWindow(parentWindow: ElectronWindow) {
+    openThemeWindow(parentWindow: CustomWindow) {
         if (!this.themeWindow) {
-            this.themeWindow = new ElectronWindow(
+            this.themeWindow = new CustomWindow(
                 {
                     parent: parentWindow,
                     show: false
                 },
+                '',
                 true
             );
             this.themeWindow.on('close', () => {
                 this.themeWindow = null;
             });
             this.themeWindow.loadFile('app/themeHandler/themes.html').catch();
-            this.themeWindow.on('ready-to-show', () => {
-                this.themeWindow.show();
-            });
         }
     }
 }

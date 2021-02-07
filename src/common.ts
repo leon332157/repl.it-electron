@@ -9,23 +9,29 @@ import {
 import { Endpoints } from '@octokit/types';
 import { platform } from 'os';
 
-class ElectronWindow extends BrowserWindow {
+class CustomWindow extends BrowserWindow {
     constructor(
         options: BrowserWindowConstructorOptions,
-        nodeIntegration: boolean = false
+        preload: string = '',
+        nodeIntegration: boolean = false // TODO: Use preload for every node intrgation
     ) {
         super({
             ...options,
+            show: false,
+            minHeight: 800, // TODO: Store window infos
+            minWidth: 600,
             webPreferences: {
-                devTools: true,
-                enableRemoteModule: false,
-                webSecurity: true,
+                webSecurity: false,
                 allowRunningInsecureContent: false,
-                nodeIntegration: nodeIntegration,
                 spellcheck: true,
-                contextIsolation: true
+                contextIsolation: false, // Enforce false since we are using preload scripts
+                nodeIntegration: nodeIntegration,
+                preload: preload
             },
             icon: __dirname + '/256x256.png'
+        });
+        this.once('ready-to-show', () => {
+            this.show();
         });
     }
 }
@@ -70,7 +76,7 @@ function capitalize(str: string) {
     });
 }
 
-function getUrl(windowObj: ElectronWindow) {
+function getUrl(windowObj: CustomWindow) {
     try {
         let url = windowObj.webContents
             .getURL()
@@ -82,7 +88,7 @@ function getUrl(windowObj: ElectronWindow) {
     }
 }
 
-function selectInput(focusedWindow: ElectronWindow) {
+function selectInput(focusedWindow: CustomWindow) {
     focusedWindow.webContents.executeJavaScript(
         `document.getElementsByTagName('input')[0].focus().select()`,
         false
@@ -91,7 +97,7 @@ function selectInput(focusedWindow: ElectronWindow) {
 
 function handleExternalLink(
     event: Event,
-    windowObj: ElectronWindow,
+    windowObj: CustomWindow,
     url: string
 ) {
     if (!url) {
@@ -150,7 +156,7 @@ const IPAD_USER_AGENT: string =
 export {
     Version,
     checkUpdateResult,
-    ElectronWindow,
+    CustomWindow,
     UpdateAssetsUrls,
     githubReleaseResponse,
     launcherStatus,

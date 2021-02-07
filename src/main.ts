@@ -1,7 +1,7 @@
 import { Launcher, Updater } from './launcher/launcher';
 import { app, BrowserWindow, ipcMain } from 'electron';
-import * as path from 'path';
-import { PLATFORM, promptYesNoSync, ElectronWindow } from './common';
+import path = require('path');
+import { PLATFORM, promptYesNoSync } from './common';
 import { App } from './app/app';
 
 app.setPath('appData', path.join(app.getPath('home'), '.repl.it', 'appData'));
@@ -33,38 +33,14 @@ async function initApp() {
         mainApp.mainWindow.show();
         launcher.window.close();
     });
-
-    // Handle The Login
-    mainApp.mainWindow.webContents.on('new-window', (event, url) => {
-        if (
-            url != 'https://repl.it/auth/google/get?close=1' &&
-            url != 'https://repl.it/auth/github/get?close=1'
-        )
-            return;
-        mainApp.clearCookies(true);
-        event.preventDefault();
-        const win = new BrowserWindow({
-            show: false,
-            webPreferences: {
-                preload: `${__dirname}/preload/Auth.js`
-            }
-        });
-        win.once('ready-to-show', () => win.show());
-        win.loadURL(url, {
-            userAgent: 'chrome'
-        });
-        // Handle The Login Process
-        ipcMain.on('auth', () =>
-            mainApp.mainWindow.loadURL('https://repl.it/~')
-        );
-        event.newGuest = win;
-    });
-
     mainApp.mainWindow.on('close', () => app.quit());
 }
 
 async function initUpdater() {
     updater = new Updater(launcher);
+    if (process.execPath.includes('electron')) {
+        updater.cleanUp(true);
+    }
     launcher.updateStatus({ text: 'Checking Update' });
     const res = await updater.checkUpdate();
     if (res['changeLog'] == 'error') {
