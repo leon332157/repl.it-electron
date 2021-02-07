@@ -1,7 +1,7 @@
-const { ipcRenderer } = require('electron');
+import { ipcRenderer } from 'electron';
 
 window.opener = {
-    postMessage: (event, data) => {
+    postMessage: (event: any, data: any) => {
         ipcRenderer.send('auth', '');
         window.close();
     }

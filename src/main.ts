@@ -46,7 +46,7 @@ async function initApp() {
         const win = new BrowserWindow({
             show: false,
             webPreferences: {
-                preload: `${__dirname}/Auth.js`
+                preload: `${__dirname}/preload/Auth.js`
             }
         });
         win.once('ready-to-show', () => win.show());
