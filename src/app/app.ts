@@ -175,20 +175,18 @@ class App extends EventEmitter {
     addWindow(window: ElectronWindow) {
         contextMenu({ window: window });
         this.windowArray.push(window);
-        ipcMain.on('choose-theme', () => {
-            window.reload();
-        });
         window.webContents.on('will-navigate', (e, url) => {
             handleExternalLink(e, window, url);
             if (this.settingsHandler.get('enable-ace')) {
                 this.toggleAce();
             }
         });
-        window.webContents.on('did-stop-loading', () => {
-            if (!this.isOffline) {
-                // this.addTheme(window).then();
-            }
+
+        this.themeHandler.openThemeWindow(window);
+        window.webContents.on('did-finish-load', () => {
+            this.themeHandler.openThemeWindow(window);
         });
+
         window.webContents.on(
             'did-fail-load',
             (e, code, description, validateUrl) => {
@@ -201,21 +199,6 @@ class App extends EventEmitter {
                 );
             }
         );
-    }
-
-    async addTheme(windowObj: ElectronWindow) {
-        for (let i = 1; i <= 3; i++) {
-            try {
-                await windowObj.webContents.insertCSS(
-                    this.themeHandler.getString()
-                );
-
-                console.log(`Theme Added for window attempt ${i}`);
-                break;
-            } catch (e) {
-                console.error(`Error adding theme on window ${e} attempt ${i}`);
-            }
-        }
     }
 }
 
