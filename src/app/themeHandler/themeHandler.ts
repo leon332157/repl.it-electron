@@ -8,7 +8,7 @@ class ThemeHandler {
         this.settings = settings;
     }
 
-    Set(parentWindow: ElectronWindow, Colors: Theme) {
+    Set(Window: any, Colors: Theme) {
         let Css = `
         :root, .replit-ui-theme-root {
         ${Object.entries(Colors)
@@ -16,10 +16,21 @@ class ThemeHandler {
             .join('\n')}
         }
         `;
-        parentWindow.webContents.insertCSS(Css);
+        Window.webContents.insertCSS(Css);
     }
 
-    openThemeWindow(parentWindow: ElectronWindow, Name: string) {
+    openThemeWindow(parentWindow: any, Name: any = 'default') {
+        console.log(Name);
+        console.log(this.settings.get('theme.Name'));
+        if (Name == 'default') {
+            if (this.settings.has('theme.Name'))
+                Name = this.settings.get('theme.Name');
+            else return;
+        }
+        console.log(Name);
+        this.settings.set('theme', {
+            Name: Name
+        });
         this.Set(parentWindow, Themes[Name]);
     }
 }
