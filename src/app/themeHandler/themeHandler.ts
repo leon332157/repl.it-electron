@@ -20,14 +20,11 @@ class ThemeHandler {
     }
 
     openThemeWindow(parentWindow: any, Name: any = 'default') {
-        console.log(Name);
-        console.log(this.settings.get('theme.Name'));
         if (Name == 'default') {
             if (this.settings.has('theme.Name'))
                 Name = this.settings.get('theme.Name');
             else return;
         }
-        console.log(Name);
         this.settings.set('theme', {
             Name: Name
         });

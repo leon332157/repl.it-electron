@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "discord-rpc": "^3.1.4",
-    "ejs": "^3.1.5",
     "electron-context-menu": "^2.1.0",
     "electron-prompt": "^1.5.1",
     "lodash": "^4.17.19",
@@ -36,7 +35,6 @@
   "devDependencies": {
     "@octokit/types": "^3.0.3",
     "@types/discord-rpc": "^3.0.4",
-    "@types/ejs": "^3.0.5",
     "@types/gulp": "^4.0.8",
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.25",
