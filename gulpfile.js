@@ -17,20 +17,31 @@ function printEc(data) {
     if (str) console.log('[electron] ' + str);
 }
 
-function runElectron() {
+async function runElectron() {
     var errored = false;
 
-    if (child) child.kill();
+    if (child) {
+        child.kill();
+    }
 
-    child = proc.spawn(electron, ['--no-sandbox', '.'], { cwd: './ts-out' });
+    child = proc.spawn(electron, ['--no-sandbox', '--trace-warnings', '.'], {
+        cwd: './ts-out'
+    });
 
     child.on('error', function (err) {
         errored = true;
         throw new Error(`gulp-run-electron ${err}`);
     });
 
+    child.once('exit', (code) => {
+        if (code === 0) {
+            process.exit(0);
+        }
+    });
+
     child.stdout.on('data', printEc);
     child.stderr.on('data', printEc);
+    return child;
 }
 
 async function copyFilesProd() {
@@ -127,23 +138,32 @@ async function copyFilesDevNoCache() {
 }
 
 async function watchDev() {
-    gulp.series(buildDev, copyFilesDev)();
+    gulp.series(buildDevWatch, copyFilesDev)();
     gulp.watch(
-        'src/*',
-        { delay: 500 },
-        gulp.series(buildDev, copyFilesDev, runElectron)
+        'src/**/*',
+        { delay: 8 * 1000 },
+        gulp.series(buildDevWatch, copyFilesDev, runElectron)
     );
     runElectron();
+}
+async function buildDevWatch() {
+    gulp.src('src/**/*.ts')
+        .pipe(cache('buildDev'))
+        .pipe(tsProject(ts.reporter.fullReporter()))
+        .pipe(gulp.dest('ts-out/'));
 }
 
 async function buildDev() {
     gulp.src('src/**/*.ts')
         .pipe(cache('buildDev'))
-        .pipe(tsProject())
+        .pipe(tsProject(ts.reporter.fullReporter()))
+        .on('error', function () {
+            process.exit(1);
+        })
         .pipe(gulp.dest('ts-out/'));
 }
 
-gulp.task(watchDev);
-gulp.task('buildDev', gulp.series(buildDev, copyFilesDevNoCache));
+module.exports.watchDev = watchDev;
+module.exports.buildDev = gulp.series(buildDev, copyFilesDevNoCache);
 module.exports.buildProd = gulp.series(buildProd, copyFilesProd);
 module.exports.buildApp = gulp.series(buildApp);
