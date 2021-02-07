@@ -138,13 +138,19 @@ async function copyFilesDevNoCache() {
 }
 
 async function watchDev() {
-    gulp.series(buildDev, copyFilesDev)();
+    gulp.series(buildDevWatch, copyFilesDev)();
     gulp.watch(
         'src/**/*',
         { delay: 8 * 1000 },
-        gulp.series(buildDev, copyFilesDev, runElectron)
+        gulp.series(buildDevWatch, copyFilesDev, runElectron)
     );
     runElectron();
+}
+async function buildDevWatch() {
+    gulp.src('src/**/*.ts')
+        .pipe(cache('buildDev'))
+        .pipe(tsProject(ts.reporter.fullReporter()))
+        .pipe(gulp.dest('ts-out/'));
 }
 
 async function buildDev() {
