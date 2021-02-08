@@ -1,6 +1,6 @@
 import { ElectronWindow } from '../../common';
 import { SettingHandler } from '../settingHandler';
-import { Themes, ThemeStructure } from './themes';
+import { themes, themeProcessor } from './themes';
 
 class ThemeHandler {
     private readonly settings: SettingHandler;
@@ -8,15 +8,22 @@ class ThemeHandler {
         this.settings = settings;
     }
 
-    setTheme(window: ElectronWindow, colors: ThemeStructure) {
-        let cssString = `
-        :root, .replit-ui-theme-root {
-        ${Object.entries(colors)
-            .map(([K, V]) => `--${K}: ${V} !important;`)
-            .join('\n')}
-        }
-        `;
-        window.webContents.insertCSS(cssString);
+    setTheme(window: ElectronWindow, colors: string) {
+        if (!colors) return;
+        window.webContents.executeJavaScript(
+            `
+            {
+                let p1 = document.getElementById("reflux-theme"),
+                    p2 = document.getElementById("reflux-display");
+                if (p1 && p2) {
+                    p1.remove();
+                    p2.remove();
+                }
+            }
+            `,
+            true
+        );
+        window.webContents.executeJavaScript(themeProcessor(colors), true);
     }
 
     addTheme(parentWindow: ElectronWindow, name: string = 'default') {
@@ -28,7 +35,7 @@ class ThemeHandler {
         this.settings.set('theme', {
             name: name
         });
-        this.setTheme(parentWindow, Themes[name]);
+        this.setTheme(parentWindow, themes[name]);
     }
 }
 

@@ -1,140 +1,18 @@
-interface ThemeStructure {
-    'color-background-1': string;
-    'color-background-2': string;
-    'color-background-3': string;
-    'color-control-1': string;
-    'color-control-2': string;
-    'color-control-3': string;
-    'color-border': string;
-    'color-foreground-1': string;
-    'color-foreground-2': string;
-    'color-foreground-3': string;
-    'color-foreground-4': string;
-    'color-foreground-transparent-1': string;
-    'color-foreground-transparent-2': string;
-    'color-foreground-transparent-3': string;
-    'color-primary-1': string;
-    'color-primary-2': string;
-    'color-primary-3': string;
-    'color-primary-4': string;
-    'color-primary-transparent-1': string;
-    'color-primary-transparent-2': string;
-    'color-primary-transparent-3': string;
-    'color-negative-1': string;
-    'color-negative-2': string;
-    'color-negative-3': string;
-    'color-negative-4': string;
-    'color-negative-transparent-1': string;
-    'color-negative-transparent-2': string;
-    'color-negative-transparent-3': string;
-    'color-warning-1': string;
-    'color-warning-2': string;
-    'color-warning-3': string;
-    'color-warning-4': string;
-    'color-warning-transparent-1': string;
-    'color-warning-transparent-2': string;
-    'color-warning-transparent-3': string;
-    'color-positive-1': string;
-    'color-positive-2': string;
-    'color-positive-3': string;
-    'color-positive-4': string;
-    'color-positive-transparent-1': string;
-    'color-positive-transparent-2': string;
-    'color-positive-transparent-3': string;
-}
-interface ThemeObject {
-    [key: string]: ThemeStructure;
-}
-const Themes: ThemeObject = {
-    darkTheme: <ThemeStructure>{
-        'color-background-1': '#1d2333',
-        'color-background-2': '#171d2d',
-        'color-background-3': '#0e1525',
-        'color-control-1': '#313646',
-        'color-control-2': '#2b3140',
-        'color-control-3': '#262b3b',
-        'color-border': '#313646',
-        'color-foreground-1': '#e1e2e4',
-        'color-foreground-2': '#90939c',
-        'color-foreground-3': '#696d78',
-        'color-foreground-4': '#4e525f',
-        'color-foreground-transparent-1': 'rgba(14,21,37,0.48)',
-        'color-foreground-transparent-2': 'rgba(14,21,37,0.24)',
-        'color-foreground-transparent-3': 'rgba(14,21,37,0.12)',
-        'color-primary-1': '#3485e4',
-        'color-primary-2': '#337bd2',
-        'color-primary-3': '#3273c4',
-        'color-primary-4': '#316cb8',
-        'color-primary-transparent-1': 'rgba(52,133,228,0.48)',
-        'color-primary-transparent-2': 'rgba(52,133,228,0.24)',
-        'color-primary-transparent-3': 'rgba(52,133,228,0.12)',
-        'color-negative-1': '#ff491c',
-        'color-negative-2': '#eb451b',
-        'color-negative-3': '#db411b',
-        'color-negative-4': '#cd3e1a',
-        'color-negative-transparent-1': 'rgba(255,73,28,0.48)',
-        'color-negative-transparent-2': 'rgba(255,73,28,0.24)',
-        'color-negative-transparent-3': 'rgba(255,73,28,0.12)',
-        'color-warning-1': '#f26702',
-        'color-warning-2': '#de5f07',
-        'color-warning-3': '#ce590a',
-        'color-warning-4': '#c0540c',
-        'color-warning-transparent-1': 'rgba(242,103,2,0.48)',
-        'color-warning-transparent-2': 'rgba(242,103,2,0.24)',
-        'color-warning-transparent-3': 'rgba(242,103,2,0.12)',
-        'color-positive-1': '#20ab46',
-        'color-positive-2': '#219d41',
-        'color-positive-3': '#22923d',
-        'color-positive-4': '#22883a',
-        'color-positive-transparent-1': 'rgba(24,204,81,0.48)',
-        'color-positive-transparent-2': 'rgba(24,204,81,0.24)',
-        'color-positive-transparent-3': 'rgba(24,204,81,0.12)'
-    },
-
-    lightTheme: <ThemeStructure>{
-        'color-background-1': '#ffffff',
-        'color-background-2': '#f6f6f6',
-        'color-background-3': '#eeeeee',
-        'color-control-1': '#e0e0e0',
-        'color-control-2': '#e9e9e9',
-        'color-control-3': '#f3f3f3',
-        'color-border': '#e0e0e0',
-        'color-foreground-1': '#363636',
-        'color-foreground-2': '#6f6f6f',
-        'color-foreground-3': '#949494',
-        'color-foreground-4': '#b7b7b7',
-        'color-foreground-transparent-1': 'rgba(255,255,255,0.48)',
-        'color-foreground-transparent-2': 'rgba(255,255,255,0.24)',
-        'color-foreground-transparent-3': 'rgba(255,255,255,0.12)',
-        'color-primary-1': '#3485e4',
-        'color-primary-2': '#337ad1',
-        'color-primary-3': '#3272c2',
-        'color-primary-4': '#316ab4',
-        'color-primary-transparent-1': 'rgba(52,133,228,0.48)',
-        'color-primary-transparent-2': 'rgba(52,133,228,0.24)',
-        'color-primary-transparent-3': 'rgba(52,133,228,0.12)',
-        'color-negative-1': '#ff491c',
-        'color-negative-2': '#e9441b',
-        'color-negative-3': '#d8411b',
-        'color-negative-4': '#c93d1a',
-        'color-negative-transparent-1': 'rgba(255,73,28,0.48)',
-        'color-negative-transparent-2': 'rgba(255,73,28,0.24)',
-        'color-negative-transparent-3': 'rgba(255,73,28,0.12)',
-        'color-warning-1': '#eb6404',
-        'color-warning-2': '#d65c08',
-        'color-warning-3': '#c7560b',
-        'color-warning-4': '#b8510d',
-        'color-warning-transparent-1': 'rgba(242,103,2,0.48)',
-        'color-warning-transparent-2': 'rgba(242,103,2,0.24)',
-        'color-warning-transparent-3': 'rgba(242,103,2,0.12)',
-        'color-positive-1': '#21a243',
-        'color-positive-2': '#21953e',
-        'color-positive-3': '#228a3a',
-        'color-positive-4': '#228037',
-        'color-positive-transparent-1': 'rgba(24,204,81,0.48)',
-        'color-positive-transparent-2': 'rgba(24,204,81,0.24)',
-        'color-positive-transparent-3': 'rgba(24,204,81,0.12)'
-    }
+const themes: { [key: string]: string } = {
+    blueberry: <string>(
+        'javascript:(function() {let p1=document.getElementById("reflux-theme");let p2=document.getElementById("reflux-display");if (p1 && p2) {var go=confirm("There is a Reflux theme already running. Would you like to stop it?");if (go) {p1.remove();p2.remove();alert("This theme has been stopped.");} else {alert("This theme will continue running.");}} else {var go=confirm("Run this Reflux Theme?\n\nName: Blueberry\nAuthor: frissyn\nDescription: Make your Repl IDE a blueberry color scheme!");if (go) {var style=document.createElement("style");var head=document.getElementsByTagName("head")[0];var target=document.getElementsByClassName("jsx-2607100739")[0];style.setAttribute("id", "reflux-theme");style.appendChild(document.createTextNode(`.replit-ui-theme-root.dark{--color-background-1: #6495ed !important;--color-background-2: #76a1ef !important;--color-background-3: #87adf1 !important;--color-control-1: #313646 !important;--color-control-2: #2b3140 !important;--color-control-3: #262b3b !important;--color-border: #00008b !important;--color-foreground-1: #590059 !important;--color-foreground-2: #450045 !important;--color-foreground-3: #320032 !important;--color-foreground-4: #1e001e !important;--color-foreground-transparent-1: rgba(14, 21, 37, 0.48) !important;--color-foreground-transparent-2: rgba(14, 21, 37, 0.24) !important;--color-foreground-transparent-3: rgba(14, 21, 37, 0.12) !important;--color-primary-1: #00008b !important;--color-primary-2: #00009f !important;--color-primary-3: #0000b2 !important;--color-primary-4: #0000c6 !important;--color-primary-transparent-1: rgba(52, 133, 228, 0.48) !important;--color-primary-transparent-2: rgba(52, 133, 228, 0.24) !important;--color-primary-transparent-3: rgba(52, 133, 228, 0.12) !important;--color-negative-1: #ff491c !important;--color-negative-2: #eb451b !important;--color-negative-3: #db411b !important;--color-negative-4: #cd3e1a !important;--color-negative-transparent-1: rgba(255, 73, 28, 0.48) !important;--color-negative-transparent-2: rgba(255, 73, 28, 0.24) !important;--color-negative-transparent-3: rgba(255, 73, 28, 0.12) !important;--color-warning-1: #f26702 !important;--color-warning-2: #de5f07 !important;--color-warning-3: #ce590a !important;--color-warning-4: #c0540c !important;--color-warning-transparent-1: rgba(242, 103, 2, 0.48) !important;--color-warning-transparent-2: rgba(242, 103, 2, 0.24) !important;--color-warning-transparent-3: rgba(242, 103, 2, 0.12) !important;--color-positive-1: #000077 !important;--color-positive-2: #00008b !important;--color-positive-3: #00009f !important;--color-positive-4: #0000b2 !important;--color-positive-transparent-1: rgba(0, 0, 139, 0.48) !important;--color-positive-transparent-2: rgba(0, 0, 139, 0.24) !important;--color-positive-transparent-3: rgba(0, 0, 139, 0.12) !important;}.replit-ui-theme-root.light{--color-background-1: #6495ed !important;--color-background-2: #76a1ef !important;--color-background-3: #87adf1 !important;--color-control-1: #313646 !important;--color-control-2: #2b3140 !important;--color-control-3: #262b3b !important;--color-border: #00008b !important;--color-foreground-1: #590059 !important;--color-foreground-2: #450045 !important;--color-foreground-3: #320032 !important;--color-foreground-4: #1e001e !important;--color-foreground-transparent-1: rgba(14, 21, 37, 0.48) !important;--color-foreground-transparent-2: rgba(14, 21, 37, 0.24) !important;--color-foreground-transparent-3: rgba(14, 21, 37, 0.12) !important;--color-primary-1: #00008b !important;--color-primary-2: #00009f !important;--color-primary-3: #0000b2 !important;--color-primary-4: #0000c6 !important;--color-primary-transparent-1: rgba(52, 133, 228, 0.48) !important;--color-primary-transparent-2: rgba(52, 133, 228, 0.24) !important;--color-primary-transparent-3: rgba(52, 133, 228, 0.12) !important;--color-negative-1: #ff491c !important;--color-negative-2: #eb451b !important;--color-negative-3: #db411b !important;--color-negative-4: #cd3e1a !important;--color-negative-transparent-1: rgba(255, 73, 28, 0.48) !important;--color-negative-transparent-2: rgba(255, 73, 28, 0.24) !important;--color-negative-transparent-3: rgba(255, 73, 28, 0.12) !important;--color-warning-1: #f26702 !important;--color-warning-2: #de5f07 !important;--color-warning-3: #ce590a !important;--color-warning-4: #c0540c !important;--color-warning-transparent-1: rgba(242, 103, 2, 0.48) !important;--color-warning-transparent-2: rgba(242, 103, 2, 0.24) !important;--color-warning-transparent-3: rgba(242, 103, 2, 0.12) !important;--color-positive-1: #000077 !important;--color-positive-2: #00008b !important;--color-positive-3: #00009f !important;--color-positive-4: #0000b2 !important;--color-positive-transparent-1: rgba(0, 0, 139, 0.48) !important;--color-positive-transparent-2: rgba(0, 0, 139, 0.24) !important;--color-positive-transparent-3: rgba(0, 0, 139, 0.12) !important;}.line-numbers {color: var(--color-primary-1) !important;}.jsx-3971054001.content, p, .jsx-4279741890 {background-color: var(--color-background-2) !important;color: #fff !important;}.jsx-3414412928 {background-color: var(--color-background-1) !important;}.toggle-bar {background-color: var(--color-foreground-2) !important;}.jsx-467725132 {background-color: var(--color-background-3) !important;}.jsx-2906438576, .jsx-986859180, .jsx-918008940  {background-color: var(--color-background-3) !important;}.interactive.jsx-2106077415:hover {border-color: var(--color-background-4) !important;}.jsx-3414412928.sidebar-layout-header-toggle-alert {background-color: var(--color-primary-1) !important;}`));if (target) {target.insertAdjacentHTML("afterend", `<a id="reflux-display" class="jsx-2607100739" target="_blank" href="//github.com/frissyn/Reflux"><span class="jsx-2607100739 sidebar-layout-nav-item-icon"><img src="https://img.icons8.com/material-outlined/24/00D1B2/code.png"/></span><div class="jsx-2607100739">Reflux</div><div class="jsx-2607100739 beta-label"><div style="background-color: #6262ff;" class="jsx-4210545632 beta-tag">ON</div></div></a>`);} else {alert("Reflux badge could not be applied. This theme will run silently.");}head.appendChild(style);alert("Reflux is now running!");} else {alert("Reflux operation cancelled.");}}})();'
+    ),
+    cactus: <string>(
+        'javascript:(function() {let p1=document.getElementById("reflux-theme");let p2=document.getElementById("reflux-display");if (p1 && p2) {var go=confirm("There is a Reflux theme already running. Would you like to stop it?");if (go) {p1.remove();p2.remove();alert("This theme has been stopped.");} else {alert("This theme will continue running.");}} else {var go=confirm("Run this Reflux Theme?\n\nName: Cactus\nAuthor: frissyn\nDescription: Coding Cactus\' trademark theme!");if (go) {var style=document.createElement("style");var head=document.getElementsByTagName("head")[0];var target=document.getElementsByClassName("jsx-2607100739")[0];style.setAttribute("id", "reflux-theme");style.appendChild(document.createTextNode(`.replit-ui-theme-root.dark{--color-background-1: #0f3f0f !important;--color-background-2: #0c2f0c !important;--color-background-3: #082008 !important;--color-control-1: #0c2f0c !important;--color-control-2: #103f10 !important;--color-control-3: #144f14 !important;--color-border: #32cd32 !important;--color-foreground-1: #cccccc !important;--color-foreground-2: #c2c2c2 !important;--color-foreground-3: #b8b8b8 !important;--color-foreground-4: #adadad !important;--color-foreground-transparent-1: rgba(14, 21, 37, 0.48) !important;--color-foreground-transparent-2: rgba(14, 21, 37, 0.24) !important;--color-foreground-transparent-3: rgba(14, 21, 37, 0.12) !important;--color-primary-1: #eb8100 !important;--color-primary-2: #d87600 !important;--color-primary-3: #c46c00 !important;--color-primary-4: #b16100 !important;--color-primary-transparent-1: rgba(52, 133, 228, 0.48) !important;--color-primary-transparent-2: rgba(52, 133, 228, 0.24) !important;--color-primary-transparent-3: rgba(52, 133, 228, 0.12) !important;--color-negative-1: #ff491c !important;--color-negative-2: #eb451b !important;--color-negative-3: #db411b !important;--color-negative-4: #cd3e1a !important;--color-negative-transparent-1: rgba(255, 73, 28, 0.48) !important;--color-negative-transparent-2: rgba(255, 73, 28, 0.24) !important;--color-negative-transparent-3: rgba(255, 73, 28, 0.12) !important;--color-warning-1: #f26702 !important;--color-warning-2: #de5f07 !important;--color-warning-3: #ce590a !important;--color-warning-4: #c0540c !important;--color-warning-transparent-1: rgba(242, 103, 2, 0.48) !important;--color-warning-transparent-2: rgba(242, 103, 2, 0.24) !important;--color-warning-transparent-3: rgba(242, 103, 2, 0.12) !important;--color-positive-1: #20ab46 !important;--color-positive-2: #219d41 !important;--color-positive-3: #22923d !important;--color-positive-4: #22883a !important;--color-positive-transparent-1: rgba(24, 204, 81, 0.48) !important;--color-positive-transparent-2: rgba(24, 204, 81, 0.24) !important;--color-positive-transparent-3: rgba(24, 204, 81, 0.12) !important;--color-background-4: #041004 !important;}.replit-ui-theme-root.light{--color-background-1: #0f3f0f !important;--color-background-2: #0c2f0c !important;--color-background-3: #082008 !important;--color-control-1: #0c2f0c !important;--color-control-2: #103f10 !important;--color-control-3: #144f14 !important;--color-border: #32cd32 !important;--color-foreground-1: #cccccc !important;--color-foreground-2: #c2c2c2 !important;--color-foreground-3: #b8b8b8 !important;--color-foreground-4: #adadad !important;--color-foreground-transparent-1: rgba(14, 21, 37, 0.48) !important;--color-foreground-transparent-2: rgba(14, 21, 37, 0.24) !important;--color-foreground-transparent-3: rgba(14, 21, 37, 0.12) !important;--color-primary-1: #eb8100 !important;--color-primary-2: #d87600 !important;--color-primary-3: #c46c00 !important;--color-primary-4: #b16100 !important;--color-primary-transparent-1: rgba(52, 133, 228, 0.48) !important;--color-primary-transparent-2: rgba(52, 133, 228, 0.24) !important;--color-primary-transparent-3: rgba(52, 133, 228, 0.12) !important;--color-negative-1: #ff491c !important;--color-negative-2: #eb451b !important;--color-negative-3: #db411b !important;--color-negative-4: #cd3e1a !important;--color-negative-transparent-1: rgba(255, 73, 28, 0.48) !important;--color-negative-transparent-2: rgba(255, 73, 28, 0.24) !important;--color-negative-transparent-3: rgba(255, 73, 28, 0.12) !important;--color-warning-1: #f26702 !important;--color-warning-2: #de5f07 !important;--color-warning-3: #ce590a !important;--color-warning-4: #c0540c !important;--color-warning-transparent-1: rgba(242, 103, 2, 0.48) !important;--color-warning-transparent-2: rgba(242, 103, 2, 0.24) !important;--color-warning-transparent-3: rgba(242, 103, 2, 0.12) !important;--color-positive-1: #20ab46 !important;--color-positive-2: #219d41 !important;--color-positive-3: #22923d !important;--color-positive-4: #22883a !important;--color-positive-transparent-1: rgba(24, 204, 81, 0.48) !important;--color-positive-transparent-2: rgba(24, 204, 81, 0.24) !important;--color-positive-transparent-3: rgba(24, 204, 81, 0.12) !important;--color-background-4: #041004 !important;}.line-numbers {color: var(--color-primary-1) !important;}.jsx-3971054001.content, p, .jsx-4279741890 {background-color: var(--color-background-2) !important;color: #fff !important;}.jsx-3414412928 {background-color: var(--color-background-1) !important;}.toggle-bar {background-color: var(--color-foreground-2) !important;}.jsx-467725132 {background-color: var(--color-background-3) !important;}.jsx-2906438576, .jsx-986859180, .jsx-918008940  {background-color: var(--color-background-3) !important;}.interactive.jsx-2106077415:hover {border-color: var(--color-background-4) !important;}.jsx-3414412928.sidebar-layout-header-toggle-alert {background-color: var(--color-primary-1) !important;}`));if (target) {target.insertAdjacentHTML("afterend", `<a id="reflux-display" class="jsx-2607100739" target="_blank" href="//github.com/frissyn/Reflux"><span class="jsx-2607100739 sidebar-layout-nav-item-icon"><img src="https://img.icons8.com/material-outlined/24/00D1B2/code.png"/></span><div class="jsx-2607100739">Reflux</div><div class="jsx-2607100739 beta-label"><div style="background-color: #6262ff;" class="jsx-4210545632 beta-tag">ON</div></div></a>`);} else {alert("Reflux badge could not be applied. This theme will run silently.");}head.appendChild(style);alert("Reflux is now running!");} else {alert("Reflux operation cancelled.");}}})();'
+    )
 };
 
-export { ThemeStructure, Themes };
+const themeProcessor = (theme: string) => {
+    return theme
+        .replace('javascript:', '')
+        .replace(/\n/g, '\\n')
+        .replace(/alert/g, 'console.log')
+        .replace(/confirm\(([^)]+)\);/gim, '(() => true)();');
+};
+
+export { themeProcessor, themes };

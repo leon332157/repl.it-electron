@@ -24,15 +24,15 @@ function appMenuSetup(
                     label: 'Choose Theme',
                     submenu: [
                         {
-                            label: 'Light',
+                            label: 'blueberry',
                             click(i: MenuItem, win: ElectronWindow) {
-                                themeHandler.addTheme(win, 'lightTheme');
+                                themeHandler.addTheme(win, 'blueberry');
                             }
                         },
                         {
-                            label: 'Dark',
+                            label: 'cactus',
                             click(i: MenuItem, win: ElectronWindow) {
-                                themeHandler.addTheme(win, 'darkTheme');
+                                themeHandler.addTheme(win, 'cactus');
                             }
                         }
                     ]
