@@ -8,7 +8,7 @@ class ThemeHandler {
         this.settings = settings;
     }
 
-    Set(window: ElectronWindow, colors: ThemeStructure) {
+    setTheme(window: ElectronWindow, colors: ThemeStructure) {
         let cssString = `
         :root, .replit-ui-theme-root {
         ${Object.entries(colors)
@@ -28,7 +28,7 @@ class ThemeHandler {
         this.settings.set('theme', {
             name: name
         });
-        this.Set(parentWindow, Themes[name]);
+        this.setTheme(parentWindow, Themes[name]);
     }
 }
 

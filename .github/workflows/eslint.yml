@@ -1,7 +1,7 @@
-name: 'Lint using ESLint'
+name: 'Lint using ESLint on push'
 
 on:
-  [push, pull_request]
+  [push]
 
 jobs:
   eslint:
