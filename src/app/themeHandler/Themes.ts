@@ -1,4 +1,4 @@
-interface Theme {
+interface ThemeStructure {
     'color-background-1': string;
     'color-background-2': string;
     'color-background-3': string;
@@ -42,11 +42,11 @@ interface Theme {
     'color-positive-transparent-2': string;
     'color-positive-transparent-3': string;
 }
-interface Theme_Structure {
-    [key: string]: Theme;
+interface ThemeObject {
+    [key: string]: ThemeStructure;
 }
-const Themes: Theme_Structure = {
-    Dark: <Theme>{
+const Themes: ThemeArray = {
+    Dark: <ThemeStructure>{
         'color-background-1': '#1d2333',
         'color-background-2': '#171d2d',
         'color-background-3': '#0e1525',
@@ -91,7 +91,7 @@ const Themes: Theme_Structure = {
         'color-positive-transparent-3': 'rgba(24,204,81,0.12)'
     },
 
-    Light: <Theme>{
+    Light: <ThemeStructure>{
         'color-background-1': '#ffffff',
         'color-background-2': '#f6f6f6',
         'color-background-3': '#eeeeee',
@@ -137,4 +137,4 @@ const Themes: Theme_Structure = {
     }
 };
 
-export { Theme, Themes };
+export { ThemeStructure, Themes };
