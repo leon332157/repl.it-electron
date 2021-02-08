@@ -16,14 +16,14 @@ module.exports = {
     },
     win: {
         target: 'nsis',
-        icon: 'src/assets/replit-logo/ico/logo.ico'
+        icon: 'logos/replit-logo/logo-clear.png'
     },
     nsis: {
         oneClick: false,
         allowToChangeInstallationDirectory: true,
         differentialPackage: false,
         //perMachine: true,
-        createDesktopShortcut: 'always'
+        createDesktopShortcut: true
     },
     linux: {
         target: {

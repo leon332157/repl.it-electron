@@ -78,7 +78,7 @@ async function copyFilesProd() {
             })
         )
         .pipe(gulp.dest('dist'));
-    gulp.src('logos/replit-logo/256x256.png').pipe(gulp.dest('dist'));
+    gulp.src('logos/replit-logo/512x512.png').pipe(gulp.dest('dist'));
 }
 
 async function buildProd() {
