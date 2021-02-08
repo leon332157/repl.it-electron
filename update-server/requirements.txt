@@ -1,6 +1,0 @@
-flask
-flask_cors
-python-dotenv
-pytz
-pymongo[srv,tls]
-jsonpickle

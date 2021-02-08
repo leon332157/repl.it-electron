@@ -12,7 +12,28 @@ module.exports = {
         sourceType: 'module'
     },
     rules: {
-        'prettier/prettier': 'error'
+        'prettier/prettier': 'error',
+        '@typescript-eslint/naming-convention': [
+            'error',
+            {
+                selector: 'typeLike',
+                format: ['camelCase', 'StrictPascalCase']
+            },
+            {
+                selector: ['variable', 'parameter'],
+                format: [
+                    'camelCase',
+                    'snake_case',
+                    'UPPER_CASE',
+                    'StrictPascalCase'
+                ]
+            },
+            {
+                selector: ['function', 'method'],
+                format: ['camelCase', 'snake_case']
+            },
+            { selector: ['property'], format: ['camelCase', 'snake_case'] }
+        ]
     },
     settings: {
         'json/sort-package-json': 'standard'

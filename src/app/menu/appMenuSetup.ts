@@ -26,13 +26,13 @@ function appMenuSetup(
                         {
                             label: 'Light',
                             click(i: MenuItem, win: ElectronWindow) {
-                                themeHandler.openThemeWindow(win, 'Light');
+                                themeHandler.addTheme(win, 'lightTheme');
                             }
                         },
                         {
                             label: 'Dark',
                             click(i: MenuItem, win: ElectronWindow) {
-                                themeHandler.openThemeWindow(win, 'Dark');
+                                themeHandler.addTheme(win, 'darkTheme');
                             }
                         }
                     ]

@@ -1,6 +1,6 @@
 import { ElectronWindow } from '../../common';
 import { SettingHandler } from '../settingHandler';
-import { Themes, Theme } from './Themes';
+import { Themes, ThemeStructure } from './themes';
 
 class ThemeHandler {
     private readonly settings: SettingHandler;
@@ -8,27 +8,27 @@ class ThemeHandler {
         this.settings = settings;
     }
 
-    Set(Window: any, Colors: Theme) {
-        let Css = `
+    setTheme(window: ElectronWindow, colors: ThemeStructure) {
+        let cssString = `
         :root, .replit-ui-theme-root {
-        ${Object.entries(Colors)
+        ${Object.entries(colors)
             .map(([K, V]) => `--${K}: ${V} !important;`)
             .join('\n')}
         }
         `;
-        Window.webContents.insertCSS(Css);
+        window.webContents.insertCSS(cssString);
     }
 
-    openThemeWindow(parentWindow: any, Name: any = 'default') {
-        if (Name == 'default') {
-            if (this.settings.has('theme.Name'))
-                Name = this.settings.get('theme.Name');
+    addTheme(parentWindow: ElectronWindow, name: string = 'default') {
+        if (name == 'default') {
+            if (this.settings.has('theme.name'))
+                name = <string>this.settings.get('theme.name');
             else return;
         }
         this.settings.set('theme', {
-            Name: Name
+            name: name
         });
-        this.Set(parentWindow, Themes[Name]);
+        this.setTheme(parentWindow, Themes[name]);
     }
 }
 
