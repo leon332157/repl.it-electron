@@ -1,6 +1,6 @@
 import { ElectronWindow } from '../../common';
 import { SettingHandler } from '../settingHandler';
-import { Themes, Theme } from './themes';
+import { Themes, ThemeStructure } from './themes';
 
 class ThemeHandler {
     private readonly settings: SettingHandler;
@@ -8,7 +8,7 @@ class ThemeHandler {
         this.settings = settings;
     }
 
-    Set(window: ElectronWindow, colors: Theme) {
+    Set(window: ElectronWindow, colors: ThemeStructure) {
         let cssString = `
         :root, .replit-ui-theme-root {
         ${Object.entries(colors)
