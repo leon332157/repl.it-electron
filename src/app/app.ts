@@ -25,28 +25,9 @@ class App extends EventEmitter {
         this.mainWindow = new ElectronWindow({
             height: 720,
             width: 1280
-            //show: false
         });
-        /*this.mainWindow.webContents.on(
-            'new-window',
-            (
-                e: NewWindowEvent,
-                url: string,
-                frameName: string,
-                disposition: string,
-                options: BrowserWindowConstructorOptions
-            ) => {
-                console.log(disposition)
-                e.preventDefault();
-                const window: ElectronWindow = new ElectronWindow({
-                    // @ts-ignore
-                    webContents: options.webContents, // use existing webContents if provided
-                    show: false
-                });
-                window.show();
-                e.newGuest = window;
-            }
-        );*/
+        this.mainWindow.maximize();
+
         this.settingsHandler = new SettingHandler();
         this.windowArray = [];
         this.discordHandler = new DiscordHandler(this.mainWindow);
@@ -62,7 +43,6 @@ class App extends EventEmitter {
             this.settingsHandler
         );
         this.isOffline = false;
-        //Set Up menu
     }
 
     handleLoadingError(
@@ -75,8 +55,8 @@ class App extends EventEmitter {
         if (errorCode > -6 || errorCode <= -300) {
             return;
         }
+        this.isOffline = true;
         this.windowArray.forEach((win: ElectronWindow) => {
-            this.isOffline = true;
             win.loadFile('app/offline.html')
                 .then(() => {
                     win.webContents
