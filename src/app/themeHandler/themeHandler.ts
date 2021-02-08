@@ -26,7 +26,7 @@ class ThemeHandler {
             else return;
         }
         this.settings.set('theme', {
-            Name: name
+            name: name
         });
         this.Set(parentWindow, Themes[name]);
     }
