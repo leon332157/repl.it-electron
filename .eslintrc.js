@@ -20,13 +20,17 @@ module.exports = {
                 format: ['camelCase', 'StrictPascalCase']
             },
             {
-                selector: 'variableLike',
+                selector: ['variable', 'parameter'],
                 format: [
                     'camelCase',
                     'snake_case',
                     'UPPER_CASE',
                     'StrictPascalCase'
                 ]
+            },
+            {
+                selector: ['function', 'method'],
+                format: ['camelCase', 'snake_case']
             }
         ]
     },

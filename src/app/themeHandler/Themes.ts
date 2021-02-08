@@ -45,7 +45,7 @@ interface ThemeStructure {
 interface ThemeObject {
     [key: string]: ThemeStructure;
 }
-const Themes: ThemeArray = {
+const Themes: ThemeObject = {
     Dark: <ThemeStructure>{
         'color-background-1': '#1d2333',
         'color-background-2': '#171d2d',
