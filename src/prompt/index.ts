@@ -1,8 +1,7 @@
 import { ElectronWindow } from '../common';
 import { ipcMain } from 'electron';
-
-const url = require('url');
-const path = require('path');
+import url = require('url');
+import path = require('path');
 
 const DEFAULT_WIDTH = 370;
 const DEFAULT_HEIGHT = 160;

@@ -1,6 +1,6 @@
 import { Launcher, Updater } from './launcher/launcher';
-import { app } from 'electron';
-import * as path from 'path';
+import { app, BrowserWindow, ipcMain } from 'electron';
+import path = require('path');
 import { PLATFORM, promptYesNoSync } from './common';
 import { App } from './app/app';
 
@@ -33,13 +33,14 @@ async function initApp() {
         mainApp.mainWindow.show();
         launcher.window.close();
     });
-    mainApp.mainWindow.on('close', () => {
-        app.quit();
-    });
+    mainApp.mainWindow.on('close', () => app.quit());
 }
 
 async function initUpdater() {
     updater = new Updater(launcher);
+    if (process.execPath.includes('electron')) {
+        updater.cleanUp(true);
+    }
     launcher.updateStatus({ text: 'Checking Update' });
     const res = await updater.checkUpdate();
     if (res['changeLog'] == 'error') {
