@@ -29,5 +29,8 @@ If applicable, add screenshots to help explain your problem.
  - Browser [e.g. chrome, safari]
  - Version [e.g. 22]
 
+**Repl**
+Does this bug also appear on the repl.it website.
+
 **Additional context**
 Add any other context about the problem here, like the long-term affects of the problem.
