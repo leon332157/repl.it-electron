@@ -38,7 +38,10 @@ class App extends EventEmitter {
         this.windowArray = [];
         this.discordHandler = new DiscordHandler(this.mainWindow);
         this.mainWindow.setBackgroundColor('#393c42');
-        this.themeHandler = new ThemeHandler(this.settingsHandler);
+        this.themeHandler = new ThemeHandler(
+            this.settingsHandler,
+            this.mainWindow
+        );
         this.addWindow(this.mainWindow);
         if (!this.settingsHandler.has('enable-ace')) {
             this.settingsHandler.set('enable-ace', false);

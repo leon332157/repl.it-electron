@@ -22,20 +22,9 @@ function appMenuSetup(
             submenu: [
                 {
                     label: 'Choose Theme',
-                    submenu: [
-                        {
-                            label: 'blueberry',
-                            click(i: MenuItem, win: ElectronWindow) {
-                                themeHandler.addTheme(win, 'blueberry');
-                            }
-                        },
-                        {
-                            label: 'cactus',
-                            click(i: MenuItem, win: ElectronWindow) {
-                                themeHandler.addTheme(win, 'cactus');
-                            }
-                        }
-                    ]
+                    click(i: MenuItem, win: ElectronWindow) {
+                        themeHandler.open_window();
+                    }
                 },
                 {
                     label: 'Use Ace Editor',
