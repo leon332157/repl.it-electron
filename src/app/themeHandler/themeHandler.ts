@@ -59,7 +59,11 @@ class ThemeHandler {
             .replace('javascript:', '')
             .replace(/\n/g, '\\n')
             .replace(/alert/g, 'console.log')
-            .replace(/confirm\(([^)]+)\);/gim, '(() => true)();');
+            .replace(/confirm\(([^)]+)\);/gim, '(() => true)();')
+            .replace(
+                'if (target) {target.insertAdjacentHTML("afterend", `<a id="reflux-display" class="jsx-2607100739" target="_blank" href="//github.com/frissyn/Reflux"><span class="jsx-2607100739 sidebar-layout-nav-item-icon"><img src="https://img.icons8.com/material-outlined/24/00D1B2/code.png"/></span><div class="jsx-2607100739">Reflux</div><div class="jsx-2607100739 beta-label"><div style="background-color: #6262ff;" class="jsx-4210545632 beta-tag">ON</div></div></a>`);} else {alert("Reflux badge could not be applied. This theme will run silently.");}',
+                ''
+            );
     };
 }
 
