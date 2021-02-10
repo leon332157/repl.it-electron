@@ -200,10 +200,18 @@ function appMenuSetup(
                     }
                 },
                 {
-                    label: 'Report a bug, or request a feature.',
+                    label: 'Report a Bug, or Request a Feature',
                     click() {
                         shell.openExternal(
                             'https://github.com/repl-it-discord/repl-it-electron/issues/new/choose'
+                        );
+                    }
+                },
+                {
+                    label: 'Go to Github Page',
+                    click() {
+                        shell.openExternal(
+                            'https://github.com/repl-it-discord/repl-it-electron'
                         );
                     }
                 }
