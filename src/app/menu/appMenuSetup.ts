@@ -197,6 +197,10 @@ function appMenuSetup(
                     label: 'Learn More about repl.it',
                     click() {
                         shell.openExternal('https://repl.it/site/about').then();
+                    },
+                    label: 'Tell us about a bug',
+                    click() {
+                        shell.openExternal('https://github.com/repl-it-discord/repl-it-electron/issues/new?assignees=&labels=&template=bug_report.md&title=').then();
                     }
                 }
             ]
