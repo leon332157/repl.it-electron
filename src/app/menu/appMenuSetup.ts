@@ -202,7 +202,7 @@ function appMenuSetup(
                 {
                     label: 'Report a bug',
                     click() {
-                        shell.openExternal('https://github.com/repl-it-discord/repl-it-electron/issues/new/choose')
+                        shell.openExternal('https://github.com/repl-it-discord/repl-it-electron/issues/new/choose');
                     }
                 }
             ]
