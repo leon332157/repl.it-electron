@@ -9,7 +9,6 @@ import { ElectronWindow, PLATFORM, selectInput } from '../../common';
 import { ThemeHandler } from '../themeHandler/themeHandler';
 import { App } from '../app';
 import { SettingHandler } from '../settingHandler';
-import set = Reflect.set;
 
 function appMenuSetup(
     mainApp: App,

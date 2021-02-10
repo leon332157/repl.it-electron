@@ -1,5 +1,5 @@
 import { Launcher, Updater } from './launcher/launcher';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app } from 'electron';
 import path = require('path');
 import { PLATFORM, promptYesNoSync } from './common';
 import { App } from './app/app';

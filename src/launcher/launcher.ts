@@ -1,9 +1,9 @@
 import { app, shell } from 'electron';
 import {
-    checkUpdateResult,
+    CheckUpdateResult,
     ElectronWindow,
-    githubReleaseResponse,
-    launcherStatus,
+    GithubReleaseResponse,
+    LauncherStatus,
     UpdateAssetsUrls,
     Version
 } from '../common';
@@ -42,8 +42,8 @@ class Updater extends EventEmitter {
         this.launcher = launcher;
     }
 
-    decodeReleaseResponse(resp: object): githubReleaseResponse {
-        return <githubReleaseResponse>Object.assign({}, resp);
+    decodeReleaseResponse(resp: object): GithubReleaseResponse {
+        return <GithubReleaseResponse>Object.assign({}, resp);
     }
 
     formatBytes(bytes: number, decimals: number = 1) {
@@ -60,9 +60,9 @@ class Updater extends EventEmitter {
         );
     }
 
-    async checkUpdate(): Promise<checkUpdateResult> {
+    async checkUpdate(): Promise<CheckUpdateResult> {
         try {
-            const res: githubReleaseResponse = this.decodeReleaseResponse(
+            const res: GithubReleaseResponse = this.decodeReleaseResponse(
                 await (
                     await fetch(
                         'https://api.github.com/repos/repl-it-discord/repl-it-electron/releases/latest'
@@ -178,7 +178,7 @@ class Launcher {
         this.window.loadFile('launcher/launcher.html').then();
     }
 
-    updateStatus(status: launcherStatus) {
+    updateStatus(status: LauncherStatus) {
         this.window.webContents.send('status-update', status);
     }
 }
