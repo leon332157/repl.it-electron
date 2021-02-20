@@ -1,7 +1,7 @@
 {
-  "name": "replit_desktop",
+  "name": "repl.it",
   "version": "3.0.0-alpha1",
-  "description": "electron version of Replit",
+  "description": "electron version of repl.it",
   "keywords": [
     "electron",
     "repl.it",
