@@ -173,8 +173,7 @@ class DiscordHandler {
         } else {
             viewing = `Viewing ${spliturl[1]}`;
         }
-        const talkBoard = capitalize(spliturl[1]);
-        return { viewing: viewing, talkBoard: talkBoard };
+        return { viewing: viewing, talkBoard: capitalize(spliturl[1]) };
     }
 
     async setEditing(
@@ -184,16 +183,19 @@ class DiscordHandler {
         largeImageKey: string;
         largeImageText: string;
     }> {
-        const fileName: string = await windowObj.webContents.executeJavaScript(
-            "document.querySelector('.file-header-name div').textContent"
+        const { activeFile, plugins }: any = JSON.parse(
+            await windowObj.webContents.executeJavaScript(
+                'JSON.stringify(window.store.getState())'
+            )
         );
         const replType: string = await windowObj.webContents.executeJavaScript(
             'document.querySelector("img.jsx-2652062152").title'
         );
-        const largeImageKey = displayNameToIcon[replType];
-        const largeImageText = replType;
-
-        return { fileName, largeImageKey, largeImageText };
+        return {
+            fileName: activeFile,
+            largeImageKey: displayNameToIcon[replType],
+            largeImageText: plugins.fs.state.repl.language
+        };
     }
 }
 
