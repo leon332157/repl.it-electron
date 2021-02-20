@@ -128,7 +128,7 @@ class DiscordHandler {
             this.client
                 .setActivity({
                     details: `Changing account settings`,
-                    state: `replit/${url}`,
+                    state: `repl.it/${url}`,
                     startTimestamp,
                     largeImageKey: 'logo-bg',
                     largeImageText: 'Replit',
