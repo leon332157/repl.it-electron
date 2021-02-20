@@ -130,18 +130,17 @@ function handleExternalLink(
     windowObj: ElectronWindow,
     url: string
 ) {
-    if (!url) {
-        return;
-    }
+    if (!url) return;
     if (url.toString().startsWith('about')) {
         windowObj.loadURL('https://repl.it/~').catch();
     } else if (
-        url.includes('repl.it') ||
-        url.includes('repl.co') ||
-        url.includes('google.com') ||
-        url.includes('repl.run')
+        !(
+            url.includes('repl.it') ||
+            url.includes('repl.co') ||
+            url.includes('google.com') ||
+            url.includes('repl.run')
+        )
     ) {
-    } else {
         console.log(`External URL: ${url}`);
         event.preventDefault();
         dialog
@@ -162,11 +161,10 @@ function handleExternalLink(
 }
 function getUrl(windowObj: ElectronWindow) {
     try {
-        let url = windowObj.webContents
+        return windowObj.webContents
             .getURL()
-            .replace(/(^\w+:|^)\/\/repl\.it\//, '');
-        url = url.split('?')[0];
-        return url;
+            .replace(/(^\w+:|^)\/\/repl\.it\//, '')
+            .split('?')[0];
     } catch (e) {
         return '';
     }

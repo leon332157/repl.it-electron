@@ -18,10 +18,7 @@ class App extends EventEmitter {
 
     constructor() {
         super();
-        this.mainWindow = new ElectronWindow({
-            height: 900,
-            width: 1600
-        });
+        this.mainWindow = new ElectronWindow({ height: 900, width: 1600 });
         this.settingsHandler = new SettingHandler();
         this.windowArray = [];
         this.discordHandler = new DiscordHandler(this.mainWindow);
@@ -32,9 +29,9 @@ class App extends EventEmitter {
         );
         this.popoutHandler = new PopoutHandler();
         this.addWindow(this.mainWindow);
-        if (!this.settingsHandler.has('enable-ace')) {
+        if (!this.settingsHandler.has('enable-ace'))
             this.settingsHandler.set('enable-ace', false);
-        } // Init settings for ace editor
+
         app.applicationMenu = appMenuSetup(
             this,
             this.themeHandler,
@@ -128,9 +125,9 @@ class App extends EventEmitter {
             if (this.settingsHandler.get('enable-ace')) this.toggleAce();
         });
         this.themeHandler.addTheme(window);
-        window.webContents.on('did-finish-load', () => {
-            this.themeHandler.addTheme(window);
-        });
+        window.webContents.on('did-finish-load', () =>
+            this.themeHandler.addTheme(window)
+        );
     }
 }
 
