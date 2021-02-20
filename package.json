@@ -29,7 +29,6 @@
     "discord-rpc": "^3.2.0",
     "electron-context-menu": "^2.1.0",
     "electron-prompt": "^1.5.1",
-    "lodash": "^4.17.19",
     "node-fetch": "^2.6.1",
     "semver": "^7.3.4",
     "write-file-atomic": "^3.0.3"

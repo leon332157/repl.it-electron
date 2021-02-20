@@ -59,18 +59,23 @@ class SettingHandler {
     has(key: string): boolean {
         const obj = this.loadSettings();
 
-        return _.has(obj, key);
+        return obj.hasOwnProperty(key);
     }
 
     get(key: string): SettingsValue {
         const obj = this.loadSettings();
-        return _.get(obj, key);
+        if (this.has(key)) {
+            return obj[key];
+        } else {
+            return null;
+        }
     }
 
     set(key: string, value: SettingsValue): void {
         const obj = this.loadSettings();
 
-        _.set(obj, key, value);
+        //@ts-ignore
+        obj.assign({ key: value });
 
         this.saveSettings(obj);
     }
@@ -78,7 +83,7 @@ class SettingHandler {
     unset(key: string): void {
         const obj = this.loadSettings();
 
-        _.unset(obj, key);
+        delete obj[key];
 
         this.saveSettings(obj);
     }

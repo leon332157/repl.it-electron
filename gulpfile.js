@@ -163,13 +163,14 @@ async function buildDevWatch() {
 }
 
 async function buildDev() {
-    gulp.src('src/**/*.ts')
-        .pipe(cache('buildDev'))
-        .pipe(tsProject(ts.reporter.fullReporter()))
-        .on('error', function () {
-            process.exit(1);
-        })
-        .pipe(gulp.dest('ts-out/'));
+    return new Promise((resolve, reject) => {
+        gulp.src('src/**/*.ts')
+            .pipe(cache('buildDev'))
+            .pipe(tsProject(ts.reporter.fullReporter()))
+            .on('error', reject)
+            .pipe(gulp.dest('ts-out/'))
+            .on('end', resolve);
+    });
 }
 
 module.exports.watchDev = watchDev;
