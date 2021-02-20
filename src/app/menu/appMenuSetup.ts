@@ -221,7 +221,7 @@ function appMenuSetup(
         {
             role: 'help',
             submenu: [
-                // { role: 'about' },
+                { role: 'about' },
                 {
                     label: 'Join the Replit discord',
                     click() {
