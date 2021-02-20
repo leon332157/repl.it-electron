@@ -9,21 +9,19 @@ let fetchIcon = (lang, fileEnding) => {
         }
     )
         .then((response) => {
-            console.log(response.url, response.status, fileEnding);
+            console.debug(response.url, response.status, fileEnding);
             return response;
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.debug(e));
 };
 
 let downloadIcons = (icon) => {};
 
 let fetchIcons = (languages) => {
     // Fetch an svg icon from the website. It one does nto exist fetch a png, then a jpg if unsucessfile
-    console.log('test');
     languages.forEach((lang) => {
         fetchIcon(lang, 'svg')
             .then(async (res) => {
-                console.log(res.statusCode);
                 if (res.statusCode !== 200) {
                     let a = await fetchIcon(lang, 'png');
                     return a;
@@ -36,12 +34,7 @@ let fetchIcons = (languages) => {
                     return a;
                 }
             });
-
-        // if (res.statusCode !== 200) res = await fetchIcon(lang, 'png')
-        // if (res.statusCode !== 200) res = await fetchIcon(lang, 'jpg')
-        // if (res.statusCode !== 200) res = await fetchIcon(lang, 'jpeg')
     });
-    // downloadIcons(arrayOfIcons)
 };
 
 let obtainListOfLanguages = () => {
@@ -65,13 +58,11 @@ let obtainListOfLanguages = () => {
                         return lang;
                     })
                     .map((lang) => lang.slice(17));
-
-                // console.log(languages)
                 fetchIcons(languages);
                 resolve();
             })
             .catch((e) => {
-                console.log(e);
+                console.debug(e);
                 reject();
             });
     });

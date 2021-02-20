@@ -74,7 +74,7 @@ class ElectronWindow extends BrowserWindow {
             .executeJavaScript(
                 `updateError("${errorCode} ${errorDescription}","${validateUrl}")`
             )
-            .catch(console.log);
+            .catch(console.debug);
     }
 }
 
@@ -141,7 +141,7 @@ function handleExternalLink(
             url.includes('repl.run')
         )
     ) {
-        console.log(`External URL: ${url}`);
+        console.debug(`External URL: ${url}`);
         event.preventDefault();
         dialog
             .showMessageBox({

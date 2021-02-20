@@ -6,7 +6,7 @@ import {
     shell,
     BrowserWindow
 } from 'electron';
-import { ElectronWindow, PLATFORM, selectInput } from '../../common';
+import { ElectronWindow, selectInput } from '../../common';
 import { ThemeHandler } from '../themeHandler/themeHandler';
 import { App } from '../app';
 import { SettingHandler } from '../settingHandler';

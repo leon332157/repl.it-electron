@@ -1,10 +1,7 @@
-// import { ipcMain } from 'electron';
 import { ElectronWindow, getUrl } from '../../common';
 
 class PopoutHandler {
-    constructor() {
-        // this cant be handled here in the end as we need the repls url
-    }
+    constructor() {}
 
     launch(win: ElectronWindow) {
         // Handle the repl url, make sure it is there repl and a repl
