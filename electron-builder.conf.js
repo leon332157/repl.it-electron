@@ -1,25 +1,23 @@
 module.exports = {
-    appId: 'repl-it-electron.repl-it-discord',
+    appId: 'replit-desktop.replit-discord',
+    generateUpdatesFilesForAllChannels: false,
     directories: {
         output: 'build/',
         app: 'dist/',
         buildResources: __dirname
     },
     mac: {
-        target: 'pkg',
+        target: 'dmg',
         icon: 'logos/replit-logo/icns/512x512.icns'
     },
-    pkg: {
-        isVersionChecked: false,
-        hasStrictIdentifier: false,
-        overwriteAction: 'upgrade'
-    },
+    dmg: { writeUpdateInfo: false },
     win: {
         target: 'nsis',
         icon: 'logos/replit-logo/logo-clear.png'
     },
     nsis: {
         oneClick: false,
+        differentialPackage: false,
         allowToChangeInstallationDirectory: true,
         differentialPackage: false,
         //perMachine: true,

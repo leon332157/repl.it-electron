@@ -1,4 +1,4 @@
-# replit-electron [![Discord](https://img.shields.io/discord/437048931827056642.svg?logo=discord)](https://discord.gg/5gcPC6B) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/3bce49c376cf4c2bb1d2813d6b12dd6a)](https://www.codacy.com/manual/leon332157/repl-it-electron?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=repl-it-discord/repl-it-electron&amp;utm_campaign=Badge_Grade) [![Run on Replit](https://repl.it/badge/github/leon332157/repl-it-electron)](https://repl.it/@leon332157/repl-it-electron)
+# replit-desktop [![Discord](https://img.shields.io/discord/437048931827056642.svg?logo=discord)](https://discord.gg/5gcPC6B) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/3bce49c376cf4c2bb1d2813d6b12dd6a)](https://www.codacy.com/manual/leon332157/replit-desktop?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=repl-it-discord/replit-desktop&amp;utm_campaign=Badge_Grade) [![Run on Replit](https://repl.it/badge/github/leon332157/replit-desktop)](https://repl.it/@leon332157/replit-desktop)
 
 
 ### Join the [Replit discord](https://repl.it/discord) for quicker communication with our community and ask questions about the app.
@@ -15,16 +15,16 @@
 + Change and create site themes (using [Reflux](https://github.com/frissyn/Reflux))
 
 ## Normal Installation & Usage
-[Download the Desired Release from the Page & Install](https://github.com/replit-discord/repl-it-electron/releases)
-+ [3.0.0-Alpha](https://github.com/replit-discord/repl-it-electron/releases/tag/3.0.0-alpha1)
-+ [2.1.0 (stable)](https://github.com/replit-discord/repl-it-electron/releases/tag/2.1.0)
+[Download the Desired Release from the Page & Install](https://github.com/replit-discord/replit-desktop/releases)
++ [3.0.0-Alpha](https://github.com/replit-discord/replit-desktop/releases/tag/3.0.0-alpha1)
++ [2.1.0 (stable)](https://github.com/replit-discord/replit-desktop/releases/tag/2.1.0)
 ## Dev Installation & Usage
 
 Install [git](https://git-scm.com)
 1. Clone the repository
 ```bash
-git clone https://github.com/repl-it-discord/repl-it-electron.git
-cd repl-it-electron
+git clone https://github.com/repl-it-discord/replit-desktop.git
+cd replit-desktop
 ```
 
 2. Install dependencies and run
@@ -45,5 +45,5 @@ Also, before opening a Pull Request or Issue, please take a look at our project 
 
 | Board           | Link                                                               |
 |:----------------|:------------------------------------------------------------------:|
-|GitHub Projects  |[🔗](https://github.com/repl-it-discord/repl-it-electron/projects)  |
+|GitHub Projects  |[🔗](https://github.com/repl-it-discord/replit-desktop/projects)  |
 |Trello Board     |[🔗](https://trello.com/b/tLDD8fnB/replit-electron)                 |

@@ -72,20 +72,21 @@ async function copyFilesProd() {
 }
 
 async function buildProd() {
-    gulp.src('src/**/*.ts')
-        .pipe(tsProject())
-        .pipe(
-            terser({
-                mangle: {
-                    toplevel: true
-                },
-                compress: {}
-            })
-        )
-        .on('error', (e) => {
-            this.emit('end');
-        })
-        .pipe(gulp.dest('dist'));
+    return new Promise((resolve, reject) => {
+        gulp.src('src/**/*.ts')
+            .pipe(tsProject())
+            .pipe(
+                terser({
+                    mangle: {
+                        toplevel: true
+                    },
+                    compress: {}
+                })
+            )
+            .on('error', reject)
+            .pipe(gulp.dest('dist'))
+            .on('end', resolve);
+    });
 }
 
 async function buildAppPreRelease() {
@@ -165,7 +166,6 @@ async function buildDevWatch() {
 async function buildDev() {
     return new Promise((resolve, reject) => {
         gulp.src('src/**/*.ts')
-            .pipe(cache('buildDev'))
             .pipe(tsProject(ts.reporter.fullReporter()))
             .on('error', reject)
             .pipe(gulp.dest('ts-out/'))

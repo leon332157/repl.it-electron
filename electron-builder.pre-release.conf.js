@@ -1,5 +1,6 @@
 module.exports = {
-    appId: 'repl-it-electron.repl-it-discord',
+    appId: 'replit-desktop.replit-discord',
+    generateUpdatesFilesForAllChannels: false,
     directories: {
         output: 'build/',
         app: 'dist/',
