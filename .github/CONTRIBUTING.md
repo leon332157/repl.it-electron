@@ -10,7 +10,9 @@ We recommend using the following tools:
 + Git Bash or GitHub Desktop as your **Version Control**.
 + TypeScript, Eslint and Prettier as your VSC **extensions**.
 
-You can also write code in [Repl.it](https://repl.it/@leon332157/repl-it-electron) however it is not recommended since it's not optimal for electron.
+You can also write code in [Replit](https://repl.it/@leon332157/repl-it-electron) however it is not recommended since it's not optimal for electron.
+
+We have a strict linting policy be sure to run `npm lint:check` before pushing or making a pull request and that it does not give you any issues.
 
 ## Scripts
 
@@ -18,7 +20,7 @@ These are the scripts that can be run with `npm {script-name}`:
 
 |Script Name     |Description                                                                                                               |
 |:--------------:|:-------------------------------------------------------------------------------------------------------------------------|
-|`start`         |Runs `npm run build` and `npm run build:run`, used for running electron with compiled ts files in a devlopmemt enviroment.|
+|`start`         |Runs `npm run build` and `npm run build:run`, used for running electron with compiled ts files in a development environment.|
 |`lint:check`    |Identifies all linting issues with eslint. Lints TypeScript as well as JavaScript.                                        |
 |`lint`          |This formats code according to Prettier style guides.                                                                     |
 |`build`         |Uses gulp to create a JavaScript build of the app.                                                                        |
@@ -41,7 +43,7 @@ PRs will be reviewed by [Leon](https://github.com/leon332157) and/or other team 
 + Do not add a period
 + Keep commits short and meaningful
 + Do not capitalize the first letter
-+ (*Optional*) Use commit prefixes, here are some exmaples:
++ (*Optional*) Use commit prefixes, here are some examples:
 
 ```html
 📝: update README information
@@ -52,7 +54,9 @@ update: add discord RPC extensions
 
 ## Branch Naming
 
-Be sure to create a new branch when contributing. *Do **not** commit to the `dev` or `master` branch directly*. Use your name and feature name to name branches. 
+Be sure to create a new branch when contributing. *Do **not** commit to the `dev` or `master` branch directly*. 
+**Do not commit to another user's branch without asking permission first.**
+Use your name and feature name to name branches. 
 #### Examples
 
 ```bash

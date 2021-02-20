@@ -221,11 +221,17 @@ function appMenuSetup(
         {
             role: 'help',
             submenu: [
-                { role: 'about' },
+                // { role: 'about' },
                 {
-                    label: 'Learn More about repl.it',
+                    label: 'Join the Replit discord',
                     click() {
-                        shell.openExternal('https://repl.it/site/about').then();
+                        shell.openExternal('https://repl.it/discord');
+                    }
+                },
+                {
+                    label: 'Learn More about Replit',
+                    click() {
+                        shell.openExternal('https://repl.it/site/about');
                     }
                 },
                 {

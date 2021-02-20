@@ -49,7 +49,7 @@ class DiscordHandler {
                 state: `repl.it/${url}`,
                 startTimestamp,
                 largeImageKey: 'logo-bg',
-                largeImageText: 'Repl.it',
+                largeImageText: 'Replit',
                 instance: false
             });
         } else if (spliturl[0] === 'talk') {
@@ -63,7 +63,7 @@ class DiscordHandler {
                             largeImageKey: 'talk-bg',
                             largeImageText: 'Repl Talk',
                             smallImageKey: 'logo-bg',
-                            smallImageText: 'Repl.it',
+                            smallImageText: 'Replit',
                             instance: false
                         })
                         .catch((reason) => {
@@ -83,7 +83,7 @@ class DiscordHandler {
                             state: `${url} `,
                             startTimestamp,
                             smallImageKey: 'logo-bg',
-                            smallImageText: 'Repl.it',
+                            smallImageText: 'Replit',
                             largeImageKey: res.largeImageKey,
                             largeImageText: res.largeImageText,
                             instance: false
@@ -105,7 +105,7 @@ class DiscordHandler {
                     largeImageKey: 'talk-bg',
                     largeImageText: 'Repl Talk',
                     smallImageKey: 'logo-bg',
-                    smallImageText: 'Repl.it',
+                    smallImageText: 'Replit',
                     instance: false
                 })
                 .catch((reason) => {
@@ -118,7 +118,7 @@ class DiscordHandler {
                     state: `repl.it/${url}`,
                     startTimestamp,
                     largeImageKey: 'logo-bg',
-                    largeImageText: 'Repl.it',
+                    largeImageText: 'Replit',
                     instance: false
                 })
                 .catch((reason) => {
@@ -128,10 +128,10 @@ class DiscordHandler {
             this.client
                 .setActivity({
                     details: `Changing account settings`,
-                    state: `repl.it/${url}`,
+                    state: `replit/${url}`,
                     startTimestamp,
                     largeImageKey: 'logo-bg',
-                    largeImageText: 'Repl.it',
+                    largeImageText: 'Replit',
                     instance: false
                 })
                 .catch((reason) => {
@@ -140,11 +140,11 @@ class DiscordHandler {
         } else {
             this.client
                 .setActivity({
-                    details: `On Repl.it`,
+                    details: `On Replit`,
                     state: `repl.it/${url}`,
                     startTimestamp,
                     largeImageKey: 'logo-bg',
-                    largeImageText: 'Repl.it',
+                    largeImageText: 'Replit',
                     instance: false
                 })
                 .catch((reason) => {
