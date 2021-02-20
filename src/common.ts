@@ -188,8 +188,6 @@ function promptYesNoSync(
 }
 
 const PLATFORM = platform();
-const IPAD_USER_AGENT: string =
-    'Mozilla/5.0 (iPad; CPU OS 11_3 like Mac OS X)AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Tablet/15E148 Safari/604.1';
 export {
     Version,
     CheckUpdateResult,
@@ -201,7 +199,6 @@ export {
     handleExternalLink,
     selectInput,
     PLATFORM,
-    IPAD_USER_AGENT,
     promptYesNoSync,
     capitalize,
     getUrl

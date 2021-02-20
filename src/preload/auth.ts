@@ -5,4 +5,3 @@ window.opener = {
         window.close();
     }
 };
-console.log(`${__filename} preloaded`);

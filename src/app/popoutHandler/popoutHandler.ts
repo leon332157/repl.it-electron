@@ -4,9 +4,6 @@ import { ElectronWindow, getUrl } from '../../common';
 class PopoutHandler {
     constructor() {
         // this cant be handled here in the end as we need the repls url
-        // ipcMain.on('Popup', (event, status) => {
-        //     this.launch();
-        // });
     }
 
     launch(win: ElectronWindow) {

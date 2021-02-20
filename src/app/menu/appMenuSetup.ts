@@ -77,7 +77,7 @@ function appMenuSetup(
                 {
                     label: 'Clear All Cookies',
                     click() {
-                        mainApp.clearCookies(false).then();
+                        mainApp.clearCookies(false);
                     }
                 },
 
