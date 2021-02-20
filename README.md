@@ -17,8 +17,7 @@
 ## Normal Installation & Usage
 [Download the Desired Release from the Page & Install](https://github.com/replit-discord/repl-it-electron/releases)
 + [3.0.0-Alpha](https://github.com/replit-discord/repl-it-electron/releases/tag/3.0.0-alpha1)
-+ [2.1.0](https://github.com/replit-discord/repl-it-electron/releases/tag/2.1.0)
-+ [Older Releases](https://github.com/replit-discord/repl-it-electron/releases/tag/3.0.0-alpha1)
++ [2.1.0 (stable)](https://github.com/replit-discord/repl-it-electron/releases/tag/2.1.0)
 ## Dev Installation & Usage
 
 Install [git](https://git-scm.com)
