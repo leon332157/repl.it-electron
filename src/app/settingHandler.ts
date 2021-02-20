@@ -2,7 +2,6 @@ import { app } from 'electron';
 import fs from 'fs';
 import path from 'path';
 import writeFileAtomic from 'write-file-atomic';
-import * as _ from 'lodash';
 
 type SettingsValue =
     | null
@@ -19,11 +18,25 @@ interface SettingsObject {
 class SettingHandler {
     public settingsFilePath: string;
 
+    public settings: SettingsObject;
+
     constructor() {
         this.settingsFilePath = `${path.dirname(app.getPath('userData'))}${
             path.sep
         }settings.json`;
         this.ensureFileSync();
+        // Load the settings
+        this.settings = {};
+        try {
+            this.settings = JSON.parse(
+                fs.readFileSync(this.settingsFilePath, 'utf-8')
+            );
+        } catch {
+            this.resetAll();
+            this.settings = JSON.parse(
+                fs.readFileSync(this.settingsFilePath, 'utf-8')
+            );
+        }
     }
 
     private ensureFileSync() {
@@ -31,65 +44,33 @@ class SettingHandler {
             fs.statSync(this.settingsFilePath);
         } catch (err) {
             if (err.code === 'ENOENT') {
-                console.log('creating file');
-                this.saveSettings({});
-            } else {
-                throw err;
-            }
+                console.debug('creating file');
+                this.saveSettings();
+            } else throw err;
         }
     }
-
-    private saveSettings(obj: SettingsObject): void {
-        const data = JSON.stringify(obj, null, 4);
-        writeFileAtomic.sync(this.settingsFilePath, data);
+    private saveSettings(): void {
+        writeFileAtomic.sync(
+            this.settingsFilePath,
+            JSON.stringify(this.settings, null, 4)
+        );
     }
-
-    private loadSettings(): SettingsObject {
-        this.ensureFileSync();
-        let data: SettingsObject;
-        try {
-            data = JSON.parse(fs.readFileSync(this.settingsFilePath, 'utf-8'));
-        } catch {
-            this.resetAll();
-            data = JSON.parse(fs.readFileSync(this.settingsFilePath, 'utf-8'));
-        }
-        return data;
-    }
-
     has(key: string): boolean {
-        const obj = this.loadSettings();
-
-        return obj.hasOwnProperty(key);
+        return this.settings.hasOwnProperty(key);
     }
-
     get(key: string): SettingsValue {
-        const obj = this.loadSettings();
-        if (this.has(key)) {
-            return obj[key];
-        } else {
-            return null;
-        }
+        return this.has(key) ? this.settings[key] : null;
     }
-
     set(key: string, value: SettingsValue): void {
-        const obj = this.loadSettings();
-
-        //@ts-ignore
-        obj.assign({ key: value });
-
-        this.saveSettings(obj);
+        this.settings[key] = value;
+        this.saveSettings();
     }
-
     unset(key: string): void {
-        const obj = this.loadSettings();
-
-        delete obj[key];
-
-        this.saveSettings(obj);
+        delete this.settings[key];
+        this.saveSettings();
     }
-
     resetAll(): void {
-        this.saveSettings({});
+        this.saveSettings();
     }
 }
 
