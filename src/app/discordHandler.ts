@@ -190,12 +190,9 @@ class DiscordHandler {
         const replType: string = await windowObj.webContents.executeJavaScript(
             'document.querySelector("img.jsx-2652062152").title'
         );
-        const logoUrl: string = await windowObj.webContents.executeJavaScript(
-            "document.querySelector('#workspace-root > div > div.jsx-132086333.content > div.jsx-1913007021.workspace-page-wrapper.desktop > div > div > div:nth-child(1) > header > div > div.jsx-2997400350.left > div > div > div > div.jsx-2652062152.language-icon-container > img').src"
-        );
-        const imageName: string = logoUrl.split('/').pop().split('.')[0];
         const largeImageKey = displayNameToIcon[replType];
         const largeImageText = replType;
+
         return { fileName, largeImageKey, largeImageText };
     }
 }
