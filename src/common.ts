@@ -43,9 +43,7 @@ class ElectronWindow extends BrowserWindow {
         });
         this.setBackgroundColor('#393c42');
 
-        this.once('ready-to-show', () => {
-            this.show();
-        });
+        this.once('ready-to-show', () => this.show());
 
         this.webContents.on(
             'did-fail-load',
@@ -154,11 +152,10 @@ function handleExternalLink(
                 buttons: ['No', 'Yes'],
                 defaultId: 1
             })
-            .then(function (resp: MessageBoxReturnValue) {
+            .then((resp: MessageBoxReturnValue) => {
                 const index = resp.response;
                 if (index === 1) {
                     shell.openExternal(url).then();
-                } else {
                 }
             });
     }
@@ -192,10 +189,7 @@ function promptYesNoSync(
 
 const PLATFORM = platform();
 const IPAD_USER_AGENT: string =
-    'Mozilla/5.0 (iPad; CPU OS 11_3 like Mac OS X)' +
-    'AppleWebKit/605.1.15' +
-    ' (KHTML, like Gecko) Version/11.0 Tablet/15E148' +
-    ' Safari/604.1';
+    'Mozilla/5.0 (iPad; CPU OS 11_3 like Mac OS X)AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Tablet/15E148 Safari/604.1';
 export {
     Version,
     CheckUpdateResult,
