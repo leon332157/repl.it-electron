@@ -7,7 +7,6 @@ const { platform } = require('os');
 const htmlmin = require('gulp-htmlmin');
 const cache = require('gulp-cached');
 const electron = require('electron');
-const proc = require('child_process');
 const sucrase = require('@sucrase/gulp-plugin');
 
 const tsProject = ts.createProject('tsconfig.json');
@@ -23,9 +22,13 @@ async function runElectron() {
         child.kill();
     }
 
-    child = proc.spawn(electron, ['--no-sandbox', '--trace-warnings', '.'], {
-        cwd: './ts-out'
-    });
+    child = child_process.spawn(
+        electron,
+        ['--no-sandbox', '--trace-warnings', '.'],
+        {
+            cwd: './ts-out'
+        }
+    );
 
     child.on('error', function (err) {
         errored = true;
@@ -73,20 +76,23 @@ async function copyFilesProd() {
 }
 
 async function buildProd() {
-    gulp.src('src/**/*.ts')
-        .pipe(tsProject())
-        .pipe(
-            terser({
-                mangle: {
-                    toplevel: true
-                },
-                compress: {}
+    return new Promise((resolve, reject) => {
+        gulp.src('src/**/*.ts')
+            .pipe(tsProject())
+            .pipe(
+                terser({
+                    mangle: {
+                        toplevel: true
+                    },
+                    compress: {}
+                })
+            )
+            .on('error', (e) => {
+                reject;
             })
-        )
-        .on('error', (e) => {
-            this.emit('end');
-        })
-        .pipe(gulp.dest('dist'));
+            .pipe(gulp.dest('dist'))
+            .on('end', resolve);
+    });
 }
 
 async function buildAppPreRelease() {
@@ -148,19 +154,13 @@ async function copyFilesDevNoCache() {
 }
 
 async function watchDev() {
-    gulp.series(buildDevWatch, copyFilesDev)();
+    gulp.series(buildDev, copyFilesDev)();
     gulp.watch(
         'src/**/*',
         { delay: 10 * 100 }, // Poll every 10 seconds
-        gulp.series(buildDevWatch, copyFilesDev, runElectron)
+        gulp.series(buildDev, copyFilesDev, runElectron)
     );
     runElectron();
-}
-async function buildDevWatch() {
-    gulp.src('src/**/*.ts')
-        .pipe(cache('buildDev'))
-        .pipe(tsProject(ts.reporter.fullReporter()))
-        .pipe(gulp.dest('ts-out/'));
 }
 
 async function buildDev() {

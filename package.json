@@ -24,7 +24,7 @@
     "dist": "npm run build:prod && npm run build:app",
     "pre-dist": "npm run build:prod && npm run build:app-pre",
     "start": "gulp buildAndRun",
-    "watchDev": "gulp watchDev",
+    "watch": "gulp watchDev",
     "lint:check": "eslint \"**/*.{js,ts,json}\"",
     "lint": "eslint \"**/*.{js,ts,json}\" --fix"
   },

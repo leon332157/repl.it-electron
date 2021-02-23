@@ -26,7 +26,7 @@ These are the scripts that can be run with `npm {script-name}`:
 |`build`         |Uses gulp to create a JavaScript build of the app.                                                                        |
 |`build:run`     |Run electron from ts-out                                                                                                  |
 |`build:prod`    |Builds a production JS version of the app.                                                                                |
-|`watchDev`      |Watch for changes in src and rebuild and relaunch electron every time if there's a change.                                |
+|`watch`      |Watch for changes in src and rebuild and relaunch electron every time if there's a change.                                |
 |`dist`          |Builds the app for release.                                                                                               | 
 
 ## Pull Requests
