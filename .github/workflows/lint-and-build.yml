@@ -1,6 +1,6 @@
 name: 'Build with gulp and lint using ESLint on push'
 
-on: push
+on: [push, pull_request]
 
 jobs:
   eslint:
@@ -11,6 +11,5 @@ jobs:
       with:
         node-version: '14'
     - run: "npm install"
-    - run: "npm run build:dev"
     - run: "npm run build:prod"
     - run: "npm run lint:check"
