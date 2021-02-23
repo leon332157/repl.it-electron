@@ -249,6 +249,14 @@ function appMenuSetup(
                             'https://github.com/repl-it-discord/repl-it-electron'
                         );
                     }
+                },
+                {
+                    label: 'The Contributers',
+                    click() {
+                        shell.openExternal(
+                            'https://github.com/replit-discord/replit-desktop/graphs/contributors'
+                        );
+                    }
                 }
             ]
         }
