@@ -8,6 +8,7 @@ const htmlmin = require('gulp-htmlmin');
 const cache = require('gulp-cached');
 const electron = require('electron');
 const proc = require('child_process');
+const sucrase = require('@sucrase/gulp-plugin');
 
 const tsProject = ts.createProject('tsconfig.json');
 let child = null;
@@ -166,7 +167,7 @@ async function buildDev() {
     return new Promise((resolve, reject) => {
         gulp.src('src/**/*.ts')
             .pipe(cache('buildDev'))
-            .pipe(tsProject(ts.reporter.fullReporter()))
+            .pipe(sucrase({ transforms: ['typescript', 'imports'] }))
             .on('error', reject)
             .pipe(gulp.dest('ts-out/'))
             .on('end', resolve);
