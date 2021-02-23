@@ -185,6 +185,7 @@ class DiscordHandler {
         const replType: string = await windowObj.webContents.executeJavaScript(
             'document.querySelector("img.jsx-2652062152").title'
         ); //i could change this but i cant because the style in the other file is wrong
+        // Match file type
         return {
             fileName: activeFile,
             largeImageKey: displayNameToIcon[replType],
