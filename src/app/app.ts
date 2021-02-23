@@ -82,9 +82,10 @@ class App extends EventEmitter {
         });
     }
 
-    async clearCookies(oauthOnly: boolean) {
+    async clearCookies(oauthOnly: boolean, Prompt: boolean = true) {
         if (
             !oauthOnly &&
+            Prompt &&
             !promptYesNoSync(
                 'Are you sure you want to clear all cookies?',
                 'Confirm'
@@ -121,6 +122,10 @@ class App extends EventEmitter {
         contextMenu({ window: window });
         this.windowArray.push(window);
         window.webContents.on('will-navigate', (e, url) => {
+            // Deal with the logout
+            if (url == 'https://repl.it/logout') {
+                this.clearCookies(false, false);
+            }
             handleExternalLink(e, window, url);
             if (this.settingsHandler.get('enable-ace')) this.toggleAce();
         });
