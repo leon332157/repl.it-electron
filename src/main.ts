@@ -41,14 +41,10 @@ async function initApp() {
     mainApp.mainWindow.webContents.once('did-finish-load', () => {
         launcher.window.close();
     });
-<<<<<<< HEAD
-    mainApp.mainWindow.on('close', () => app.quit());
-=======
 
     mainApp.mainWindow.on('close', () => {
         app.quit();
     });
->>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
 }
 
 async function initUpdater() {

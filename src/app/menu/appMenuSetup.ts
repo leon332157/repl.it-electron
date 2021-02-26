@@ -105,10 +105,14 @@ function appMenuSetup(
                 {
                     label: 'Copy URL to clipboard',
 <<<<<<< HEAD
+<<<<<<< HEAD
                     click(item: MenuItem, focusedWindow: BrowserWindow) {
 =======
                     click(_: MenuItem, focusedWindow: ElectronWindow) {
 >>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
+=======
+                    click(_: MenuItem, focusedWindow: ElectronWindow) {
+>>>>>>> 95371bf... Fixed mobile view bug
                         clipboard.writeText(focusedWindow.webContents.getURL());
                     }
                 }
@@ -120,10 +124,14 @@ function appMenuSetup(
                 {
                     label: 'Go Back',
 <<<<<<< HEAD
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
 =======
                     click(_: any, focusedWindow: ElectronWindow) {
 >>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
+=======
+                    click(_: any, focusedWindow: ElectronWindow) {
+>>>>>>> 95371bf... Fixed mobile view bug
                         if (focusedWindow.webContents.canGoBack()) {
                             focusedWindow.webContents.goBack();
                         }
@@ -132,10 +140,14 @@ function appMenuSetup(
                 {
                     label: 'Go Forward',
 <<<<<<< HEAD
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
 =======
                     click(_: any, focusedWindow: ElectronWindow) {
 >>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
+=======
+                    click(_: any, focusedWindow: ElectronWindow) {
+>>>>>>> 95371bf... Fixed mobile view bug
                         if (focusedWindow.webContents.canGoForward()) {
                             focusedWindow.webContents.goForward();
                         }
@@ -145,10 +157,14 @@ function appMenuSetup(
                 {
                     label: 'Open Current Link in Default Browser',
 <<<<<<< HEAD
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
 =======
                     click(_: any, focusedWindow: ElectronWindow) {
 >>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
+=======
+                    click(_: any, focusedWindow: ElectronWindow) {
+>>>>>>> 95371bf... Fixed mobile view bug
                         shell
                             .openExternal(focusedWindow.webContents.getURL())
                             .then(() => {});
@@ -157,10 +173,14 @@ function appMenuSetup(
                 {
                     label: 'Go to Home',
 <<<<<<< HEAD
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
 =======
                     click(_: any, focusedWindow: ElectronWindow) {
 >>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
+=======
+                    click(_: any, focusedWindow: ElectronWindow) {
+>>>>>>> 95371bf... Fixed mobile view bug
                         focusedWindow.loadURL('https://repl.it/~').catch();
                     }
                 },
@@ -168,9 +188,12 @@ function appMenuSetup(
                     accelerator: 'CmdOrCtrl+f',
                     label: 'Select Input',
 <<<<<<< HEAD
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
                         selectInput(<ElectronWindow>focusedWindow);
 =======
+=======
+>>>>>>> 95371bf... Fixed mobile view bug
                     click(_: any, focusedWindow: ElectronWindow) {
                         selectInput(focusedWindow);
 >>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
