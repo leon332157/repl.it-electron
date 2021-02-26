@@ -1,127 +1,154 @@
 <!DOCTYPE html>
 <html lang="en" style="height: 100%">
-<head>
-    <meta charset="UTF-8">
-    <title>Launcher</title>
-    <style>
-        :root {
-            --logo-size: 100px;
-        }
-        body {
-            background-color: #393c42;
-            margin: auto;
-            width: 100%;
-            height: 100%;
-            display: flex;
-        }
-        #logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: var(--logo-size);
-            width: var(--logo-size);
-            transform-origin: center;
-            animation: 3s rotateRight infinite linear;
-        }
-        @keyframes rotateRight {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        #status {
-            color: #FFFFFF;
-            font-family: IBM Plex Sans, sans-serif;
-            font-size: 17px;
-            user-select: none;
-            width: max-content;
-            margin: 22px auto;;
-        }
-        .box {
-            padding-top: 34px;
-            flex-direction: column;
-            height: max-content;
-            width: max-content;
-            margin: auto;
-            display: flex;
-            align-items: center;
-        }
-        #bar-bg {
-            height: 16px;
-            border-radius: 20px;
-            width: 200px;
-            background-color: #999999;
-            margin-top: 15px;
-            display: flex;
-            visibility: hidden;
-            text-align: center;
-            flex-direction: column;
-            position: relative;
-        }
-        #bar {
-            background-color: #EEEEEE;
-            height: 100%;
-            border-radius: 20px;
-        }
-        #bar-content {
-            color: #000000;
-            width: 100%;
-            font-family: IBM Plex Sans, sans-serif;
-            font-size: 15px;
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-</head>
-<body>
-<div class="box">
-    <svg id="logo" viewBox="0 0 156 156" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-         <style>.cls-1{fill:#989ba1;}.cls-2{fill:#929497;}</style>
-        </defs>
-        <g>
-         <title>background</title>
-         <rect fill="none" id="canvas_background" height="158" width="158" y="-1" x="-1"/>
-        </g>
-        <g>
-         <title>Layer 1</title>
-         <g id="svg_7">
-          <path id="svg_1" d="m155.63222,70.8417c0.213,2.361 0.362,4.744 0.362,7.161l0,0c0,-2.418 -0.149,-4.8 -0.362,-7.161z" class="cls-1"/>
-          <path id="svg_2" d="m39.91822,70.4287s-21.689,79.918 65.248,80.614a77.991,77.991 0 0 0 50.422,-65.064c0.211,-2.076 0.274,-4.193 0.32,-6.315c0.009,-0.559 0.083,-1.1 0.083,-1.662c0,-2.418 -0.148,-4.8 -0.362,-7.161c-22.965,90.419 -124.574,55.002 -115.711,-0.412z" class="cls-1"/>
-          <path id="svg_3" d="m84.87222,40.7637s-80.938,-22.6 -79.7,65.657a78.218,78.218 0 0 0 18.863,28.2c0.343,0.329 0.707,0.64 1.059,0.964a78.272,78.272 0 0 0 7.4,6.029c0.4,0.287 0.779,0.6 1.182,0.883a77.676,77.676 0 0 0 8.539,5.07c0.858,0.442 1.734,0.845 2.61,1.256a77.183,77.183 0 0 0 7.8,3.165c0.651,0.223 1.275,0.5 1.935,0.708a77.317,77.317 0 0 0 9.705,2.3c0.992,0.176 2,0.32 3,0.458a78.24,78.24 0 0 0 10.278,0.8c0.132,0 0.26,0.02 0.392,0.02c2.594,0 5.155,-0.138 7.682,-0.388c-90.829,-21.668 -56.296,-123.224 -0.745,-115.122z" class="cls-2"/>
-          <path id="svg_4" d="m116.42222,82.6197s19.151,-80.736 -67.051,-77.129a77.2,77.2 0 0 0 -48.568,83.117c18.143,-91.347 121.497,-61.77 115.619,-5.988z" class="cls-1"/>
-          <path id="svg_5" d="m75.03322,117.3637s81.086,10.586 76.01,-66.507a77.559,77.559 0 0 0 -87.192,-49.513c90.353,11.091 66.87,116.81 11.182,116.02z" class="cls-1"/>
-          <path id="svg_6" d="m100.50622,78.0037a21.847,21.847 0 1 1 -21.84,-21.848a21.846,21.846 0 0 1 21.84,21.848z" class="cls-1"/>
-         </g>
-        </g>
-       </svg>
-    <span class="text" id="status" unselectable="on">Loading Replit Desktop</span>
-    <div id="bar-bg">
-        <div id="bar"></div>
-        <span id="bar-content"></span>
-    </div>
-</div>
-<script>
-    const ipcRenderer = require('electron').ipcRenderer;
-    const status = document.getElementById('status');
-    const bar = document.getElementById('bar');
-    const barBg = document.getElementById('bar-bg');
-    const barContent = document.getElementById('bar-content');
-    if (status !== undefined) {
-        ipcRenderer.on('status-update', function (event, s) {
-            status.innerHTML = s.text;
-            if (s.percentage) {
-                status.innerText = 'Downloading Update';
-                barBg.style.visibility = 'initial';
-                bar.style.width = s.percentage;
-                barContent.innerText = s.text;
-            } else {
-                barBg.style.visibility = 'hidden';
-            }
-        });
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <title>Launcher</title>
 
-</script>
-</body>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap"
+            rel="stylesheet"
+        />
+
+        <style>
+            body {
+                background-color: #393c42;
+                margin: auto;
+                height: 100%;
+            }
+
+            #logo {
+                height: 150px;
+                width: 150px;
+                animation: 2s rotateRight infinite linear;
+            }
+
+            @keyframes rotateRight {
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            #status {
+                color: #ffffff;
+                font-family: IBM Plex Sans, sans-serif;
+                font-size: 17px;
+                user-select: none;
+                padding-top: 10px;
+            }
+
+            .box {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            #bar-bg {
+                height: 16px;
+                border-radius: 20px;
+                width: 200px;
+                background-color: #999999;
+                margin-top: 15px;
+                display: flex;
+                visibility: hidden;
+                text-align: center;
+                flex-direction: column;
+            }
+
+            #bar {
+                background-color: #eeeeee;
+                height: 100%;
+                border-radius: 20px;
+            }
+
+            #bar-content {
+                color: #000000;
+                width: 100%;
+                font-family: IBM Plex Sans, sans-serif;
+                font-size: 15px;
+                position: absolute;
+                transform: translateX(-50%);
+                left: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <div>
+                <svg
+                    id="logo"
+                    viewBox="0 0 1156 1156"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <defs>
+                        <style>
+                            .cls-2 {
+                                fill: #56676e;
+                            }
+
+                            .cls-3 {
+                                fill: #4e4f50;
+                            }
+                        </style>
+                    </defs>
+                    <g class="" id="Exponent">
+                        <path
+                            class="cls-2"
+                            d="M1024.5,534.05c1.23,13.58,2.08,27.28,2.08,41.19h0C1026.58,561.33,1025.73,547.64,1024.5,534.05Z"
+                        />
+                        <path
+                            class="cls-2"
+                            d="M359,531.68S234.25,991.32,734.26,995.32c156.88-58.4,272.48-201.58,290-374.2,1.21-11.94,1.57-24.12,1.84-36.32.05-3.21.48-6.33.48-9.56,0-13.9-.85-27.61-2.08-41.19C892.4,1054.08,308,850.39,359,531.68Z"
+                        />
+                        <path
+                            class="cls-2"
+                            d="M617.54,361.07S152,231.06,159.16,738.68A449.86,449.86,0,0,0,267.65,900.85c2,1.89,4.07,3.68,6.09,5.54a450.17,450.17,0,0,0,42.54,34.67c2.31,1.65,4.48,3.47,6.8,5.08a446.74,446.74,0,0,0,49.11,29.16c4.93,2.54,10,4.86,15,7.23a443.91,443.91,0,0,0,44.85,18.2c3.75,1.28,7.33,2.88,11.13,4.07A444.68,444.68,0,0,0,499,1018c5.71,1,11.48,1.84,17.26,2.64a450,450,0,0,0,59.11,4.59c.76,0,1.49.12,2.25.12,14.92,0,29.65-.8,44.18-2.23C99.46,898.55,298,314.47,617.54,361.07Z"
+                        />
+                        <path
+                            class="cls-2"
+                            d="M799,601.8S909.14,137.46,413.36,158.2c-166.25,65.67-283.94,227.43-283.94,417a451.1,451.1,0,0,0,4.61,61C238.37,110.86,832.8,281,799,601.8Z"
+                        />
+                        <path
+                            class="cls-2"
+                            d="M560.95,801.62S1027.3,862.5,998.11,419.11C934.64,248.44,770.76,126.62,578,126.62a450.24,450.24,0,0,0-81.35,7.73C1016.29,198.14,881.23,806.16,560.95,801.62Z"
+                        />
+                        <path
+                            class="cls-3"
+                            d="M707.46,575.25A125.65,125.65,0,1,1,581.85,449.6,125.64,125.64,0,0,1,707.46,575.25Z"
+                            id="center-dot"
+                        />
+                    </g>
+                </svg>
+            </div>
+            <span class="text" id="status" unselectable="on"
+                >Loading repl.it</span
+            >
+            <div id="bar-bg">
+                <div id="bar"></div>
+                <span id="bar-content"></span>
+            </div>
+        </div>
+        <script>
+            const { ipcRenderer } = require('electron');
+            const status = document.getElementById('status');
+            const bar = document.getElementById('bar');
+            const barBg = document.getElementById('bar-bg');
+            const barContent = document.getElementById('bar-content');
+            if (status !== undefined) {
+                ipcRenderer.on('status-update', function (event, s) {
+                    status.innerHTML = s.text;
+                    if (s.percentage) {
+                        status.innerText = 'Downloading Update';
+                        barBg.style.visibility = 'initial';
+                        bar.style.width = s.percentage;
+                        barContent.innerText = s.text;
+                    } else {
+                        barBg.style.visibility = 'hidden';
+                    }
+                });
+            }
+        </script>
+    </body>
 </html>

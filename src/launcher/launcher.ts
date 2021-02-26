@@ -20,17 +20,14 @@ class Updater extends EventEmitter {
         linuxUrl: ''
     };
     private pathSep: string = path.sep;
-    private appPath: string = `${app.getAppPath()}${this.pathSep}`;
-    private upperAppPath: string = `${path.dirname(this.appPath)}${
-        this.pathSep
-    }`;
-    private userDesktop: string = app.getPath('desktop');
-    private logFilePath: string = `${this.userDesktop}updater-log.txt`;
+    // private appPath: string = app.getAppPath() + this.pathSep;
+    // private upperAppPath: string = path.dirname(this.appPath) + this.pathSep;
+    // private userDesktop: string = app.getPath('desktop');
+    // private logFilePath: string = this.userDesktop + 'updater-log.txt';
     private appVersion: Version;
-    private logArray: [string] = [''];
-    private downloadPath: string = `${app.getPath('appData')}updaterDownload${
-        this.pathSep
-    }`;
+    // private logArray: [string] = [''];
+    private downloadPath: string =
+        app.getPath('appData') + 'updaterDownload' + this.pathSep;
     private downloadFilePath: string;
     private launcher: Launcher;
 

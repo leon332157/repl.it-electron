@@ -6,9 +6,18 @@ If you want to be added as a collaborator, DM Leon on discord. `leon332157#6808`
 ## Tools
 We recommend using the following tools:
 
-+ VSCode as your **IDE**.
-+ Git Bash or GitHub Desktop as your **Version Control**.
-+ TypeScript, Eslint and Prettier as your VSC **extensions**.
+You can also write code in [Repl.it](https://repl.it/@leon332157/repl-it-electron) however is not recommended since it's not optimal for electron. 
+## Scripts
+
+### `start`
+
+Runs `npm run build` and `npm run build:run`, used for running electron with compiled ts files in a development enviroment. 
+
+### `lint:check`
+
+Identifies all linting issues with eslint. Lints TypeScript as well as JavaScript.
+
+### `lint`
 
 You can also write code in [Replit](https://repl.it/@leon332157/repl-it-electron) however it is not recommended since it's not optimal for electron.
 
@@ -54,9 +63,7 @@ update: add discord RPC extensions
 
 ## Branch Naming
 
-Be sure to create a new branch when contributing. *Do **not** commit to the `dev` or `master` branch directly*. 
-**Do not commit to another user's branch without asking permission first.**
-Use your name and feature name to name branches. 
+Be sure to create a new branch when contributing. *Do **not** commit to the `dev` or `master` branch directly*. Use your name and feature name to name branches.
 #### Examples
 
 ```bash

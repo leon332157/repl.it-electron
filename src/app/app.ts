@@ -68,23 +68,19 @@ class App extends EventEmitter {
     }
 
     toggleAce(menu?: MenuItem) {
-        let userAgent: string =
-            'Mozilla/5.0 (iPad; CPU OS 11_3 like Mac OS X)AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Tablet/15E148 Safari/604.1';
-        if (menu) {
-            if (menu.checked == true) {
-                this.settingsHandler.set('enable-ace', true);
-            } else {
-                this.settingsHandler.set('enable-ace', false);
-                userAgent = app.userAgentFallback;
-            }
-        } else if (!this.settingsHandler.get('enable-ace')) {
+        let userAgent: string;
+
+        if (menu?.checked == true) {
+            this.settingsHandler.set('enable-ace', true);
+            userAgent = IPAD_USER_AGENT;
+        } else {
+            this.settingsHandler.set('enable-ace', false);
             userAgent = app.userAgentFallback;
         }
-        [...this.windowArray.values()].forEach((window) => {
-            if (window.webContents) {
-                window.webContents.userAgent = userAgent;
-                window.reload();
-            }
+
+        this.windowArray.forEach((window) => {
+            window.webContents.userAgent = userAgent;
+            window.reload();
         });
     }
 

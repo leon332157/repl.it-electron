@@ -23,30 +23,13 @@ function appMenuSetup(
             label: 'App',
             submenu: [
                 {
-                    label: 'Themes',
-                    submenu: [
-                        {
-                            label: 'Choose Theme',
-                            click() {
-                                themeHandler.openWindow();
-                            }
-                        },
-                        {
-                            label: 'Make Theme',
-                            click() {
-                                themeHandler.openMaker();
-                            }
-                        }
-                    ]
-                },
-                {
-                    label: 'Popup',
-                    click(i: MenuItem, win: BrowserWindow) {
-                        popoutHandler.launch(<ElectronWindow>win);
+                    label: 'Choose Theme',
+                    click(_: MenuItem, win: ElectronWindow) {
+                        themeHandler.openThemeWindow(win);
                     }
                 },
                 {
-                    label: 'Use Ace Editor',
+                    label: 'Use Mobile View',
                     type: 'checkbox',
                     checked: <boolean>settings.get('enable-ace'),
                     click(item: MenuItem) {
@@ -80,7 +63,6 @@ function appMenuSetup(
                         mainApp.clearCookies(false);
                     }
                 },
-
                 { type: 'separator' },
                 {
                     role: 'quit'
@@ -122,7 +104,11 @@ function appMenuSetup(
                 },
                 {
                     label: 'Copy URL to clipboard',
+<<<<<<< HEAD
                     click(item: MenuItem, focusedWindow: BrowserWindow) {
+=======
+                    click(_: MenuItem, focusedWindow: ElectronWindow) {
+>>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
                         clipboard.writeText(focusedWindow.webContents.getURL());
                     }
                 }
@@ -133,7 +119,11 @@ function appMenuSetup(
             submenu: [
                 {
                     label: 'Go Back',
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
+=======
+                    click(_: any, focusedWindow: ElectronWindow) {
+>>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
                         if (focusedWindow.webContents.canGoBack()) {
                             focusedWindow.webContents.goBack();
                         }
@@ -141,42 +131,55 @@ function appMenuSetup(
                 },
                 {
                     label: 'Go Forward',
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
+=======
+                    click(_: any, focusedWindow: ElectronWindow) {
+>>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
                         if (focusedWindow.webContents.canGoForward()) {
                             focusedWindow.webContents.goForward();
                         }
                     }
                 },
-                {
-                    type: 'separator'
-                },
+                { type: 'separator' },
                 {
                     label: 'Open Current Link in Default Browser',
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
+=======
+                    click(_: any, focusedWindow: ElectronWindow) {
+>>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
                         shell
                             .openExternal(focusedWindow.webContents.getURL())
-                            .then((r) => {});
+                            .then(() => {});
                     }
                 },
                 {
                     label: 'Go to Home',
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
+=======
+                    click(_: any, focusedWindow: ElectronWindow) {
+>>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
                         focusedWindow.loadURL('https://repl.it/~').catch();
                     }
                 },
                 {
                     accelerator: 'CmdOrCtrl+f',
                     label: 'Select Input',
+<<<<<<< HEAD
                     click(item: any, focusedWindow: BrowserWindow) {
                         selectInput(<ElectronWindow>focusedWindow);
+=======
+                    click(_: any, focusedWindow: ElectronWindow) {
+                        selectInput(focusedWindow);
+>>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
                     }
                 },
-                {
-                    type: 'separator'
-                },
+                { type: 'separator' },
                 {
                     accelerator: 'CmdOrCtrl+R',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(_: any, focusedWindow: ElectronWindow) {
                         if (focusedWindow) focusedWindow.reload();
                     },
                     label: 'Reload'
@@ -187,14 +190,12 @@ function appMenuSetup(
                         process.platform === 'darwin'
                             ? 'Alt+Command+I'
                             : 'Ctrl+Shift+I',
-                    click(item: any, focusedWindow: ElectronWindow) {
+                    click(_: any, focusedWindow: ElectronWindow) {
                         if (focusedWindow)
                             focusedWindow.webContents.toggleDevTools();
                     }
                 },
-                {
-                    type: 'separator'
-                },
+                { type: 'separator' },
                 {
                     role: 'resetZoom'
                 },
@@ -243,7 +244,11 @@ function appMenuSetup(
                     }
                 },
                 {
+<<<<<<< HEAD
                     label: 'Go to Github Page',
+=======
+                    label: 'What is replit?',
+>>>>>>> 4177374a5a8eb3d739d42a56b3360371b135c3f6
                     click() {
                         shell.openExternal(
                             'https://github.com/repl-it-discord/repl-it-electron'
