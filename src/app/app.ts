@@ -1,5 +1,5 @@
 import { ElectronWindow, handleExternalLink, promptYesNoSync } from '../common';
-import { app, Cookie, ipcMain, session, MenuItem } from 'electron';
+import { app, Cookie, ipcMain, session, MenuItem, screen } from 'electron';
 import { PopoutHandler } from './popoutHandler/popoutHandler';
 import { ThemeHandler } from './themeHandler/themeHandler';
 import { DiscordHandler } from './discordHandler';
@@ -8,6 +8,10 @@ import contextMenu from 'electron-context-menu';
 import { appMenuSetup } from './menu/appMenuSetup';
 import { EventEmitter } from 'events';
 
+interface WindowSize {
+    width: number;
+    height: number;
+}
 class App extends EventEmitter {
     public readonly mainWindow: ElectronWindow;
     public readonly themeHandler: ThemeHandler;
@@ -40,6 +44,44 @@ class App extends EventEmitter {
             this.settingsHandler,
             this.popoutHandler
         );
+
+        if (this.settingsHandler.has('window-size')) {
+            // Type is as an object ts does not like this got to find a better way arround this
+            //@ts-ignore
+            let windowSize: WindowSize = this.settingsHandler.get(
+                'window-size'
+            );
+
+            if (typeof windowSize != 'object') {
+                // Reset to Default
+                windowSize = {
+                    width: 1600,
+                    height: 900
+                };
+            }
+
+            let size = screen.getPrimaryDisplay().size;
+
+            if (windowSize == null) {
+                console.log('No window size detected.');
+            } else if (
+                windowSize.width &&
+                windowSize.height &&
+                size.width > windowSize.width &&
+                size.height > windowSize.height
+            ) {
+                this.mainWindow.setSize(windowSize.width, windowSize.height);
+            }
+        }
+
+        // Detect on resize and add to settings
+        this.mainWindow.on('resize', () => {
+            let size = this.mainWindow.getSize();
+            this.settingsHandler.set('window-size', {
+                width: size[0],
+                height: size[1]
+            });
+        });
 
         // Handle The Login
         this.mainWindow.webContents.on('new-window', (event, url) => {
