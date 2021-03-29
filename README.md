@@ -6,7 +6,7 @@
 #### Before you make an issue, come in the discord and ask us as the issue could be fixed on another branch, which isn't always up-to-date with `dev`.
 ## Summary
 
-[Replit](https://replit.com) is an online coding platform that provides a browser-based IDE. `Replit-electron` is an unofficial desktop application that interfaces with Replit. It intends to improve the developer experience and boost efficiency.
+[Replit](https://replit.com) is an online coding platform that provides a browser-based IDE. `Replit-Desktop` is an unofficial desktop application that interfaces with Replit. It intends to improve the developer experience and boost efficiency.
 
 ## Features
 
