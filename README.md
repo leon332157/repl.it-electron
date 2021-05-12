@@ -32,8 +32,8 @@ Head to the [Releases Tab](https://github.com/replit-discord/replit-desktop/rele
     npm install
     npm start
     ```
-If you would like to contribute, please refer to our [`Contribution Guide`](https://github.com/replit-discord/replit-desktop/blob/dev/.github/CONTRIBUTING.md).
-Before contributing, please take a look at our [`project boards`](https://github.com/replit-discord/replit-desktop/projects).
+If you would like to contribute, please refer to our [Contribution Guide](https://github.com/replit-discord/replit-desktop/blob/dev/.github/CONTRIBUTING.md).
+Before contributing, please take a look at our [project boards](https://github.com/replit-discord/replit-desktop/projects).
 
 **DEVELOPER NOTES:** 
 + The application requires Node 14 LTS or later. Node 15 also works but isn't recommended as Electron does not fully support it.
